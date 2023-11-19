@@ -52,7 +52,9 @@ export async function getTradePriceImpact({
 
       const numerator = BigNumber.from(10).pow(tokens[i].decimals)
 
-      return BigNumber.from(result['weightedRate']).mul(numerator).div(denominator)
+      return BigNumber.from(result["weightedRate"])
+        .mul(numerator)
+        .div(denominator)
     }
   )
 
