@@ -8,7 +8,6 @@ import {
 import { BigNumber, Signer } from "ethers"
 import { Token, TokenAmount, wrappedToken } from "../entities"
 import type { Symbiosis } from "./symbiosis"
-
 import { BridgeDirection } from "./types"
 import {
   getExternalId,

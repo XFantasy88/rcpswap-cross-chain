@@ -12,8 +12,11 @@ export * from "./revert"
 export * from "./getRepresentation"
 export * from "./omniLiquidity"
 export * from "./dataProvider"
-export { getTradePriceImpact, IzumiTrade } from "./trade"
-export type { SymbiosisTradeType } from "./trade"
+export {
+  type SymbiosisTradeType,
+  getTradePriceImpact,
+  IzumiTrade,
+} from "./trade"
 export * from "./zappingSyncSwapLaunchPool"
 export * from "./bestPoolSwapping"
 export * from "./baseSwapping"

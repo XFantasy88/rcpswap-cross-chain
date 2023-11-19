@@ -141,7 +141,6 @@ export class UniLikeTrade implements SymbiosisTrade {
     })
 
     let method = methodName
-    // TODO replace if condition to method mapping
 
     return {
       data: this.router.interface.encodeFunctionData(

@@ -4,7 +4,7 @@
   "include": ["src"],
   "exclude": ["node_modules", "dist", ".turbo"],
   "compilerOptions": {
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "target": "ES2022",
     "outDir": "./dist",
     "rootDir": "./src",

@@ -11,7 +11,7 @@ import type {
 
 const _abi = [
   {
-    inputs: [] as any[],
+    inputs: [],
     payable: false,
     stateMutability: "nonpayable",
     type: "constructor",

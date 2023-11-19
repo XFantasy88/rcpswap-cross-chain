@@ -1,5 +1,4 @@
 import JSBI from "jsbi"
-import { NativeCurrency } from "./entities"
 
 // exports for external consumption
 export type BigintIsh = JSBI | bigint | string
@@ -28,7 +27,6 @@ export type ChainConstructor = {
   explorer: string
   disabled: boolean
   icons: Icons
-  nativeCurrency?: NativeCurrency
   swappable?: boolean
   evm?: boolean
 }

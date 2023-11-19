@@ -13,24 +13,16 @@ import { Execute, WaitForMined } from "./bridging"
 import { BIPS_BASE } from "./constants"
 import { Error, ErrorCode } from "./error"
 import type { Symbiosis } from "./symbiosis"
-import { UniLikeTrade, AggregatorTrade, SymbiosisTradeType } from "./trade"
+import { AggregatorTrade, SymbiosisTradeType } from "./trade"
 import {
   getExternalId,
   getInternalId,
   prepareTransactionRequest,
 } from "./utils"
 import { WaitForComplete } from "./waitForComplete"
-import {
-  AdaRouter,
-  AvaxRouter,
-  KavaRouter,
-  OmniPool,
-  OmniPoolOracle,
-  UniLikeRouter,
-} from "./contracts"
+import { OmniPool, OmniPoolOracle } from "./contracts"
 import { DataProvider } from "./dataProvider"
 import { OmniLiquidity } from "./omniLiquidity"
-
 import { OmniPoolConfig } from "./types"
 import { WrapTrade } from "./trade/wrapTrade"
 
@@ -64,7 +56,7 @@ export class Zapping {
   private deadline!: number
   private ttl!: number
 
-  private tradeA: UniLikeTrade | AggregatorTrade | WrapTrade | undefined
+  private tradeA: AggregatorTrade | WrapTrade | undefined
 
   private synthToken!: Token
   private transitTokenIn!: Token
@@ -199,8 +191,8 @@ export class Zapping {
         : undefined
 
     const params = {
-      firstSwapCalldata: (this.tradeA?.callData || []) as any,
-      secondSwapCalldata: [] as any,
+      firstSwapCalldata: this.tradeA?.callData || [],
+      secondSwapCalldata: [],
       approvedTokens,
       firstDexRouter: this.tradeA?.routerAddress || AddressZero,
       secondDexRouter: AddressZero,
@@ -243,7 +235,7 @@ export class Zapping {
     return synthAmount
   }
 
-  private buildTradeA(): UniLikeTrade | AggregatorTrade | WrapTrade {
+  private buildTradeA(): AggregatorTrade | WrapTrade {
     const chainId = this.tokenAmountIn.token.chainId
     const tokenOut = this.transitTokenIn
     const from = this.symbiosis.metaRouter(chainId).address
@@ -253,34 +245,17 @@ export class Zapping {
       return new WrapTrade(this.tokenAmountIn, tokenOut, this.to)
     }
 
-    if (AggregatorTrade.isAvailable(chainId)) {
-      return new AggregatorTrade({
-        tokenAmountIn: this.tokenAmountIn,
-        tokenOut,
-        from,
-        to,
-        slippage: this.slippage / 100,
-        dataProvider: this.dataProvider,
-        symbiosis: this.symbiosis,
-        clientId: this.symbiosis.clientId,
-        ttl: this.ttl,
-      })
-    }
-
-    const dexFee = this.symbiosis.dexFee(chainId)
-
-    let routerA: UniLikeRouter | AvaxRouter | AdaRouter | KavaRouter =
-      this.symbiosis.uniLikeRouter(chainId)
-
-    return new UniLikeTrade(
-      this.tokenAmountIn,
+    return new AggregatorTrade({
+      tokenAmountIn: this.tokenAmountIn,
       tokenOut,
+      from,
       to,
-      this.slippage,
-      this.ttl,
-      routerA,
-      dexFee
-    )
+      slippage: this.slippage / 100,
+      dataProvider: this.dataProvider,
+      symbiosis: this.symbiosis,
+      clientId: this.symbiosis.clientId,
+      ttl: this.ttl,
+    })
   }
 
   private buildOmniLiquidity(fee?: TokenAmount): OmniLiquidity {

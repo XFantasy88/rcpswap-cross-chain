@@ -47,7 +47,7 @@ const _abi = [
     type: "constructor",
   },
   {
-    inputs: [] as any[],
+    inputs: [],
     name: "ETHTransferFailed",
     type: "error",
   },

@@ -4,7 +4,7 @@ import { Unwrapper__factory, Weth__factory } from "../contracts"
 import type { SymbiosisTrade } from "./symbiosisTrade"
 
 const UNWRAP_ADDRESSES: Partial<Record<ChainId, string>> = {
-  [ChainId.ARBITRUM_NOVA]: "0x8a7F930003BedD63A1ebD99C5917FD6aE7E3dedf",
+  [ChainId.ARBITRUM_NOVA]: "0xf02bBC9de6e443eFDf3FC41851529C2c3B9E5e0C",
 }
 
 export class WrapTrade implements SymbiosisTrade {

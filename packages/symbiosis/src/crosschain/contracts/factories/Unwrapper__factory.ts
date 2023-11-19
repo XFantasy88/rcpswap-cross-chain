@@ -38,7 +38,7 @@ const _abi = [
     type: "event",
   },
   {
-    inputs: [] as any[],
+    inputs: [],
     name: "owner",
     outputs: [
       {

@@ -20,7 +20,7 @@ import { OmniPoolConfig } from "./types"
 import { PendingRequest } from "./revertRequest"
 
 type RevertBase = {
-  type: "tron" | "evm"
+  type: "evm"
   fee: TokenAmount
 }
 export type EvmRevertResponse = RevertBase & {
@@ -236,7 +236,7 @@ export class RevertPending {
 
     const metarouter = this.symbiosis.metaRouter(this.omniPoolConfig.chainId)
 
-    let revertableAddress: string = from
+    let revertableAddress = from
 
     const calldata = synthesis.interface.encodeFunctionData(
       "metaBurnSyntheticToken",
@@ -396,12 +396,12 @@ export class RevertPending {
       managerChainId: this.omniPoolConfig.chainId,
       sourceChainId: chainIdFrom,
       router: AddressZero, // multicall router
-      swapCalldata: [] as any, // swapCalldata,
+      swapCalldata: [], // swapCalldata,
       sourceChainSynthesis: this.symbiosis.synthesis(
         this.omniPoolConfig.chainId
       ).address,
       burnToken: AddressZero, //burnToken,
-      burnCalldata: [] as any, // burnCalldata,
+      burnCalldata: [], // burnCalldata,
       clientID: this.symbiosis.clientId,
     }
 
@@ -572,7 +572,7 @@ export class RevertPending {
       managerChainId: this.omniPoolConfig.chainId,
       sourceChainId: chainIdTo,
       router: AddressZero, // multicall router
-      swapCalldata: [] as any,
+      swapCalldata: [],
       sourceChainSynthesis: this.symbiosis.synthesis(
         this.omniPoolConfig.chainId
       ).address,

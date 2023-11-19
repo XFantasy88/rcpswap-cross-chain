@@ -708,7 +708,7 @@ const _abi = [
       },
     ],
     name: "configureEModeCategory",
-    outputs: [] as any,
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },

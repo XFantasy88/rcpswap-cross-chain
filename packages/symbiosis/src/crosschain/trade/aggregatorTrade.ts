@@ -7,6 +7,15 @@ import { OneInchProtocols, OneInchTrade } from "./oneInchTrade"
 import { OpenOceanTrade } from "./openOceanTrade"
 import { SymbiosisTrade, SymbiosisTradeType } from "./symbiosisTrade"
 import { IzumiTrade } from "./izumiTrade"
+import {
+  AdaRouter,
+  AvaxRouter,
+  KavaRouter,
+  UniLikeRouter,
+  XfusionRouter,
+} from "../contracts"
+import { UniLikeTrade } from "./uniLikeTrade"
+import { XfusionTrade } from "./xfusionTrade"
 
 interface AggregatorTradeParams {
   symbiosis: Symbiosis
@@ -29,7 +38,12 @@ class TradeNotInitializedError extends Error {
 
 const OPEN_OCEAN_CLIENT_ID = utils.formatBytes32String("open-ocean")
 
-type TradeType = OneInchTrade | OpenOceanTrade | IzumiTrade
+type TradeType =
+  | OneInchTrade
+  | OpenOceanTrade
+  | IzumiTrade
+  | UniLikeTrade
+  | XfusionTrade
 
 // Get the best trade from all aggregators
 export class AggregatorTrade implements SymbiosisTrade {
@@ -83,11 +97,11 @@ export class AggregatorTrade implements SymbiosisTrade {
 
     if (OpenOceanTrade.isAvailable(tokenAmountIn.token.chainId)) {
       const openOceanTrade = new OpenOceanTrade({
+        symbiosis,
         slippage,
         to,
         tokenAmountIn,
         tokenOut,
-        dataProvider,
       })
 
       const promises: Promise<OpenOceanTrade>[] = [openOceanTrade.init()]
@@ -115,10 +129,15 @@ export class AggregatorTrade implements SymbiosisTrade {
       aggregators.push(izumiTrade.init())
     }
 
+    if (XfusionTrade.isAvailable(tokenAmountIn.token.chainId)) {
+      this.trade = await this.buildXfusionTrade()
+      return this
+    }
+
     if (aggregators.length === 0) {
-      throw new Error(
-        "No aggregators available for this trade. Aggregators count is zero."
-      )
+      // If no trade found, fallback to Uniswap like trade
+      this.trade = await this.buildUniLikeTrade()
+      return this
     }
 
     const tradesResults = await Promise.allSettled(aggregators)
@@ -127,7 +146,10 @@ export class AggregatorTrade implements SymbiosisTrade {
     let bestTrade: TradeType | undefined
     for (const trade of tradesResults) {
       if (trade.status === "rejected") {
-        console.log("Rejected. Reason: ", trade.reason)
+        console.log(
+          "Rejected. Reason: ",
+          trade.reason?.toString?.().replace(/(\r\n|\n|\r)/gm, "")
+        )
         continue
       }
 
@@ -142,9 +164,14 @@ export class AggregatorTrade implements SymbiosisTrade {
     }
 
     if (!bestTrade) {
-      throw new Error(
-        "No aggregators available for this trade. All trades have failed."
+      const inToken = tokenAmountIn.token
+
+      console.log(
+        `No aggregetor trade found for ${inToken.chainId}/${inToken.address} -> ${tokenOut.chainId}/${tokenOut.address}. Fallback to unilike.`
       )
+
+      this.trade = await this.buildUniLikeTrade()
+      return this
     }
 
     this.trade = bestTrade
@@ -158,6 +185,47 @@ export class AggregatorTrade implements SymbiosisTrade {
     if (!this.trade) {
       throw new TradeNotInitializedError()
     }
+  }
+
+  private async buildXfusionTrade(): Promise<XfusionTrade> {
+    const { symbiosis, tokenAmountIn, tokenOut, to, slippage } = this.params
+    const { chainId } = tokenAmountIn.token
+    let routerA: XfusionRouter = symbiosis.xfusionRouter(chainId)
+
+    const trade = new XfusionTrade(
+      tokenAmountIn,
+      tokenOut,
+      to,
+      slippage,
+      routerA
+    )
+
+    await trade.init()
+
+    return trade
+  }
+
+  private async buildUniLikeTrade(): Promise<UniLikeTrade> {
+    const { symbiosis, tokenAmountIn, tokenOut, to, slippage, ttl } =
+      this.params
+    const { chainId } = tokenAmountIn.token
+    let routerA: UniLikeRouter | AvaxRouter | AdaRouter | KavaRouter =
+      symbiosis.uniLikeRouter(chainId)
+
+    const dexFee = symbiosis.dexFee(chainId)
+    const trade = new UniLikeTrade(
+      tokenAmountIn,
+      tokenOut,
+      to,
+      slippage,
+      ttl,
+      routerA,
+      dexFee
+    )
+
+    await trade.init()
+
+    return trade
   }
 
   /**

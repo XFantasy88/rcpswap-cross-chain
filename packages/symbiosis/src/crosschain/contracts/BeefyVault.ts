@@ -2,877 +2,644 @@
 /* tslint:disable */
 /* eslint-disable */
 import {
-  BaseContract,
-  BigNumber,
-  BigNumberish,
-  BytesLike,
-  CallOverrides,
-  ContractTransaction,
-  Overrides,
-  PopulatedTransaction,
-  Signer,
-  utils,
-} from "ethers";
-import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
-import { Listener, Provider } from "@ethersproject/providers";
-import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
+    BaseContract,
+    BigNumber,
+    BigNumberish,
+    BytesLike,
+    CallOverrides,
+    ContractTransaction,
+    Overrides,
+    PopulatedTransaction,
+    Signer,
+    utils,
+} from 'ethers'
+import { FunctionFragment, Result, EventFragment } from '@ethersproject/abi'
+import { Listener, Provider } from '@ethersproject/providers'
+import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common'
 
 export interface BeefyVaultInterface extends utils.Interface {
-  contractName: "BeefyVault";
-  functions: {
-    "allowance(address,address)": FunctionFragment;
-    "approvalDelay()": FunctionFragment;
-    "approve(address,uint256)": FunctionFragment;
-    "available()": FunctionFragment;
-    "balance()": FunctionFragment;
-    "balanceOf(address)": FunctionFragment;
-    "decimals()": FunctionFragment;
-    "decreaseAllowance(address,uint256)": FunctionFragment;
-    "deposit(uint256)": FunctionFragment;
-    "depositAll()": FunctionFragment;
-    "earn()": FunctionFragment;
-    "getPricePerFullShare()": FunctionFragment;
-    "inCaseTokensGetStuck(address)": FunctionFragment;
-    "increaseAllowance(address,uint256)": FunctionFragment;
-    "name()": FunctionFragment;
-    "owner()": FunctionFragment;
-    "proposeStrat(address)": FunctionFragment;
-    "renounceOwnership()": FunctionFragment;
-    "stratCandidate()": FunctionFragment;
-    "strategy()": FunctionFragment;
-    "symbol()": FunctionFragment;
-    "totalSupply()": FunctionFragment;
-    "transfer(address,uint256)": FunctionFragment;
-    "transferFrom(address,address,uint256)": FunctionFragment;
-    "transferOwnership(address)": FunctionFragment;
-    "upgradeStrat()": FunctionFragment;
-    "want()": FunctionFragment;
-    "withdraw(uint256)": FunctionFragment;
-    "withdrawAll()": FunctionFragment;
-  };
+    contractName: 'BeefyVault'
+    functions: {
+        'allowance(address,address)': FunctionFragment
+        'approvalDelay()': FunctionFragment
+        'approve(address,uint256)': FunctionFragment
+        'available()': FunctionFragment
+        'balance()': FunctionFragment
+        'balanceOf(address)': FunctionFragment
+        'decimals()': FunctionFragment
+        'decreaseAllowance(address,uint256)': FunctionFragment
+        'deposit(uint256)': FunctionFragment
+        'depositAll()': FunctionFragment
+        'earn()': FunctionFragment
+        'getPricePerFullShare()': FunctionFragment
+        'inCaseTokensGetStuck(address)': FunctionFragment
+        'increaseAllowance(address,uint256)': FunctionFragment
+        'name()': FunctionFragment
+        'owner()': FunctionFragment
+        'proposeStrat(address)': FunctionFragment
+        'renounceOwnership()': FunctionFragment
+        'stratCandidate()': FunctionFragment
+        'strategy()': FunctionFragment
+        'symbol()': FunctionFragment
+        'totalSupply()': FunctionFragment
+        'transfer(address,uint256)': FunctionFragment
+        'transferFrom(address,address,uint256)': FunctionFragment
+        'transferOwnership(address)': FunctionFragment
+        'upgradeStrat()': FunctionFragment
+        'want()': FunctionFragment
+        'withdraw(uint256)': FunctionFragment
+        'withdrawAll()': FunctionFragment
+    }
 
-  encodeFunctionData(
-    functionFragment: "allowance",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "approvalDelay",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "approve",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "available", values?: undefined): string;
-  encodeFunctionData(functionFragment: "balance", values?: undefined): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "decreaseAllowance",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "deposit",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "depositAll",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "earn", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "getPricePerFullShare",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "inCaseTokensGetStuck",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "increaseAllowance",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "proposeStrat",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "renounceOwnership",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "stratCandidate",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "strategy", values?: undefined): string;
-  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "totalSupply",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transfer",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferOwnership",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "upgradeStrat",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "want", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "withdraw",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdrawAll",
-    values?: undefined
-  ): string;
+    encodeFunctionData(functionFragment: 'allowance', values: [string, string]): string
+    encodeFunctionData(functionFragment: 'approvalDelay', values?: undefined): string
+    encodeFunctionData(functionFragment: 'approve', values: [string, BigNumberish]): string
+    encodeFunctionData(functionFragment: 'available', values?: undefined): string
+    encodeFunctionData(functionFragment: 'balance', values?: undefined): string
+    encodeFunctionData(functionFragment: 'balanceOf', values: [string]): string
+    encodeFunctionData(functionFragment: 'decimals', values?: undefined): string
+    encodeFunctionData(functionFragment: 'decreaseAllowance', values: [string, BigNumberish]): string
+    encodeFunctionData(functionFragment: 'deposit', values: [BigNumberish]): string
+    encodeFunctionData(functionFragment: 'depositAll', values?: undefined): string
+    encodeFunctionData(functionFragment: 'earn', values?: undefined): string
+    encodeFunctionData(functionFragment: 'getPricePerFullShare', values?: undefined): string
+    encodeFunctionData(functionFragment: 'inCaseTokensGetStuck', values: [string]): string
+    encodeFunctionData(functionFragment: 'increaseAllowance', values: [string, BigNumberish]): string
+    encodeFunctionData(functionFragment: 'name', values?: undefined): string
+    encodeFunctionData(functionFragment: 'owner', values?: undefined): string
+    encodeFunctionData(functionFragment: 'proposeStrat', values: [string]): string
+    encodeFunctionData(functionFragment: 'renounceOwnership', values?: undefined): string
+    encodeFunctionData(functionFragment: 'stratCandidate', values?: undefined): string
+    encodeFunctionData(functionFragment: 'strategy', values?: undefined): string
+    encodeFunctionData(functionFragment: 'symbol', values?: undefined): string
+    encodeFunctionData(functionFragment: 'totalSupply', values?: undefined): string
+    encodeFunctionData(functionFragment: 'transfer', values: [string, BigNumberish]): string
+    encodeFunctionData(functionFragment: 'transferFrom', values: [string, string, BigNumberish]): string
+    encodeFunctionData(functionFragment: 'transferOwnership', values: [string]): string
+    encodeFunctionData(functionFragment: 'upgradeStrat', values?: undefined): string
+    encodeFunctionData(functionFragment: 'want', values?: undefined): string
+    encodeFunctionData(functionFragment: 'withdraw', values: [BigNumberish]): string
+    encodeFunctionData(functionFragment: 'withdrawAll', values?: undefined): string
 
-  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "approvalDelay",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "available", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "balance", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "decreaseAllowance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "depositAll", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "earn", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getPricePerFullShare",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "inCaseTokensGetStuck",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "increaseAllowance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "proposeStrat",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "renounceOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "stratCandidate",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "strategy", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "totalSupply",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "transferFrom",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "upgradeStrat",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "want", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "withdrawAll",
-    data: BytesLike
-  ): Result;
+    decodeFunctionResult(functionFragment: 'allowance', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'approvalDelay', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'approve', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'available', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'balance', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'decimals', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'decreaseAllowance', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'deposit', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'depositAll', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'earn', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'getPricePerFullShare', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'inCaseTokensGetStuck', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'increaseAllowance', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'name', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'owner', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'proposeStrat', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'renounceOwnership', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'stratCandidate', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'strategy', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'symbol', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'totalSupply', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'transfer', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'transferFrom', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'upgradeStrat', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'want', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result
+    decodeFunctionResult(functionFragment: 'withdrawAll', data: BytesLike): Result
 
-  events: {
-    "Approval(address,address,uint256)": EventFragment;
-    "NewStratCandidate(address)": EventFragment;
-    "OwnershipTransferred(address,address)": EventFragment;
-    "Transfer(address,address,uint256)": EventFragment;
-    "UpgradeStrat(address)": EventFragment;
-  };
+    events: {
+        'Approval(address,address,uint256)': EventFragment
+        'NewStratCandidate(address)': EventFragment
+        'OwnershipTransferred(address,address)': EventFragment
+        'Transfer(address,address,uint256)': EventFragment
+        'UpgradeStrat(address)': EventFragment
+    }
 
-  getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "NewStratCandidate"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UpgradeStrat"): EventFragment;
+    getEvent(nameOrSignatureOrTopic: 'Approval'): EventFragment
+    getEvent(nameOrSignatureOrTopic: 'NewStratCandidate'): EventFragment
+    getEvent(nameOrSignatureOrTopic: 'OwnershipTransferred'): EventFragment
+    getEvent(nameOrSignatureOrTopic: 'Transfer'): EventFragment
+    getEvent(nameOrSignatureOrTopic: 'UpgradeStrat'): EventFragment
 }
 
 export type ApprovalEvent = TypedEvent<
-  [string, string, BigNumber],
-  { owner: string; spender: string; value: BigNumber }
->;
+    [string, string, BigNumber],
+    { owner: string; spender: string; value: BigNumber }
+>
 
-export type ApprovalEventFilter = TypedEventFilter<ApprovalEvent>;
+export type ApprovalEventFilter = TypedEventFilter<ApprovalEvent>
 
-export type NewStratCandidateEvent = TypedEvent<
-  [string],
-  { implementation: string }
->;
+export type NewStratCandidateEvent = TypedEvent<[string], { implementation: string }>
 
-export type NewStratCandidateEventFilter =
-  TypedEventFilter<NewStratCandidateEvent>;
+export type NewStratCandidateEventFilter = TypedEventFilter<NewStratCandidateEvent>
 
-export type OwnershipTransferredEvent = TypedEvent<
-  [string, string],
-  { previousOwner: string; newOwner: string }
->;
+export type OwnershipTransferredEvent = TypedEvent<[string, string], { previousOwner: string; newOwner: string }>
 
-export type OwnershipTransferredEventFilter =
-  TypedEventFilter<OwnershipTransferredEvent>;
+export type OwnershipTransferredEventFilter = TypedEventFilter<OwnershipTransferredEvent>
 
-export type TransferEvent = TypedEvent<
-  [string, string, BigNumber],
-  { from: string; to: string; value: BigNumber }
->;
+export type TransferEvent = TypedEvent<[string, string, BigNumber], { from: string; to: string; value: BigNumber }>
 
-export type TransferEventFilter = TypedEventFilter<TransferEvent>;
+export type TransferEventFilter = TypedEventFilter<TransferEvent>
 
-export type UpgradeStratEvent = TypedEvent<
-  [string],
-  { implementation: string }
->;
+export type UpgradeStratEvent = TypedEvent<[string], { implementation: string }>
 
-export type UpgradeStratEventFilter = TypedEventFilter<UpgradeStratEvent>;
+export type UpgradeStratEventFilter = TypedEventFilter<UpgradeStratEvent>
 
 export interface BeefyVault extends BaseContract {
-  contractName: "BeefyVault";
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+    contractName: 'BeefyVault'
+    connect(signerOrProvider: Signer | Provider | string): this
+    attach(addressOrName: string): this
+    deployed(): Promise<this>
 
-  interface: BeefyVaultInterface;
+    interface: BeefyVaultInterface
 
-  queryFilter<TEvent extends TypedEvent>(
-    event: TypedEventFilter<TEvent>,
-    fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+    queryFilter<TEvent extends TypedEvent>(
+        event: TypedEventFilter<TEvent>,
+        fromBlockOrBlockhash?: string | number | undefined,
+        toBlock?: string | number | undefined
+    ): Promise<Array<TEvent>>
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+    listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>
+    listeners(eventName?: string): Array<Listener>
+    removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this
+    removeAllListeners(eventName?: string): this
+    off: OnEvent<this>
+    on: OnEvent<this>
+    once: OnEvent<this>
+    removeListener: OnEvent<this>
 
-  functions: {
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    functions: {
+        allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<[BigNumber]>
 
-    approvalDelay(overrides?: CallOverrides): Promise<[BigNumber]>;
+        approvalDelay(overrides?: CallOverrides): Promise<[BigNumber]>
+
+        approve(
+            spender: string,
+            amount: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<ContractTransaction>
+
+        available(overrides?: CallOverrides): Promise<[BigNumber]>
+
+        balance(overrides?: CallOverrides): Promise<[BigNumber]>
+
+        balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>
+
+        decimals(overrides?: CallOverrides): Promise<[number]>
+
+        decreaseAllowance(
+            spender: string,
+            subtractedValue: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<ContractTransaction>
+
+        deposit(
+            _amount: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<ContractTransaction>
+
+        depositAll(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
+
+        earn(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
+
+        getPricePerFullShare(overrides?: CallOverrides): Promise<[BigNumber]>
+
+        inCaseTokensGetStuck(
+            _token: string,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<ContractTransaction>
+
+        increaseAllowance(
+            spender: string,
+            addedValue: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<ContractTransaction>
+
+        name(overrides?: CallOverrides): Promise<[string]>
+
+        owner(overrides?: CallOverrides): Promise<[string]>
+
+        proposeStrat(
+            _implementation: string,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<ContractTransaction>
+
+        renounceOwnership(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
+
+        stratCandidate(
+            overrides?: CallOverrides
+        ): Promise<[string, BigNumber] & { implementation: string; proposedTime: BigNumber }>
+
+        strategy(overrides?: CallOverrides): Promise<[string]>
+
+        symbol(overrides?: CallOverrides): Promise<[string]>
+
+        totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>
+
+        transfer(
+            recipient: string,
+            amount: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<ContractTransaction>
+
+        transferFrom(
+            sender: string,
+            recipient: string,
+            amount: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<ContractTransaction>
+
+        transferOwnership(
+            newOwner: string,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<ContractTransaction>
+
+        upgradeStrat(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
+
+        want(overrides?: CallOverrides): Promise<[string]>
+
+        withdraw(
+            _shares: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<ContractTransaction>
+
+        withdrawAll(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
+    }
+
+    allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>
+
+    approvalDelay(overrides?: CallOverrides): Promise<BigNumber>
 
     approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+        spender: string,
+        amount: BigNumberish,
+        overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>
 
-    available(overrides?: CallOverrides): Promise<[BigNumber]>;
+    available(overrides?: CallOverrides): Promise<BigNumber>
 
-    balance(overrides?: CallOverrides): Promise<[BigNumber]>;
+    balance(overrides?: CallOverrides): Promise<BigNumber>
 
-    balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>
 
-    decimals(overrides?: CallOverrides): Promise<[number]>;
+    decimals(overrides?: CallOverrides): Promise<number>
 
     decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+        spender: string,
+        subtractedValue: BigNumberish,
+        overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>
 
     deposit(
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+        _amount: BigNumberish,
+        overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>
 
-    depositAll(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    depositAll(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
-    earn(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    earn(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
-    getPricePerFullShare(overrides?: CallOverrides): Promise<[BigNumber]>;
+    getPricePerFullShare(overrides?: CallOverrides): Promise<BigNumber>
 
     inCaseTokensGetStuck(
-      _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+        _token: string,
+        overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>
 
     increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+        spender: string,
+        addedValue: BigNumberish,
+        overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>
 
-    name(overrides?: CallOverrides): Promise<[string]>;
+    name(overrides?: CallOverrides): Promise<string>
 
-    owner(overrides?: CallOverrides): Promise<[string]>;
+    owner(overrides?: CallOverrides): Promise<string>
 
     proposeStrat(
-      _implementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+        _implementation: string,
+        overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>
 
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    renounceOwnership(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
     stratCandidate(
-      overrides?: CallOverrides
-    ): Promise<
-      [string, BigNumber] & { implementation: string; proposedTime: BigNumber }
-    >;
+        overrides?: CallOverrides
+    ): Promise<[string, BigNumber] & { implementation: string; proposedTime: BigNumber }>
 
-    strategy(overrides?: CallOverrides): Promise<[string]>;
+    strategy(overrides?: CallOverrides): Promise<string>
 
-    symbol(overrides?: CallOverrides): Promise<[string]>;
+    symbol(overrides?: CallOverrides): Promise<string>
 
-    totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
+    totalSupply(overrides?: CallOverrides): Promise<BigNumber>
 
     transfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+        recipient: string,
+        amount: BigNumberish,
+        overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>
 
     transferFrom(
-      sender: string,
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+        sender: string,
+        recipient: string,
+        amount: BigNumberish,
+        overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>
 
     transferOwnership(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+        newOwner: string,
+        overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>
 
-    upgradeStrat(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    upgradeStrat(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
-    want(overrides?: CallOverrides): Promise<[string]>;
+    want(overrides?: CallOverrides): Promise<string>
 
     withdraw(
-      _shares: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+        _shares: BigNumberish,
+        overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>
 
-    withdrawAll(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-  };
+    withdrawAll(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
-  allowance(
-    owner: string,
-    spender: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+    callStatic: {
+        allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>
 
-  approvalDelay(overrides?: CallOverrides): Promise<BigNumber>;
+        approvalDelay(overrides?: CallOverrides): Promise<BigNumber>
 
-  approve(
-    spender: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        approve(spender: string, amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  available(overrides?: CallOverrides): Promise<BigNumber>;
+        available(overrides?: CallOverrides): Promise<BigNumber>
 
-  balance(overrides?: CallOverrides): Promise<BigNumber>;
-
-  balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+        balance(overrides?: CallOverrides): Promise<BigNumber>
 
-  decimals(overrides?: CallOverrides): Promise<number>;
+        balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>
 
-  decreaseAllowance(
-    spender: string,
-    subtractedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        decimals(overrides?: CallOverrides): Promise<number>
 
-  deposit(
-    _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        decreaseAllowance(spender: string, subtractedValue: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  depositAll(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        deposit(_amount: BigNumberish, overrides?: CallOverrides): Promise<void>
 
-  earn(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        depositAll(overrides?: CallOverrides): Promise<void>
 
-  getPricePerFullShare(overrides?: CallOverrides): Promise<BigNumber>;
+        earn(overrides?: CallOverrides): Promise<void>
 
-  inCaseTokensGetStuck(
-    _token: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        getPricePerFullShare(overrides?: CallOverrides): Promise<BigNumber>
 
-  increaseAllowance(
-    spender: string,
-    addedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        inCaseTokensGetStuck(_token: string, overrides?: CallOverrides): Promise<void>
 
-  name(overrides?: CallOverrides): Promise<string>;
+        increaseAllowance(spender: string, addedValue: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  owner(overrides?: CallOverrides): Promise<string>;
+        name(overrides?: CallOverrides): Promise<string>
 
-  proposeStrat(
-    _implementation: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        owner(overrides?: CallOverrides): Promise<string>
 
-  renounceOwnership(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        proposeStrat(_implementation: string, overrides?: CallOverrides): Promise<void>
 
-  stratCandidate(
-    overrides?: CallOverrides
-  ): Promise<
-    [string, BigNumber] & { implementation: string; proposedTime: BigNumber }
-  >;
+        renounceOwnership(overrides?: CallOverrides): Promise<void>
 
-  strategy(overrides?: CallOverrides): Promise<string>;
+        stratCandidate(
+            overrides?: CallOverrides
+        ): Promise<[string, BigNumber] & { implementation: string; proposedTime: BigNumber }>
 
-  symbol(overrides?: CallOverrides): Promise<string>;
+        strategy(overrides?: CallOverrides): Promise<string>
 
-  totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+        symbol(overrides?: CallOverrides): Promise<string>
 
-  transfer(
-    recipient: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        totalSupply(overrides?: CallOverrides): Promise<BigNumber>
 
-  transferFrom(
-    sender: string,
-    recipient: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        transfer(recipient: string, amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  transferOwnership(
-    newOwner: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        transferFrom(
+            sender: string,
+            recipient: string,
+            amount: BigNumberish,
+            overrides?: CallOverrides
+        ): Promise<boolean>
 
-  upgradeStrat(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        transferOwnership(newOwner: string, overrides?: CallOverrides): Promise<void>
 
-  want(overrides?: CallOverrides): Promise<string>;
+        upgradeStrat(overrides?: CallOverrides): Promise<void>
 
-  withdraw(
-    _shares: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        want(overrides?: CallOverrides): Promise<string>
 
-  withdrawAll(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+        withdraw(_shares: BigNumberish, overrides?: CallOverrides): Promise<void>
 
-  callStatic: {
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+        withdrawAll(overrides?: CallOverrides): Promise<void>
+    }
 
-    approvalDelay(overrides?: CallOverrides): Promise<BigNumber>;
+    filters: {
+        'Approval(address,address,uint256)'(
+            owner?: string | null,
+            spender?: string | null,
+            value?: null
+        ): ApprovalEventFilter
+        Approval(owner?: string | null, spender?: string | null, value?: null): ApprovalEventFilter
 
-    approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+        'NewStratCandidate(address)'(implementation?: null): NewStratCandidateEventFilter
+        NewStratCandidate(implementation?: null): NewStratCandidateEventFilter
 
-    available(overrides?: CallOverrides): Promise<BigNumber>;
+        'OwnershipTransferred(address,address)'(
+            previousOwner?: string | null,
+            newOwner?: string | null
+        ): OwnershipTransferredEventFilter
+        OwnershipTransferred(previousOwner?: string | null, newOwner?: string | null): OwnershipTransferredEventFilter
 
-    balance(overrides?: CallOverrides): Promise<BigNumber>;
+        'Transfer(address,address,uint256)'(from?: string | null, to?: string | null, value?: null): TransferEventFilter
+        Transfer(from?: string | null, to?: string | null, value?: null): TransferEventFilter
 
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+        'UpgradeStrat(address)'(implementation?: null): UpgradeStratEventFilter
+        UpgradeStrat(implementation?: null): UpgradeStratEventFilter
+    }
 
-    decimals(overrides?: CallOverrides): Promise<number>;
+    estimateGas: {
+        allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>
 
-    decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+        approvalDelay(overrides?: CallOverrides): Promise<BigNumber>
 
-    deposit(_amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+        approve(
+            spender: string,
+            amount: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<BigNumber>
 
-    depositAll(overrides?: CallOverrides): Promise<void>;
-
-    earn(overrides?: CallOverrides): Promise<void>;
-
-    getPricePerFullShare(overrides?: CallOverrides): Promise<BigNumber>;
-
-    inCaseTokensGetStuck(
-      _token: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    name(overrides?: CallOverrides): Promise<string>;
-
-    owner(overrides?: CallOverrides): Promise<string>;
-
-    proposeStrat(
-      _implementation: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+        available(overrides?: CallOverrides): Promise<BigNumber>
 
-    stratCandidate(
-      overrides?: CallOverrides
-    ): Promise<
-      [string, BigNumber] & { implementation: string; proposedTime: BigNumber }
-    >;
+        balance(overrides?: CallOverrides): Promise<BigNumber>
 
-    strategy(overrides?: CallOverrides): Promise<string>;
+        balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>
 
-    symbol(overrides?: CallOverrides): Promise<string>;
+        decimals(overrides?: CallOverrides): Promise<BigNumber>
 
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+        decreaseAllowance(
+            spender: string,
+            subtractedValue: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<BigNumber>
 
-    transfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    transferFrom(
-      sender: string,
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+        deposit(_amount: BigNumberish, overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>
 
-    transferOwnership(
-      newOwner: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+        depositAll(overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>
 
-    upgradeStrat(overrides?: CallOverrides): Promise<void>;
+        earn(overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>
 
-    want(overrides?: CallOverrides): Promise<string>;
-
-    withdraw(_shares: BigNumberish, overrides?: CallOverrides): Promise<void>;
+        getPricePerFullShare(overrides?: CallOverrides): Promise<BigNumber>
 
-    withdrawAll(overrides?: CallOverrides): Promise<void>;
-  };
+        inCaseTokensGetStuck(
+            _token: string,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<BigNumber>
 
-  filters: {
-    "Approval(address,address,uint256)"(
-      owner?: string | null,
-      spender?: string | null,
-      value?: null
-    ): ApprovalEventFilter;
-    Approval(
-      owner?: string | null,
-      spender?: string | null,
-      value?: null
-    ): ApprovalEventFilter;
+        increaseAllowance(
+            spender: string,
+            addedValue: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<BigNumber>
 
-    "NewStratCandidate(address)"(
-      implementation?: null
-    ): NewStratCandidateEventFilter;
-    NewStratCandidate(implementation?: null): NewStratCandidateEventFilter;
+        name(overrides?: CallOverrides): Promise<BigNumber>
 
-    "OwnershipTransferred(address,address)"(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): OwnershipTransferredEventFilter;
-    OwnershipTransferred(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): OwnershipTransferredEventFilter;
+        owner(overrides?: CallOverrides): Promise<BigNumber>
 
-    "Transfer(address,address,uint256)"(
-      from?: string | null,
-      to?: string | null,
-      value?: null
-    ): TransferEventFilter;
-    Transfer(
-      from?: string | null,
-      to?: string | null,
-      value?: null
-    ): TransferEventFilter;
+        proposeStrat(
+            _implementation: string,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<BigNumber>
 
-    "UpgradeStrat(address)"(implementation?: null): UpgradeStratEventFilter;
-    UpgradeStrat(implementation?: null): UpgradeStratEventFilter;
-  };
+        renounceOwnership(overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>
 
-  estimateGas: {
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+        stratCandidate(overrides?: CallOverrides): Promise<BigNumber>
 
-    approvalDelay(overrides?: CallOverrides): Promise<BigNumber>;
+        strategy(overrides?: CallOverrides): Promise<BigNumber>
 
-    approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        symbol(overrides?: CallOverrides): Promise<BigNumber>
 
-    available(overrides?: CallOverrides): Promise<BigNumber>;
+        totalSupply(overrides?: CallOverrides): Promise<BigNumber>
 
-    balance(overrides?: CallOverrides): Promise<BigNumber>;
+        transfer(
+            recipient: string,
+            amount: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<BigNumber>
 
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+        transferFrom(
+            sender: string,
+            recipient: string,
+            amount: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<BigNumber>
 
-    decimals(overrides?: CallOverrides): Promise<BigNumber>;
+        transferOwnership(
+            newOwner: string,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<BigNumber>
 
-    decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        upgradeStrat(overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>
 
-    deposit(
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        want(overrides?: CallOverrides): Promise<BigNumber>
 
-    depositAll(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        withdraw(_shares: BigNumberish, overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>
 
-    earn(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        withdrawAll(overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>
+    }
 
-    getPricePerFullShare(overrides?: CallOverrides): Promise<BigNumber>;
+    populateTransaction: {
+        allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    inCaseTokensGetStuck(
-      _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        approvalDelay(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        approve(
+            spender: string,
+            amount: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<PopulatedTransaction>
 
-    name(overrides?: CallOverrides): Promise<BigNumber>;
+        available(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    owner(overrides?: CallOverrides): Promise<BigNumber>;
+        balance(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    proposeStrat(
-      _implementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        balanceOf(account: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    stratCandidate(overrides?: CallOverrides): Promise<BigNumber>;
-
-    strategy(overrides?: CallOverrides): Promise<BigNumber>;
+        decreaseAllowance(
+            spender: string,
+            subtractedValue: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<PopulatedTransaction>
 
-    symbol(overrides?: CallOverrides): Promise<BigNumber>;
+        deposit(
+            _amount: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<PopulatedTransaction>
 
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+        depositAll(overrides?: Overrides & { from?: string | Promise<string> }): Promise<PopulatedTransaction>
 
-    transfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        earn(overrides?: Overrides & { from?: string | Promise<string> }): Promise<PopulatedTransaction>
 
-    transferFrom(
-      sender: string,
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        getPricePerFullShare(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    transferOwnership(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        inCaseTokensGetStuck(
+            _token: string,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<PopulatedTransaction>
 
-    upgradeStrat(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        increaseAllowance(
+            spender: string,
+            addedValue: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<PopulatedTransaction>
 
-    want(overrides?: CallOverrides): Promise<BigNumber>;
+        name(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    withdraw(
-      _shares: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+        owner(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    withdrawAll(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-  };
+        proposeStrat(
+            _implementation: string,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<PopulatedTransaction>
 
-  populateTransaction: {
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+        renounceOwnership(overrides?: Overrides & { from?: string | Promise<string> }): Promise<PopulatedTransaction>
 
-    approvalDelay(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        stratCandidate(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+        strategy(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    available(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    balance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    balanceOf(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+        transfer(
+            recipient: string,
+            amount: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<PopulatedTransaction>
 
-    decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        transferFrom(
+            sender: string,
+            recipient: string,
+            amount: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<PopulatedTransaction>
 
-    decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+        transferOwnership(
+            newOwner: string,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<PopulatedTransaction>
 
-    deposit(
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+        upgradeStrat(overrides?: Overrides & { from?: string | Promise<string> }): Promise<PopulatedTransaction>
 
-    depositAll(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+        want(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    earn(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+        withdraw(
+            _shares: BigNumberish,
+            overrides?: Overrides & { from?: string | Promise<string> }
+        ): Promise<PopulatedTransaction>
 
-    getPricePerFullShare(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    inCaseTokensGetStuck(
-      _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    proposeStrat(
-      _implementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    stratCandidate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    strategy(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    transfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    transferFrom(
-      sender: string,
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    transferOwnership(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    upgradeStrat(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    want(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    withdraw(
-      _shares: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    withdrawAll(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-  };
+        withdrawAll(overrides?: Overrides & { from?: string | Promise<string> }): Promise<PopulatedTransaction>
+    }
 }

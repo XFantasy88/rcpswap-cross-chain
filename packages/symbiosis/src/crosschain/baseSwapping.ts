@@ -8,23 +8,10 @@ import { BigNumber, utils } from "ethers"
 import JSBI from "jsbi"
 import { Percent, Token, TokenAmount, wrappedToken } from "../entities"
 import { BIPS_BASE } from "./constants"
-import {
-  AdaRouter,
-  AvaxRouter,
-  KavaRouter,
-  Portal__factory,
-  Synthesis,
-  Synthesis__factory,
-  UniLikeRouter,
-} from "./contracts"
+import { Portal__factory, Synthesis, Synthesis__factory } from "./contracts"
 import { DataProvider } from "./dataProvider"
 import type { Symbiosis } from "./symbiosis"
-import {
-  AggregatorTrade,
-  SymbiosisTradeType,
-  UniLikeTrade,
-  WrapTrade,
-} from "./trade"
+import { AggregatorTrade, SymbiosisTradeType, WrapTrade } from "./trade"
 import { Transit } from "./transit"
 import {
   splitSlippage,
@@ -36,8 +23,8 @@ import { WaitForComplete } from "./waitForComplete"
 import { Error, ErrorCode } from "./error"
 import { SymbiosisTrade } from "./trade/symbiosisTrade"
 import { OneInchProtocols } from "./trade/oneInchTrade"
+
 import { OmniPoolConfig } from "./types"
-import { XfusionTrade } from "./trade/xfusionTrade"
 
 export interface SwapExactInParams {
   tokenAmountIn: TokenAmount
@@ -153,8 +140,10 @@ export abstract class BaseSwapping {
 
     this.route = this.getRoute()
 
-    const fee = await this.getFee(this.transit.feeToken)
-    const feeV2 = this.transit.isV2() ? await this.getFeeV2() : undefined
+    const [fee, feeV2] = await Promise.all([
+      this.getFee(this.transit.feeToken),
+      this.transit.isV2() ? this.getFeeV2() : undefined,
+    ])
 
     this.feeV2 = feeV2
 
@@ -388,46 +377,18 @@ export abstract class BaseSwapping {
     const from = this.symbiosis.metaRouter(chainId).address
     const to = from
 
-    if (AggregatorTrade.isAvailable(chainId)) {
-      return new AggregatorTrade({
-        tokenAmountIn: this.tokenAmountIn,
-        tokenOut,
-        from,
-        to,
-        slippage: this.slippage["A"],
-        symbiosis: this.symbiosis,
-        dataProvider: this.dataProvider,
-        clientId: this.symbiosis.clientId,
-        ttl: this.ttl,
-        oneInchProtocols: this.oneInchProtocols,
-      })
-    }
-
-    if (XfusionTrade.isAvailable(chainId)) {
-      const routerA = this.symbiosis.xfusionRouter(chainId)
-
-      return new XfusionTrade(
-        this.tokenAmountIn,
-        tokenOut,
-        to,
-        this.slippage["A"],
-        routerA
-      )
-    }
-
-    let routerA: UniLikeRouter | AvaxRouter | AdaRouter | KavaRouter =
-      this.symbiosis.uniLikeRouter(chainId)
-
-    const dexFee = this.symbiosis.dexFee(chainId)
-    return new UniLikeTrade(
-      this.tokenAmountIn,
+    return new AggregatorTrade({
+      tokenAmountIn: this.tokenAmountIn,
       tokenOut,
+      from,
       to,
-      this.slippage["A"],
-      this.ttl,
-      routerA,
-      dexFee
-    )
+      slippage: this.slippage["A"],
+      symbiosis: this.symbiosis,
+      dataProvider: this.dataProvider,
+      clientId: this.symbiosis.clientId,
+      ttl: this.ttl,
+      oneInchProtocols: this.oneInchProtocols,
+    })
   }
 
   protected buildTransit(fee?: TokenAmount): Transit {
@@ -472,52 +433,20 @@ export abstract class BaseSwapping {
     }
 
     const chainId = this.tokenOut.chainId
-    const dexFee = this.symbiosis.dexFee(chainId)
 
-    if (WrapTrade.isSupported(amountIn, this.tokenOut)) {
-      return new WrapTrade(amountIn, this.tokenOut, this.to)
-    }
-
-    if (AggregatorTrade.isAvailable(chainId)) {
-      const from = this.symbiosis.metaRouter(chainId).address
-      return new AggregatorTrade({
-        tokenAmountIn: amountIn,
-        tokenOut: this.tokenOut,
-        from,
-        to: this.tradeCTo(),
-        slippage: this.slippage["C"],
-        symbiosis: this.symbiosis,
-        dataProvider: this.dataProvider,
-        clientId: this.symbiosis.clientId,
-        ttl: this.ttl,
-        oneInchProtocols: this.oneInchProtocols,
-      })
-    }
-
-    if (XfusionTrade.isAvailable(chainId)) {
-      const routerC = this.symbiosis.xfusionRouter(chainId)
-
-      return new XfusionTrade(
-        amountIn,
-        this.tokenOut,
-        this.tradeCTo(),
-        this.slippage["C"],
-        routerC
-      )
-    }
-
-    let routerC: UniLikeRouter | AvaxRouter | AdaRouter | KavaRouter =
-      this.symbiosis.uniLikeRouter(chainId)
-
-    return new UniLikeTrade(
-      amountIn,
-      this.tokenOut,
-      this.tradeCTo(),
-      this.slippage["C"],
-      this.ttl,
-      routerC,
-      dexFee
-    )
+    const from = this.symbiosis.metaRouter(chainId).address
+    return new AggregatorTrade({
+      tokenAmountIn: amountIn,
+      tokenOut: this.tokenOut,
+      from,
+      to: this.tradeCTo(),
+      slippage: this.slippage["C"],
+      symbiosis: this.symbiosis,
+      dataProvider: this.dataProvider,
+      clientId: this.symbiosis.clientId,
+      ttl: this.ttl,
+      oneInchProtocols: this.oneInchProtocols,
+    })
   }
 
   protected getRoute(): Token[] {

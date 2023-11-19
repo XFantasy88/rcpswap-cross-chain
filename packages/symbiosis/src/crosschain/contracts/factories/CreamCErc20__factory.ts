@@ -8,7 +8,7 @@ import type { CreamCErc20, CreamCErc20Interface } from "../CreamCErc20"
 
 const _abi = [
   {
-    inputs: [] as any[],
+    inputs: [],
     payable: false,
     stateMutability: "nonpayable",
     type: "constructor",

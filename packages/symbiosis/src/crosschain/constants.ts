@@ -68,7 +68,7 @@ export const DEX_TOKENS_TO_CHECK_TRADES_AGAINST = {
       name: "Dai Stablecoin",
     }),
   ],
-  [ChainId.BOBA_BNB]: [] as any,
+  [ChainId.BOBA_BNB]: [],
   [ChainId.ARBITRUM_NOVA]: [
     new Token({
       chainId: ChainId.ARBITRUM_NOVA,

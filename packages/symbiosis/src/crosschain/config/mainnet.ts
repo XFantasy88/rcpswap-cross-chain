@@ -5,11 +5,11 @@ export const config: Config = {
     url: "https://api-v2.symbiosis.finance/calculations",
   },
   omniPools: [
-    // {
-    //     chainId: 56288,
-    //     address: '0x6148FD6C649866596C3d8a971fC313E5eCE84882',
-    //     oracle: '0x7775b274f0C3fA919B756b22A4d9674e55927ab8',
-    // },
+    {
+      chainId: 56288,
+      address: "0x6148FD6C649866596C3d8a971fC313E5eCE84882",
+      oracle: "0x7775b274f0C3fA919B756b22A4d9674e55927ab8",
+    },
     {
       chainId: 56288,
       address: "0xBcc2637DFa64999F75abB53a7265b5B4932e40eB",
