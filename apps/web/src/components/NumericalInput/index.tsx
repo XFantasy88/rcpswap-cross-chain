@@ -43,7 +43,7 @@ const StyledInput = styled.input<{
   }
 
   &:disabled {
-    color: ${({ theme }) => theme.text1};
+    color: ${({ theme }) => theme.text1} !important;
   }
 `
 

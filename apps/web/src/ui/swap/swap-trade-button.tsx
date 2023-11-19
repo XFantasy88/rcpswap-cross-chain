@@ -72,6 +72,8 @@ export default function SwapTradeButton() {
   const addTransaction = useAddTransaction()
   const addPopup = useAddPopup()
 
+  console.log(trade)
+
   const { config, error } = usePrepareContractWrite({
     chainId: chainId0,
     address: ROUTE_PROCESSOR_3_ADDRESS[chainId0],
