@@ -10,10 +10,6 @@ import Polling from "@/components/Header/Polling"
 import styled from "styled-components"
 import Popups from "@/components/Popups"
 
-export const metadata: Metadata = {
-  title: "RCPSwap | Reddit Community Points Swap",
-}
-
 const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -44,6 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <title>RCPSwap | Reddit Community Points Swap</title>
       <link
         rel="apple-touch-icon"
         sizes="180x180"
