@@ -15,6 +15,7 @@
     "exactOptionalPropertyTypes": false,
     "resolveJsonModule": true,
     "noImplicitReturns": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "moduleResolution": "Node16"
   }
 }
