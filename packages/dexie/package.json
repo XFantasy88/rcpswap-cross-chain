@@ -1,0 +1,42 @@
+{
+  "name": "@rcpswap/dexie",
+  "version": "1.0.0",
+  "description": "RCPSwap Dexie",
+  "keywords": [
+    "rcpswap",
+    "dexie"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "check": "tsc --pretty --noEmit",
+    "dev": "tsc -w"
+  },
+  "dependencies": {
+    "dexie": "3.2.4",
+    "dexie-react-hooks": "1.1.6",
+    "lodash.groupby": "4.6.0",
+    "rcpswap": "workspace:*"
+  },
+  "devDependencies": {
+    "@tsconfig/esm": "1.0.4",
+    "@tsconfig/strictest": "2.0.2",
+    "@types/lodash.groupby": "4.6.7",
+    "@types/react": "18.2.14",
+    "@types/react-dom": "18.2.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.2.2"
+  },
+  "peerDependencies": {
+    "next": "13.4.19",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
+}

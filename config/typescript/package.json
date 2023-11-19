@@ -1,0 +1,19 @@
+{
+  "name": "@rcpswap/typescript-config",
+  "version": "1.0.0",
+  "description": "RCPSwap TypeScript Config",
+  "keywords": [
+    "rcpswap",
+    "typescript",
+    "config"
+  ],
+  "sideEffects": false,
+  "exports": {
+    "./base.json": "./base.json",
+    "./react-library.json": "./react-library.json"
+  },
+  "files": [
+    "./base.json",
+    "./react-library.json"
+  ]
+}

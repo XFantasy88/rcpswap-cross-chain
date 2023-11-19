@@ -1,0 +1,34 @@
+{
+  "name": "@rcpswap/tines",
+  "version": "1.0.0",
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "source": "src/index.ts",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "check": "tsc --pretty --noEmit",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsc -w",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "seedrandom": "3.0.5",
+    "rcpswap": "workspace:*"
+  },
+  "devDependencies": {
+    "@tsconfig/esm": "1.0.4",
+    "@tsconfig/node18": "18.2.2",
+    "@tsconfig/strictest": "2.0.2",
+    "@types/node": "18",
+    "@types/seedrandom": "3.0.1",
+    "typescript": "5.2.2",
+    "viem": "1.17.2"
+  },
+  "peerDependencies": {
+    "viem": "1.17.2"
+  }
+}

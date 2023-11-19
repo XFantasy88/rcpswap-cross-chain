@@ -1,0 +1,39 @@
+{
+  "name": "@rcpswap/router-config",
+  "version": "1.0.0",
+  "description": "RCPSwap Router Config",
+  "keywords": [
+    "rcpswap",
+    "router",
+    "config"
+  ],
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "source": "src/index.ts",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "check": "tsc --pretty --noEmit",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsc -w"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@tsconfig/esm": "1.0.4",
+    "@tsconfig/node18": "18.2.2",
+    "@tsconfig/strictest": "2.0.2",
+    "rcpswap": "workspace:*",
+    "typescript": "5.2.2"
+  },
+  "peerDependencies": {
+    "rcpswap": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "rcpswap": {
+      "optional": false
+    }
+  }
+}

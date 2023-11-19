@@ -1,0 +1,167 @@
+{
+  "name": "rcpswap",
+  "version": "1.0.0",
+  "description": "RCPSwap",
+  "keywords": [
+    "rcpswap"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./abi": {
+      "types": "./dist/abi/index.d.ts",
+      "default": "./dist/abi/index.js"
+    },
+    "./calculate": {
+      "types": "./dist/calculate/index.d.ts",
+      "default": "./dist/calculate/index.js"
+    },
+    "./chain": {
+      "types": "./dist/chain/index.d.ts",
+      "default": "./dist/chain/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "default": "./dist/config/index.js"
+    },
+    "./contract": {
+      "types": "./dist/contract/index.d.ts",
+      "default": "./dist/contract/index.js"
+    },
+    "./convert": {
+      "types": "./dist/convert/index.d.ts",
+      "default": "./dist/convert/index.js"
+    },
+    "./currency": {
+      "types": "./dist/currency/index.d.ts",
+      "default": "./dist/currency/index.js"
+    },
+    "./dex": {
+      "types": "./dist/dex/index.d.ts",
+      "default": "./dist/dex/index.js"
+    },
+    "./format": {
+      "types": "./dist/format/index.d.ts",
+      "default": "./dist/format/index.js"
+    },
+    "./math": {
+      "types": "./dist/math/index.d.ts",
+      "default": "./dist/math/index.js"
+    },
+    "./sort": {
+      "types": "./dist/sort/index.d.ts",
+      "default": "./dist/sort/index.js"
+    },
+    "./token-list": {
+      "types": "./dist/token-list/index.d.ts",
+      "default": "./dist/token-list/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
+    },
+    "./validate": {
+      "types": "./dist/validate/index.d.ts",
+      "default": "./dist/validate/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.js",
+  "source": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "abi": [
+        "./dist/abi/index.d.ts"
+      ],
+      "calculate": [
+        "./dist/calculate/index.d.ts"
+      ],
+      "chain": [
+        "./dist/chain/index.d.ts"
+      ],
+      "config": [
+        "./dist/config/index.d.ts"
+      ],
+      "contract": [
+        "./dist/contract/index.d.ts"
+      ],
+      "convert": [
+        "./dist/convert/index.d.ts"
+      ],
+      "currency": [
+        "./dist/currency/index.d.ts"
+      ],
+      "dex": [
+        "./dist/dex/index.d.ts"
+      ],
+      "format": [
+        "./dist/format/index.d.ts"
+      ],
+      "gas": [
+        "./dist/gas/index.d.ts"
+      ],
+      "math": [
+        "./dist/math/index.d.ts"
+      ],
+      "sort": [
+        "./dist/sort/index.d.ts"
+      ],
+      "token-list": [
+        "./dist/token-list/index.d.ts"
+      ],
+      "types": [
+        "./dist/types/index.d.ts"
+      ],
+      "validate": [
+        "./dist/validate/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "check": "tsc --pretty --noEmit",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsc -w",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@uniswap/token-lists": "1.0.0-beta.33",
+    "big.js": "6.1.1",
+    "decimal.js-light": "2.5.1",
+    "numeral": "2.0.6",
+    "tiny-invariant": "1.3.1",
+    "toformat": "2.0.0"
+  },
+  "devDependencies": {
+    "@tsconfig/esm": "1.0.4",
+    "@tsconfig/node18": "18.2.2",
+    "@tsconfig/strictest": "2.0.2",
+    "@types/big.js": "6.2.0",
+    "@types/numeral": "2.0.3",
+    "typescript": "5.2.2",
+    "viem": "1.17.2",
+    "zod": "3.21.4"
+  },
+  "peerDependencies": {
+    "@rcpswap/tines": "*",
+    "viem": "*",
+    "zod": "*"
+  },
+  "peerDependenciesMeta": {
+    "@rcpswap/tines": {
+      "optional": true
+    },
+    "viem": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
+  }
+}

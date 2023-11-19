@@ -1,0 +1,110 @@
+{
+  "name": "@rcpswap/wagmi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RCPSwap Wagmi",
+  "keywords": [
+    "rcpswap",
+    "wagmi"
+  ],
+  "sideEffects": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": [
+      "./src/*.ts",
+      "./src/*.tsx",
+      "./src/*/index.ts",
+      "./src/*/index.tsx"
+    ],
+    "./future/*": [
+      "./src/future/*.ts",
+      "./src/future/*.tsx",
+      "./src/future/*/index.ts",
+      "./src/future/*/index.tsx"
+    ]
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*",
+        "src/*/index",
+        "src/future/*",
+        "src/future/*/index"
+      ]
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "check": "tsc --pretty --noEmit",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "dependencies": {
+    "@rcpswap/hooks": "workspace:*",
+    "@rcpswap/react-query": "workspace:*",
+    "@rcpswap/router": "workspace:*",
+    "@rcpswap/router-config": "workspace:*",
+    "@rcpswap/tines": "workspace:*",
+    "@rcpswap/v2-sdk": "workspace:*",
+    "@rcpswap/v3-sdk": "workspace:*",
+    "@rcpswap/viem-config": "workspace:*",
+    "@rcpswap/wagmi-config": "workspace:*",
+    "@tanstack/react-query": "4.28.0",
+    "@tanstack/react-query-persist-client": "4.28.0",
+    "@uniswap/v2-core": "1.0.1",
+    "@uniswap/v3-periphery": "1.4.1",
+    "next-themes": "0.2.1",
+    "rcpswap": "workspace:*",
+    "zod": "3.21.4"
+  },
+  "devDependencies": {
+    "@sentry/nextjs": "7.77.0",
+    "@rcpswap/typescript-config": "workspace:*",
+    "@types/react": "18.2.14",
+    "@types/react-dom": "18.2.6",
+    "@wagmi/core": "1.4.5",
+    "next": "13.4.19",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.2.2",
+    "viem": "1.17.2",
+    "wagmi": "1.4.5"
+  },
+  "peerDependencies": {
+    "@sentry/nextjs": "7.77.0",
+    "@wagmi/core": "1.4.5",
+    "next": "13.4.19",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "viem": "1.17.2",
+    "wagmi": "1.4.5"
+  },
+  "peerDependenciesMeta": {
+    "@sentry/nextjs": {
+      "optional": true
+    },
+    "@wagmi/core": {
+      "optional": false
+    },
+    "next": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "viem": {
+      "optional": false
+    },
+    "wagmi": {
+      "optional": false
+    }
+  },
+  "optionalDependencies": {
+    "next": "13.4.19"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "name": "@rcpswap/wagmi-config",
+  "version": "1.0.0",
+  "description": "RCPSwap Wagmi Config",
+  "keywords": [
+    "rcpswap",
+    "wagmi",
+    "config"
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./chains": {
+      "types": "./dist/chains.d.ts",
+      "default": "./dist/chains.js"
+    },
+    "./providers": {
+      "types": "./dist/providers.d.ts",
+      "default": "./dist/providers.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.js",
+  "source": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "typesVersions": {
+    "workspace:*": {
+      "chains": [
+        "./dist/chains.d.ts"
+      ],
+      "providers": [
+        "./dist/providers.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "check": "tsc --pretty --noEmit",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsc -w",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "@tsconfig/esm": "1.0.4",
+    "@tsconfig/strictest": "2.0.2",
+    "@wagmi/core": "1.4.5",
+    "rcpswap": "workspace:*",
+    "typescript": "5.2.2"
+  },
+  "peerDependencies": {
+    "@wagmi/core": "workspace:*",
+    "rcpswap": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@wagmi/core": {
+      "optional": false
+    },
+    "rcpswap": {
+      "optional": false
+    }
+  }
+}

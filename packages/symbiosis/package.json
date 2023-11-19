@@ -1,0 +1,56 @@
+{
+  "name": "@rcpswap/symbiosis",
+  "version": "1.0.0",
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "source": "src/index.ts",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "check": "tsc --pretty --noEmit",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsc -w",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@ethersproject/abi": "5.7.0",
+    "@ethersproject/address": "5.7.0",
+    "@ethersproject/bignumber": "5.7.0",
+    "@ethersproject/constants": "^5.7.0",
+    "@ethersproject/contracts": "^5.7.0",
+    "@ethersproject/networks": "^5.7.1",
+    "@ethersproject/providers": "5.7.2",
+    "@ethersproject/solidity": "5.7.0",
+    "@ethersproject/units": "^5.7.0",
+    "@rcpswap/router": "workspace:*",
+    "@rcpswap/tines": "workspace:*",
+    "@whatwg-node/fetch": "^0.9.14",
+    "big.js": "6.1.1",
+    "bignumber.js": "^9.1.2",
+    "decimal.js-light": "2.5.1",
+    "ethers": "5.7.2",
+    "isomorphic-unfetch": "^4.0.2",
+    "jsbi": "^4.3.0",
+    "lodash.flatmap": "^4.5.0",
+    "rcpswap": "workspace:*",
+    "tiny-invariant": "1.3.1",
+    "toformat": "2.0.0",
+    "unfetch": "^5.0.0"
+  },
+  "devDependencies": {
+    "@tsconfig/esm": "1.0.4",
+    "@tsconfig/node18": "18.2.2",
+    "@tsconfig/strictest": "2.0.2",
+    "@types/big.js": "6.2.0",
+    "@types/lodash.flatmap": "^4.5.9",
+    "@types/node": "18",
+    "typescript": "5.2.2",
+    "viem": "1.17.2"
+  },
+  "peerDependencies": {
+    "viem": "1.17.2"
+  }
+}

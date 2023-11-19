@@ -1,0 +1,47 @@
+import { ChainId } from '../../chain/index.js'
+
+export const ARB_ADDRESS = {
+  [ChainId.ARBITRUM_NOVA]: '0xf823C3cD3CeBE0a1fA952ba88Dc9EEf8e0Bf46AD',
+} as const
+
+export const WBTC_ADDRESS = {
+  [ChainId.POLYGON]: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
+  [ChainId.ARBITRUM_NOVA]: '0x1d05e4e72cD994cdF976181CfB0707345763564d',
+} as const
+
+export const WETH9_ADDRESS = {
+  [ChainId.POLYGON]: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+  [ChainId.ARBITRUM_NOVA]: '0x722E8BdD2ce80A4422E880164f2079488e115365',
+} as const
+
+export const WNATIVE_ADDRESS = {
+  [ChainId.POLYGON]: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+  [ChainId.ARBITRUM_NOVA]: WETH9_ADDRESS[ChainId.ARBITRUM_NOVA]
+} as const
+
+export const USDC_ADDRESS = {
+  [ChainId.POLYGON]: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+  [ChainId.ARBITRUM_NOVA]: '0x750ba8b76187092B0D1E87E28daaf484d1b5273b'
+} as const
+
+export const USDT_ADDRESS = {
+  [ChainId.POLYGON]: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
+  [ChainId.ARBITRUM_NOVA]: '0xeD9d63a96c27f87B07115b56b2e3572827f21646'
+} as const
+
+export const DAI_ADDRESS = {
+  [ChainId.POLYGON]: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+  [ChainId.ARBITRUM_NOVA]: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1'
+} as const
+
+export const BRICK_ADDRESS = {
+  [ChainId.ARBITRUM_NOVA]: '0x6dcb98f460457fe4952e12779ba852f82ecc62c1'
+} as const
+
+export const MOON_ADDRESS = {
+  [ChainId.ARBITRUM_NOVA]: '0x0057ac2d777797d31cd3f8f13bf5e927571d6ad0'
+} as const
+
+export const MOOND_ADDRESS = {
+  [ChainId.ARBITRUM_NOVA]: '0x4b2576BC44310D6dfb4cfCf2630f25190fc60803'
+} as const

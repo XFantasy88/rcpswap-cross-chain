@@ -1,0 +1,59 @@
+{
+  "name": "@rcpswap/hooks",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RCPSwap Hooks",
+  "keywords": [
+    "rcpswap",
+    "hooks",
+    "react"
+  ],
+  "main": "./dist/index.js",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "check": "tsc --pretty --noEmit",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsc -w"
+  },
+  "dependencies": {
+    "@ethersproject/address": "5.7.0",
+    "@ethersproject/providers": "5.7.2",
+    "copy-to-clipboard": "^3.3.1",
+    "node-vibrant": "^3.1.5",
+    "polished": "^4.2.2",
+    "react-responsive": "9.0.0-beta.10",
+    "wcag-contrast": "^3.0.0"
+  },
+  "devDependencies": {
+    "@rcpswap/router-config": "workspace:*",
+    "@tsconfig/esm": "1.0.4",
+    "@tsconfig/strictest": "2.0.2",
+    "@types/react": "18.2.14",
+    "@types/react-dom": "18.2.6",
+    "rcpswap": "workspace:*",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.2.2"
+  },
+  "peerDependencies": {
+    "rcpswap": "*",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    },
+    "rcpswap": {
+      "optional": true
+    }
+  }
+}

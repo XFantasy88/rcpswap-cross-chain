@@ -1,0 +1,46 @@
+{
+  "name": "@rcpswap/v3-sdk",
+  "version": "1.0.0",
+  "description": "RCPSwap V3 SDK",
+  "keywords": [
+    "rcpswap",
+    "v3",
+    "sdk"
+  ],
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "source": "src/index.ts",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "check": "tsc --pretty --noEmit",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsc -w",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@ethersproject/abi": "5.7.0",
+    "@ethersproject/address": "5.7.0",
+    "@ethersproject/bignumber": "5.7.0",
+    "@ethersproject/solidity": "5.7.0",
+    "@rcpswap/tines": "workspace:*",
+    "@uniswap/swap-router-contracts": "1.3.0",
+    "@uniswap/v3-core": "1.0.1",
+    "@uniswap/v3-periphery": "1.4.3",
+    "@uniswap/v3-staker": "1.0.2",
+    "rcpswap": "workspace:*",
+    "tiny-invariant": "1.3.1",
+    "tiny-warning": "1.0.3",
+    "zod": "3.21.4"
+  },
+  "devDependencies": {
+    "@tsconfig/esm": "1.0.4",
+    "@tsconfig/node18": "18.2.2",
+    "@tsconfig/strictest": "2.0.2",
+    "@types/node": "18",
+    "typescript": "5.2.2"
+  }
+}

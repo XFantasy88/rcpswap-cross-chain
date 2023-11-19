@@ -1,0 +1,43 @@
+{
+  "name": "@rcpswap/viem-config",
+  "version": "1.0.0",
+  "description": "RCPSwap Viem Config",
+  "keywords": [
+    "rcpswap",
+    "viem",
+    "config"
+  ],
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "source": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "check": "tsc --pretty --noEmit",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsc -w",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "18.2.2",
+    "@tsconfig/strictest": "2.0.2",
+    "rcpswap": "workspace:*",
+    "typescript": "5.2.2",
+    "viem": "1.17.2"
+  },
+  "peerDependencies": {
+    "rcpswap": "workspace:*",
+    "viem": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "rcpswap": {
+      "optional": false
+    },
+    "viem": {
+      "optional": false
+    }
+  }
+}

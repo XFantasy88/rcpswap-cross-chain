@@ -1,0 +1,20 @@
+{
+  // TODO: Fix strictness "@tsconfig/strictest/tsconfig"
+  "extends": ["@tsconfig/strictest/tsconfig", "@tsconfig/node18/tsconfig"],
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", ".turbo"],
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "target": "ES2022",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "strictNullChecks": false,
+    "exactOptionalPropertyTypes": false,
+    "resolveJsonModule": true,
+    "noImplicitReturns": false,
+    "noImplicitAny": false
+  }
+}

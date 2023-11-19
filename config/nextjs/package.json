@@ -1,0 +1,21 @@
+{
+  "name": "@rcpswap/nextjs-config",
+  "version": "1.0.0",
+  "description": "RCPSwap Next.js Config",
+  "keywords": [
+    "rcpswap",
+    "nextjs",
+    "config"
+  ],
+  "sideEffects": false,
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "devDependencies": {
+    "next": "13.4.19"
+  },
+  "peerDependencies": {
+    "next": "13.4.19"
+  }
+}
