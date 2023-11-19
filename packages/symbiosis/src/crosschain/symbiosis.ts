@@ -62,8 +62,8 @@ import { config as testnet } from "./config/testnet"
 import { config as dev } from "./config/dev"
 import { config as bridge } from "./config/bridge"
 import { BestPoolSwapping } from "./bestPoolSwapping"
-import { ConfigCache } from "./config/cache/cache"
-import { OmniPoolInfo } from "./config/cache/builder"
+import { ConfigCache } from "./config/cache"
+import { OmniPoolInfo } from "./config/cache"
 import { PendingRequest } from "./revertRequest"
 import {
   MakeOneInchRequestFn,
