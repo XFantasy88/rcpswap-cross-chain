@@ -39,7 +39,7 @@ export default function SwapToken1Input() {
       otherCurrency={token0}
       otherAmount={swapAmount ?? ""}
       id="swap-currency-output"
-      disabled
+      inactive
       showPriceImpact
       // loading={swapMode === 1 && fusionSwap.loading}
     />

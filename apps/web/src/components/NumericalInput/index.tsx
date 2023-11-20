@@ -6,7 +6,7 @@ const StyledInput = styled.input<{
   error?: boolean
   fontSize?: string
   align?: string
-  disabled?: boolean
+  inactive?: boolean
 }>`
   color: ${({ error, theme }) => (error ? theme.red1 : theme.text1)};
   width: 0;
@@ -15,8 +15,8 @@ const StyledInput = styled.input<{
   outline: none;
   border: none;
   flex: 1 1 auto;
-  background-color: ${({ theme, disabled }) =>
-    disabled ? theme.bg1 : theme.bg1};
+  background-color: ${({ theme, inactive }) =>
+    inactive ? theme.bg1 : theme.bg1};
   font-size: ${({ fontSize }) => fontSize ?? "24px"};
   text-align: ${({ align }) => align && align};
   white-space: nowrap;
@@ -41,10 +41,6 @@ const StyledInput = styled.input<{
   &::placeholder {
     color: ${({ theme }) => theme.text4};
   }
-
-  &:disabled {
-    color: ${({ theme }) => theme.text1} !important;
-  }
 `
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
@@ -59,6 +55,7 @@ export const Input = React.memo(function InnerInput({
   onUserInput: (input: string) => void
   error?: boolean
   fontSize?: string
+  inactive?: boolean
   align?: "right" | "left"
 } & Omit<React.HTMLProps<HTMLInputElement>, "ref" | "onChange" | "as">) {
   const enforcer = (nextUserInput: string) => {

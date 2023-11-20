@@ -104,11 +104,11 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
   z-index: 2;
 `
 
-const Container = styled.div<{ hideInput: boolean; disabled?: boolean }>`
+const Container = styled.div<{ hideInput: boolean; inactive?: boolean }>`
   border-radius: ${({ hideInput }) => (hideInput ? "8px" : "20px")};
   border: 1px solid ${({ theme }) => theme.bg2};
-  background-color: ${({ theme, disabled }) =>
-    disabled ? theme.bg1 : theme.bg1};
+  background-color: ${({ theme, inactive }) =>
+    inactive ? theme.bg1 : theme.bg1};
 `
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
@@ -168,7 +168,7 @@ interface CurrencyInputPanelProps {
   id: string
   showCommonBases?: boolean
   customBalanceText?: string
-  disabled?: boolean
+  inactive?: boolean
   showPriceImpact?: boolean
   loading?: boolean
   saving?: number
@@ -194,7 +194,7 @@ export default function CurrencyInputPanel({
   id,
   showCommonBases,
   customBalanceText,
-  disabled = false,
+  inactive = false,
   showPriceImpact = false,
   loading = false,
   saving = 0,
@@ -267,7 +267,7 @@ export default function CurrencyInputPanel({
 
   return (
     <InputPanel id={id}>
-      <Container hideInput={hideInput} disabled={disabled}>
+      <Container hideInput={hideInput} inactive={inactive}>
         {!hideInput && (
           <LabelRow>
             <RowBetween>
@@ -306,7 +306,7 @@ export default function CurrencyInputPanel({
                 className="token-amount-input"
                 value={value}
                 onUserInput={onChange}
-                disabled={disabled}
+                inactive={inactive}
               />
               {address && currency && showMaxButton && label !== "To" && (
                 <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>

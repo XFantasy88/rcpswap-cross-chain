@@ -34,7 +34,7 @@ import { gasMargin } from "rcpswap/calculate"
 import confirmPriceImpactWithoutFee from "@/components/swap/confirmPriceImpactWithoutFee"
 import { useAddTransaction, finalizeTransaction } from "@rcpswap/dexie"
 import { useAddPopup } from "@/state/application/hooks"
-import { Symbiosis } from "@rcpswap/symbiosis"
+import { ErrorCode, Symbiosis } from "@rcpswap/symbiosis"
 
 export default function SwapTradeButton() {
   const {
@@ -71,8 +71,6 @@ export default function SwapTradeButton() {
   } = useSymbiosisTrade()
   const addTransaction = useAddTransaction()
   const addPopup = useAddPopup()
-
-  console.log(trade)
 
   const { config, error } = usePrepareContractWrite({
     chainId: chainId0,
@@ -283,9 +281,13 @@ export default function SwapTradeButton() {
               isLoading || isSymbiosisLoading
                 ? "Fetching the best price"
                 : chainId0 !== chainId1 && symbiosisError
-                ? (symbiosisError as any)?.code === 2
-                  ? "The amount is too low"
-                  : "Invalid trade"
+                ? (symbiosisError as any)?.code ===
+                    ErrorCode.AMOUNT_LESS_THAN_FEE ||
+                  (symbiosisError as any)?.code === ErrorCode.AMOUNT_TOO_LOW
+                  ? "Amount is too low"
+                  : (symbiosisError as any)?.code === ErrorCode.AMOUNT_TOO_HIGH
+                  ? "Amount is too high"
+                  : "Invalid Trade"
                 : trade?.route?.status === RouteStatus.NoWay
                 ? "Insufficient liquidity for this trade."
                 : undefined

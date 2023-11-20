@@ -6,6 +6,7 @@ import {
   Symbiosis,
   TokenAmount as SymbiosisTokenAmount,
   Token as SymbiosisToken,
+  ErrorCode,
 } from "@rcpswap/symbiosis"
 import {
   FC,
@@ -366,6 +367,7 @@ const useSymbiosisTrade = () => {
       }
       return result
     },
+    retry: false,
     enabled: Boolean(parsedAmount?.greaterThan(ZERO) && chainId0 !== chainId1),
     refetchInterval: 60000,
     refetchOnWindowFocus: false,
