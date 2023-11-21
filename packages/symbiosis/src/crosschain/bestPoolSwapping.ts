@@ -5,6 +5,7 @@ import type { SwapExactInParams } from "./baseSwapping"
 import { ErrorCode } from "./error"
 import { Token, TokenAmount, wrappedToken } from "../entities"
 import { utils } from "ethers"
+import JSBI from "jsbi"
 
 type WaitForCompleteArgs = Parameters<typeof Swapping.prototype.waitForComplete>
 type FindTransitTokenSentArgs = Parameters<
@@ -78,8 +79,13 @@ export class BestPoolSwapping {
   }: SwapExactInParams) {
     const { omniPools } = this.symbiosis.config
 
+    const feeTokenAmount = new TokenAmount(
+      tokenAmountIn.token,
+      JSBI.divide(tokenAmountIn.raw, JSBI.BigInt("100"))
+    )
+
     const exactInParams: SwapExactInParams = {
-      tokenAmountIn,
+      tokenAmountIn: tokenAmountIn.subtract(feeTokenAmount),
       tokenOut,
       from,
       to,

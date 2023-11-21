@@ -10,7 +10,6 @@ interface CheckerProps {
 }
 
 const Error: FC<CheckerProps> = ({ error, children }) => {
-  console.log(error)
   if (error) {
     return (
       <GreyCard style={{ textAlign: "center" }}>

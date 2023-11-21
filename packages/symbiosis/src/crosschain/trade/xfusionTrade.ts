@@ -1,14 +1,13 @@
 import { ChainId, ONE } from "../../constants"
 import { Fraction, Percent, Token, TokenAmount } from "../../entities"
 import { XFUSION_CHAINS } from "../constants"
-import { Router, DataFetcher, LiquidityProviders } from "@rcpswap/router"
+import { Router, DataFetcher } from "@rcpswap/router"
 import { XfusionRouter } from "../contracts"
 import { SymbiosisTrade } from "./symbiosisTrade"
 import { Native, Type, Token as RToken } from "rcpswap/currency"
-import { BigNumber } from "ethers"
 import { PoolCode } from "@rcpswap/router"
 
-import { MultiRoute, RouteStatus, getBetterRouteExactIn } from "@rcpswap/tines"
+import { MultiRoute, RouteStatus } from "@rcpswap/tines"
 import { basisPointsToPercent } from "../utils"
 import { ROUTE_PROCESSOR_3_ADDRESS } from "rcpswap/config"
 import { PublicClient } from "viem"
@@ -31,7 +30,6 @@ export class XfusionTrade implements SymbiosisTrade {
   public routerAddress!: string
   public callDataOffset?: number
   private poolsCodeMap?: Map<string, PoolCode>
-  private feeAmountOutBN?: BigNumber
 
   private readonly tokenOut: Token
   private readonly to: string
@@ -87,66 +85,6 @@ export class XfusionTrade implements SymbiosisTrade {
       throw new Error("Cannot create trade")
     }
 
-    const sushiPoolsCodeMap = new Map<string, PoolCode>()
-
-    const sushiFilter = [
-      "USDC",
-      "WETH",
-      "WBTC",
-      "USDT",
-      "DAI",
-      "ETH",
-      this.inToken.symbol,
-      this.outToken.symbol,
-    ]
-
-    Array.from(poolsCodeMap.entries()).forEach((item) => {
-      if (
-        sushiFilter.find((v) => v === item[1].pool.token0.symbol) &&
-        sushiFilter.find((v) => v === item[1].pool.token1.symbol)
-      ) {
-        sushiPoolsCodeMap.set(item[0], item[1])
-      }
-    })
-
-    const sushiBestRoute = Router.findBestRoute(
-      sushiPoolsCodeMap,
-      ChainId.ARBITRUM_NOVA,
-      this.inToken,
-      BigInt(this.tokenAmountIn.raw.toString()),
-      this.outToken,
-      Number(gasPrice.toString()),
-      100,
-      [LiquidityProviders.SushiSwapV2, LiquidityProviders.SushiSwapV3]
-    )
-
-    const arbBestRoute = Router.findBestRoute(
-      poolsCodeMap,
-      ChainId.ARBITRUM_NOVA,
-      this.inToken,
-      BigInt(this.tokenAmountIn.raw.toString()),
-      this.outToken,
-      Number(gasPrice.toString()),
-      1,
-      [LiquidityProviders.ArbSwap]
-    )
-
-    const rcpBestRoute = Router.findBestRoute(
-      poolsCodeMap,
-      ChainId.ARBITRUM_NOVA,
-      this.inToken,
-      BigInt(this.tokenAmountIn.raw.toString()),
-      this.outToken,
-      Number(gasPrice.toString()),
-      1,
-      [LiquidityProviders.RCPSwap]
-    )
-
-    const bestSingleProvider = getBetterRouteExactIn(
-      sushiBestRoute,
-      getBetterRouteExactIn(arbBestRoute, rcpBestRoute)
-    )
-
     this.trade = bestRoute
 
     this.priceImpact = new Percent(
@@ -163,29 +101,12 @@ export class XfusionTrade implements SymbiosisTrade {
         .multiply(bestRoute.amountOutBI.toString()).quotient
     )
 
-    const xFusionFee =
-      (bestRoute?.amountOutBI ?? 0n) >= (bestSingleProvider?.amountOutBI ?? 0n)
-        ? (((bestRoute?.amountOutBI ?? 0n) -
-            (bestSingleProvider?.amountOutBI ?? 0n)) *
-            3000n) /
-          10000n
-        : 0n
-
-    const feeAmountOutBI =
-      xFusionFee === 0n
-        ? bestRoute.amountOutBI / 100n
-        : xFusionFee + (bestSingleProvider.amountOutBI * 30n) / 10000n
-
-    this.feeAmountOutBN = BigNumber.from(feeAmountOutBI.toString())
-
     this.amountOut = new TokenAmount(
       this.tokenOut,
-      BigInt((bestRoute.amountOutBI - feeAmountOutBI).toString())
+      BigInt(bestRoute.amountOutBI.toString())
     )
 
-    this.amountOutMin = amountOutMin.subtract(
-      new TokenAmount(this.tokenOut, feeAmountOutBI.toString())
-    )
+    this.amountOutMin = amountOutMin
 
     const { data, offset } = this.buildCallData()
 
@@ -236,7 +157,7 @@ export class XfusionTrade implements SymbiosisTrade {
         args.amountIn.toString(),
         args.tokenOut,
         "0",
-        this.feeAmountOutBN?.toString() ?? "0",
+        "0",
         args.to,
         args.routeCode,
       ]),

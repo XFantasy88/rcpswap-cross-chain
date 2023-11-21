@@ -519,38 +519,40 @@ export default function PoolAddWidget({
                   ]}
                   chainId={chainId}
                 >
-                  <Checker.Error
-                    error={
-                      poolState === SwapV2PoolState.INVALID
-                        ? "Invalid Pair"
-                        : undefined
-                    }
-                  >
-                    <Checker.ApproveTwoERC20
-                      amounts={[
-                        parsedAmounts[Field.CURRENCY_A],
-                        parsedAmounts[Field.CURRENCY_B],
-                      ]}
-                      contract={RCPSWAP_ROUTER_ADDRESS[chainId]}
+                  <Checker.Tokens tokens={[currencyA, currencyB]}>
+                    <Checker.Error
+                      error={
+                        poolState === SwapV2PoolState.INVALID
+                          ? "Invalid Pair"
+                          : undefined
+                      }
                     >
-                      {(disabled) => (
-                        <ButtonError
-                          onClick={() => {
-                            expertMode ? onAdd() : setShowConfirm(true)
-                          }}
-                          disabled={disabled}
-                          error={
-                            !!parsedAmounts[Field.CURRENCY_A] &&
-                            !!parsedAmounts[Field.CURRENCY_B]
-                          }
-                        >
-                          <Text fontSize={20} fontWeight={500}>
-                            Supply
-                          </Text>
-                        </ButtonError>
-                      )}
-                    </Checker.ApproveTwoERC20>
-                  </Checker.Error>
+                      <Checker.ApproveTwoERC20
+                        amounts={[
+                          parsedAmounts[Field.CURRENCY_A],
+                          parsedAmounts[Field.CURRENCY_B],
+                        ]}
+                        contract={RCPSWAP_ROUTER_ADDRESS[chainId]}
+                      >
+                        {(disabled) => (
+                          <ButtonError
+                            onClick={() => {
+                              expertMode ? onAdd() : setShowConfirm(true)
+                            }}
+                            disabled={disabled}
+                            error={
+                              !!parsedAmounts[Field.CURRENCY_A] &&
+                              !!parsedAmounts[Field.CURRENCY_B]
+                            }
+                          >
+                            <Text fontSize={20} fontWeight={500}>
+                              Supply
+                            </Text>
+                          </ButtonError>
+                        )}
+                      </Checker.ApproveTwoERC20>
+                    </Checker.Error>
+                  </Checker.Tokens>
                 </Checker.Amounts>
               </Checker.Network>
             </Checker.Connect>

@@ -691,47 +691,49 @@ export default function PoolRemoveWidget({
             <div style={{ position: "relative" }}>
               <Checker.Connect>
                 <Checker.Network chainId={chainId}>
-                  <Checker.ApproveERC20
-                    amount={parsedAmounts[Field.LIQUIDITY]}
-                    contract={RCPSWAP_ROUTER_ADDRESS[chainId]}
-                  >
-                    {(approvalSubmitted, approvalState, approve) => (
-                      <RowBetween>
-                        <ButtonConfirmed
-                          onClick={() => approve?.()}
-                          confirmed={approvalState === ApprovalState.APPROVED}
-                          disabled={
-                            approvalState !== ApprovalState.NOT_APPROVED
-                          }
-                          mr="0.5rem"
-                          fontWeight={500}
-                          fontSize={16}
-                        >
-                          {approvalState === ApprovalState.PENDING ? (
-                            <Dots>Approving</Dots>
-                          ) : approvalState === ApprovalState.APPROVED ? (
-                            "Approved"
-                          ) : (
-                            "Approve"
-                          )}
-                        </ButtonConfirmed>
-                        <ButtonError
-                          onClick={() => {
-                            expertMode ? onRemove() : setShowConfirm(true)
-                          }}
-                          disabled={approvalState !== ApprovalState.APPROVED}
-                          error={
-                            !!parsedAmounts[Field.CURRENCY_A] &&
-                            !!parsedAmounts[Field.CURRENCY_B]
-                          }
-                        >
-                          <Text fontSize={16} fontWeight={500}>
-                            Remove
-                          </Text>
-                        </ButtonError>
-                      </RowBetween>
-                    )}
-                  </Checker.ApproveERC20>
+                  <Checker.Tokens tokens={[tokenA, tokenB]}>
+                    <Checker.ApproveERC20
+                      amount={parsedAmounts[Field.LIQUIDITY]}
+                      contract={RCPSWAP_ROUTER_ADDRESS[chainId]}
+                    >
+                      {(approvalSubmitted, approvalState, approve) => (
+                        <RowBetween>
+                          <ButtonConfirmed
+                            onClick={() => approve?.()}
+                            confirmed={approvalState === ApprovalState.APPROVED}
+                            disabled={
+                              approvalState !== ApprovalState.NOT_APPROVED
+                            }
+                            mr="0.5rem"
+                            fontWeight={500}
+                            fontSize={16}
+                          >
+                            {approvalState === ApprovalState.PENDING ? (
+                              <Dots>Approving</Dots>
+                            ) : approvalState === ApprovalState.APPROVED ? (
+                              "Approved"
+                            ) : (
+                              "Approve"
+                            )}
+                          </ButtonConfirmed>
+                          <ButtonError
+                            onClick={() => {
+                              expertMode ? onRemove() : setShowConfirm(true)
+                            }}
+                            disabled={approvalState !== ApprovalState.APPROVED}
+                            error={
+                              !!parsedAmounts[Field.CURRENCY_A] &&
+                              !!parsedAmounts[Field.CURRENCY_B]
+                            }
+                          >
+                            <Text fontSize={16} fontWeight={500}>
+                              Remove
+                            </Text>
+                          </ButtonError>
+                        </RowBetween>
+                      )}
+                    </Checker.ApproveERC20>
+                  </Checker.Tokens>
                 </Checker.Network>
               </Checker.Connect>
             </div>

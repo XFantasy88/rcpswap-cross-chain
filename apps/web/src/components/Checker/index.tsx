@@ -4,6 +4,7 @@ import ApproveTwoERC20 from "./ApproveTwoERC20"
 import Connect from "./Connect"
 import Error from "./Error"
 import Network from "./Network"
+import Tokens from "./Tokens"
 
 export default {
   Amounts,
@@ -12,4 +13,5 @@ export default {
   Connect,
   Error,
   Network,
+  Tokens,
 }
