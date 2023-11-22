@@ -21,6 +21,7 @@ import {
 import { metaRouteProcessorAbi, routeProcessor2Abi } from "rcpswap/abi"
 import {
   getShortenAddress,
+  getTokenWithCacheQueryFn,
   isAddress,
   waitForTransaction,
 } from "@rcpswap/wagmi"
@@ -30,6 +31,8 @@ import { useAddPopup } from "@/state/application/hooks"
 import { RouteStatus } from "@rcpswap/tines"
 import { gasMargin } from "rcpswap"
 import confirmPriceImpactWithoutFee from "@/components/swap/confirmPriceImpactWithoutFee"
+import { getEthersTransactionReceipt } from "@/utils/getEthersTransactionReceipt"
+import { ethers } from "ethers"
 
 export default function SwapTradeConfirmModal() {
   const {
@@ -171,9 +174,6 @@ export default function SwapTradeConfirmModal() {
     },
     onSuccess: async (data) => {
       console.log(data)
-      setAttemptingTxn(false)
-      setTxHash(data.hash)
-      setSwapErrorMessage(undefined)
 
       const baseText = `Swap ${symbiosisRef.current?.amountIn?.toSignificant(
         3
@@ -194,19 +194,73 @@ export default function SwapTradeConfirmModal() {
 
       addTransaction(address ?? "", chainId0, data.hash, baseText)
 
-      waitForTransaction({ hash: data.hash }).then((receipt) => {
+      waitForTransaction({ hash: data.hash }).then(async (receipt) => {
         finalizeTransaction(data.hash, receipt)
 
-        addPopup(
-          {
-            txn: {
-              hash: data.hash,
-              success: receipt.status === "success",
-              summary: baseText,
-            },
-          },
-          data.hash
-        )
+        await symbiosisRef.current?.symbiosis
+          ?.waitForComplete(getEthersTransactionReceipt(receipt))
+          .then((log: any) => {
+            const swapData = symbiosisRef.current
+            console.log(swapData)
+            if (!log || !swapData) return
+            const expectedTokenOut = swapData.amountOut?.currency
+            if (!expectedTokenOut) return
+
+            const abiCoder = new ethers.utils.AbiCoder()
+            const [, , tokenOut] = abiCoder.decode(
+              ["uint256", "uint256", "address"],
+              log.data
+            )
+            console.log(tokenOut)
+
+            if (
+              expectedTokenOut?.address.toLowerCase() === tokenOut.toLowerCase()
+            ) {
+              return
+            }
+
+            const currencyOut = swapData.symbiosis.config.chains
+              .find((chain: any) => chain.id === expectedTokenOut.chainId)
+              ?.stables?.find(
+                (token: any) =>
+                  token.address.toLowerCase() === tokenOut.toLowerCase()
+              )
+
+            console.log(currencyOut)
+
+            if (!currencyOut) return
+
+            const formatedText = `You've received ${currencyOut?.symbol} instead of ${expectedTokenOut?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`
+
+            console.log(formatedText)
+
+            addPopup(
+              {
+                txn: {
+                  hash: log?.transactionHash,
+                  success: false,
+                  summary: formatedText,
+                  chainId: expectedTokenOut?.chainId,
+                },
+              },
+              log.transactionHash
+            )
+          })
+
+        setAttemptingTxn(false)
+        setTxHash(data.hash)
+        setSwapErrorMessage(undefined)
+
+        // addPopup(
+        //   {
+        //     txn: {
+        //       hash: data.hash,
+        //       success: receipt.status === "success",
+        //       summary: baseText,
+        //     },
+        //   },
+        //   data.hash
+        // )
       })
     },
     onError: (error) => {

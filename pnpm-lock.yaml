@@ -34,6 +34,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@ethersproject/abstract-provider':
+        specifier: ^5.7.0
+        version: 5.7.0
       '@ethersproject/experimental':
         specifier: ^5.7.0
         version: 5.7.0
@@ -106,6 +109,9 @@ importers:
       cids:
         specifier: ^1.1.9
         version: 1.1.9
+      ethers:
+        specifier: 5.7.2
+        version: 5.7.2
       inter-ui:
         specifier: ^3.19.3
         version: 3.19.3

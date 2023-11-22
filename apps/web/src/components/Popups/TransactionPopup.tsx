@@ -16,13 +16,15 @@ export default function TransactionPopup({
   hash,
   success,
   summary,
+  chainId,
 }: {
   hash: string
   success?: boolean
   summary?: string
+  chainId?: ChainId
 }) {
   // const { chainId } = useActiveWeb3React()
-  const chainId = useNetwork().chain?.id as ChainId
+  const { chain } = useNetwork()
   const theme = useContext(ThemeContext)
   const explorerName = getExplorerName(chainId)
 
@@ -39,9 +41,13 @@ export default function TransactionPopup({
         <TYPE.body fontWeight={500}>
           {summary ?? "Hash: " + hash.slice(0, 8) + "..." + hash.slice(58, 65)}
         </TYPE.body>
-        {chainId && (
+        {(chainId ?? chain?.id) && (
           <StyledInternalLink
-            href={getEtherscanLink(chainId, hash, "transaction")}
+            href={getEtherscanLink(
+              (chainId ?? chain?.id) as ChainId,
+              hash,
+              "transaction"
+            )}
             target="_blank"
             rel="noreferrer"
           >

@@ -38,6 +38,9 @@ import confirmPriceImpactWithoutFee from "@/components/swap/confirmPriceImpactWi
 import { useAddTransaction, finalizeTransaction } from "@rcpswap/dexie"
 import { useAddPopup } from "@/state/application/hooks"
 import { ErrorCode, Symbiosis } from "@rcpswap/symbiosis"
+import { zeroAddress } from "viem"
+import { ethers } from "ethers"
+import { getEthersTransactionReceipt } from "@/utils/getEthersTransactionReceipt"
 
 export default function SwapTradeButton() {
   const {
@@ -121,6 +124,8 @@ export default function SwapTradeButton() {
       }`
 
       addTransaction(address ?? "", chainId0, data.hash, baseText)
+
+      // symbiosisRef.current?.symbiosis?.waitForComplete()
 
       waitForTransaction({ hash: data.hash }).then((receipt) => {
         finalizeTransaction(data.hash, receipt)

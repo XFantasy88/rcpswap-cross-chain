@@ -16,7 +16,7 @@ const SOCKET_IO_PARTNER_ID = utils.formatBytes32String("socket-io")
 
 // Swapping wrapper what select best omni pool for swapping
 export class BestPoolSwapping {
-  constructor(private symbiosis: Symbiosis) {}
+  constructor(public symbiosis: Symbiosis) {}
 
   public swapping?: Swapping
 
