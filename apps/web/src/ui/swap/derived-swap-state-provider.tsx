@@ -369,7 +369,7 @@ const useSymbiosisTrade = () => {
     },
     retry: false,
     enabled: Boolean(parsedAmount?.greaterThan(ZERO) && chainId0 !== chainId1),
-    refetchInterval: 60000,
+    refetchInterval: 25000,
     refetchOnWindowFocus: false,
   })
 }

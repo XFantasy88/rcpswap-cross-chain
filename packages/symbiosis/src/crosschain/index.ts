@@ -20,3 +20,4 @@ export {
 export * from "./zappingSyncSwapLaunchPool"
 export * from "./bestPoolSwapping"
 export * from "./baseSwapping"
+export * from "./config"

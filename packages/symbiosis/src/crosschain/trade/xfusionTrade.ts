@@ -156,7 +156,7 @@ export class XfusionTrade implements SymbiosisTrade {
         args.tokenIn,
         args.amountIn.toString(),
         args.tokenOut,
-        "0",
+        this.amountOutMin.raw.toString(),
         "0",
         args.to,
         args.routeCode,

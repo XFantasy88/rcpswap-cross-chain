@@ -217,7 +217,8 @@ function Web3StatusInner() {
 }
 
 export default function Web3Status() {
-  const allTransactions = useAllTransactions(ChainId.ARBITRUM_NOVA)
+  const chainId = useNetwork().chain?.id as ChainId
+  const allTransactions = useAllTransactions(chainId)
 
   const pending = allTransactions
     ?.filter((tx) => !tx.receipt)

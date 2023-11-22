@@ -86,6 +86,7 @@ export default function SwapTradeButton() {
         chainId0 === chainId1
     ),
     value: trade?.value ?? 0n,
+    staleTime: 5000,
     onError: () => {},
   })
 
@@ -176,6 +177,7 @@ export default function SwapTradeButton() {
       ],
       value: token0?.isNative ? parsedAmount?.quotient ?? 0n : 0n,
       enabled: Boolean(symbiosis && symbiosis.transaction),
+      staleTime: 5000,
     })
 
   const { writeAsync: symbiosisWriteAsync } = useContractWrite({
@@ -195,20 +197,11 @@ export default function SwapTradeButton() {
       }
     },
     onSuccess: async (data) => {
-      setAttemptingTxn(false)
-      setTxHash(data.hash)
-      setSwapErrorMessage(undefined)
-
       const baseText = `Swap ${symbiosisRef.current?.amountIn?.toSignificant(
         3
       )} ${
         symbiosisRef.current?.amountIn?.currency.symbol
-      } for ${symbiosisRef.current?.amountOut
-        ?.subtract(
-          symbiosisRef.current.feeAmount ??
-            Amount.fromRawAmount(symbiosisRef.current.amountOut.currency, 0)
-        )
-        .toSignificant(3)} ${
+      } for ${symbiosisRef.current?.amountOut?.toSignificant(3)} ${
         symbiosisRef.current?.amountOut?.currency.symbol
       } ${
         recipient !== undefined && recipient !== address && isAddress(recipient)
@@ -218,19 +211,56 @@ export default function SwapTradeButton() {
 
       addTransaction(address ?? "", chainId0, data.hash, baseText)
 
-      waitForTransaction({ hash: data.hash }).then((receipt) => {
-        finalizeTransaction(data.hash, receipt)
+      waitForTransaction({ hash: data.hash }).then(async (receipt) => {
+        await symbiosisRef.current?.symbiosis
+          ?.waitForComplete(getEthersTransactionReceipt(receipt))
+          .then(async (log: any) => {
+            const swapData = symbiosisRef.current
+            if (!log || !swapData) return
+            const expectedTokenOut = swapData.amountOut?.currency
 
-        addPopup(
-          {
-            txn: {
-              hash: data.hash,
-              success: receipt.status === "success",
-              summary: baseText,
-            },
-          },
-          data.hash
-        )
+            const transitTokenSent =
+              await symbiosisRef.current?.symbiosis?.findTransitTokenSent(
+                log.transactionHash
+              )
+
+            let formatedText
+
+            if (transitTokenSent) {
+              formatedText = `Received ${transitTokenSent?.token?.symbol} instead of ${expectedTokenOut?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`
+            } else {
+              formatedText = `Swap ${symbiosisRef.current?.amountIn?.toSignificant(
+                3
+              )} ${
+                symbiosisRef.current?.amountIn?.currency.symbol
+              } for ${symbiosisRef.current?.amountOut?.toSignificant(3)} ${
+                symbiosisRef.current?.amountOut?.currency.symbol
+              } ${
+                recipient !== undefined &&
+                recipient !== address &&
+                isAddress(recipient)
+                  ? `to ${getShortenAddress(recipient)}`
+                  : ""
+              }`
+            }
+
+            addPopup(
+              {
+                txn: {
+                  hash: log?.transactionHash,
+                  success: !transitTokenSent,
+                  summary: formatedText,
+                  chainId: expectedTokenOut?.chainId,
+                },
+              },
+              log.transactionHash
+            )
+          })
+
+        finalizeTransaction(data.hash, receipt)
+        setAttemptingTxn(false)
+        setTxHash(data.hash)
+        setSwapErrorMessage(undefined)
       })
     },
     onError: (error) => {

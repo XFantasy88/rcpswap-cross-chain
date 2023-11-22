@@ -9,6 +9,7 @@ import InjectedIcon from "@/assets/images/wallets/injected.webp"
 
 import ArbitrumNova from "@/assets/images/networks/42170.png"
 import Polygon from "@/assets/images/networks/137.png"
+import { getEventSelector } from "viem"
 
 export const SUPPORTED_CONNECTORS: {
   [key: string]: {

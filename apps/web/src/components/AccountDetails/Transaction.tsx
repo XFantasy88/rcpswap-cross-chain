@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { FiCheckCircle, FiTriangle } from "react-icons/fi"
 
-import { getEtherscanLink } from "@rcpswap/wagmi"
+import { getEtherscanLink, useNetwork } from "@rcpswap/wagmi"
 import { ChainId } from "rcpswap/chain"
 import { useAllTransactions } from "@rcpswap/dexie"
 
@@ -43,8 +43,7 @@ const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
 `
 
 export default function Transaction({ hash }: { hash: string }) {
-  // const { chainId } = useActiveWeb3React()
-  const chainId = ChainId.ARBITRUM_NOVA
+  const chainId = useNetwork().chain?.id as ChainId
   const allTransactions = useAllTransactions(chainId)
 
   const tx = allTransactions?.find((tx) => tx.hash === hash)

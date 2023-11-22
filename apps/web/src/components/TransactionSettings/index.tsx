@@ -12,6 +12,7 @@ enum SlippageError {
   InvalidInput = "InvalidInput",
   RiskyLow = "RiskyLow",
   RiskyHigh = "RiskyHigh",
+  TooLow = "TooLow",
 }
 
 enum DeadlineError {
@@ -120,6 +121,8 @@ export default function SlippageTabs({
   let slippageError: SlippageError | undefined
   if (slippageInput !== "" && !slippageInputIsValid) {
     slippageError = SlippageError.InvalidInput
+  } else if (slippageInputIsValid && +rawSlippage < 0.2) {
+    slippageError = SlippageError.TooLow
   } else if (slippageInputIsValid && +rawSlippage < 0.5) {
     slippageError = SlippageError.RiskyLow
   } else if (slippageInputIsValid && +rawSlippage > 5) {
@@ -204,7 +207,8 @@ export default function SlippageTabs({
           >
             <RowBetween>
               {!!slippageInput &&
-              (slippageError === SlippageError.RiskyLow ||
+              (slippageError === SlippageError.TooLow ||
+                slippageError === SlippageError.RiskyLow ||
                 slippageError === SlippageError.RiskyHigh) ? (
                 <SlippageEmojiContainer>
                   <span role="img" aria-label="warning">
@@ -233,13 +237,16 @@ export default function SlippageTabs({
               fontSize: "14px",
               paddingTop: "7px",
               color:
-                slippageError === SlippageError.InvalidInput
+                slippageError === SlippageError.InvalidInput ||
+                slippageError === SlippageError.TooLow
                   ? "red"
                   : "#F3841E",
             }}
           >
             {slippageError === SlippageError.InvalidInput
               ? "Enter a valid slippage percentage"
+              : slippageError === SlippageError.TooLow
+              ? `Slippage cannot be less than 0.2%`
               : slippageError === SlippageError.RiskyLow
               ? "Your transaction may fail"
               : "Your transaction may be frontrun"}

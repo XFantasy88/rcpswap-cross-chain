@@ -4,24 +4,18 @@ import {
   useSwapTrade,
   useSymbiosisTrade,
 } from "@/ui/swap/derived-swap-state-provider"
-import { UseTradeReturn } from "@rcpswap/router"
 import { useDerivedSwapTradeState } from "./derived-swap-trade-state-provider"
 import { useCallback, useMemo, useRef } from "react"
-import {
-  useAccount,
-  useContractWrite,
-  usePrepareContractWrite,
-  usePrepareSendTransaction,
-  useSendTransaction,
-} from "wagmi"
+import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi"
 import {
   META_ROUTE_PROCESSOR_ADDRESS,
   ROUTE_PROCESSOR_3_ADDRESS,
 } from "rcpswap/config"
+import { mainnetConfig } from "@rcpswap/symbiosis"
 import { metaRouteProcessorAbi, routeProcessor2Abi } from "rcpswap/abi"
 import {
+  getPublicClient,
   getShortenAddress,
-  getTokenWithCacheQueryFn,
   isAddress,
   waitForTransaction,
 } from "@rcpswap/wagmi"
@@ -33,6 +27,7 @@ import { gasMargin } from "rcpswap"
 import confirmPriceImpactWithoutFee from "@/components/swap/confirmPriceImpactWithoutFee"
 import { getEthersTransactionReceipt } from "@/utils/getEthersTransactionReceipt"
 import { ethers } from "ethers"
+import { getAddress } from "viem"
 
 export default function SwapTradeConfirmModal() {
   const {
@@ -82,6 +77,7 @@ export default function SwapTradeConfirmModal() {
         tradeToConfirm.route.status !== RouteStatus.NoWay
     ),
     value: tradeToConfirm?.value ?? 0n,
+    staleTime: 5000,
   })
 
   const { writeAsync } = useContractWrite({
@@ -154,6 +150,7 @@ export default function SwapTradeConfirmModal() {
       ],
       value: token0?.isNative ? parsedAmount?.quotient ?? 0n : 0n,
       enabled: Boolean(symbiosis && symbiosis.transaction),
+      staleTime: 5000,
     })
 
   const { writeAsync: symbiosisWriteAsync } = useContractWrite({
@@ -173,18 +170,11 @@ export default function SwapTradeConfirmModal() {
       }
     },
     onSuccess: async (data) => {
-      console.log(data)
-
       const baseText = `Swap ${symbiosisRef.current?.amountIn?.toSignificant(
         3
       )} ${
         symbiosisRef.current?.amountIn?.currency.symbol
-      } for ${symbiosisRef.current?.amountOut
-        ?.subtract(
-          symbiosisRef.current.feeAmount ??
-            Amount.fromRawAmount(symbiosisRef.current.amountOut.currency, 0)
-        )
-        .toSignificant(3)} ${
+      } for ${symbiosisRef.current?.amountOut?.toSignificant(3)} ${
         symbiosisRef.current?.amountOut?.currency.symbol
       } ${
         recipient !== undefined && recipient !== address && isAddress(recipient)
@@ -195,42 +185,40 @@ export default function SwapTradeConfirmModal() {
       addTransaction(address ?? "", chainId0, data.hash, baseText)
 
       waitForTransaction({ hash: data.hash }).then(async (receipt) => {
-        finalizeTransaction(data.hash, receipt)
-
         await symbiosisRef.current?.symbiosis
           ?.waitForComplete(getEthersTransactionReceipt(receipt))
-          .then((log: any) => {
+          .then(async (log: any) => {
+            console.log(log)
             const swapData = symbiosisRef.current
-            console.log(swapData)
             if (!log || !swapData) return
             const expectedTokenOut = swapData.amountOut?.currency
-            if (!expectedTokenOut) return
 
-            const abiCoder = new ethers.utils.AbiCoder()
-            const [, , tokenOut] = abiCoder.decode(
-              ["uint256", "uint256", "address"],
-              log.data
-            )
-            console.log(tokenOut)
-
-            if (
-              expectedTokenOut?.address.toLowerCase() === tokenOut.toLowerCase()
-            ) {
-              return
-            }
-
-            const currencyOut = swapData.symbiosis.config.chains
-              .find((chain: any) => chain.id === expectedTokenOut.chainId)
-              ?.stables?.find(
-                (token: any) =>
-                  token.address.toLowerCase() === tokenOut.toLowerCase()
+            const transitTokenSent =
+              await symbiosisRef.current?.symbiosis?.findTransitTokenSent(
+                log.transactionHash
               )
 
-            console.log(currencyOut)
+            console.log(transitTokenSent)
 
-            if (!currencyOut) return
+            let formatedText
 
-            const formatedText = `You've received ${currencyOut?.symbol} instead of ${expectedTokenOut?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`
+            if (transitTokenSent) {
+              formatedText = `Received ${transitTokenSent?.token?.symbol} instead of ${expectedTokenOut?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`
+            } else {
+              formatedText = `Swap ${symbiosisRef.current?.amountIn?.toSignificant(
+                3
+              )} ${
+                symbiosisRef.current?.amountIn?.currency.symbol
+              } for ${symbiosisRef.current?.amountOut?.toSignificant(3)} ${
+                symbiosisRef.current?.amountOut?.currency.symbol
+              } ${
+                recipient !== undefined &&
+                recipient !== address &&
+                isAddress(recipient)
+                  ? `to ${getShortenAddress(recipient)}`
+                  : ""
+              }`
+            }
 
             console.log(formatedText)
 
@@ -238,7 +226,7 @@ export default function SwapTradeConfirmModal() {
               {
                 txn: {
                   hash: log?.transactionHash,
-                  success: false,
+                  success: !transitTokenSent,
                   summary: formatedText,
                   chainId: expectedTokenOut?.chainId,
                 },
@@ -247,20 +235,10 @@ export default function SwapTradeConfirmModal() {
             )
           })
 
+        finalizeTransaction(data.hash, receipt)
         setAttemptingTxn(false)
         setTxHash(data.hash)
         setSwapErrorMessage(undefined)
-
-        // addPopup(
-        //   {
-        //     txn: {
-        //       hash: data.hash,
-        //       success: receipt.status === "success",
-        //       summary: baseText,
-        //     },
-        //   },
-        //   data.hash
-        // )
       })
     },
     onError: (error) => {
