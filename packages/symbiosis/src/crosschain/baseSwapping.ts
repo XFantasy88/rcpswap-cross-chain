@@ -61,8 +61,8 @@ export abstract class BaseSwapping {
 
   protected from!: string
   protected to!: string
-  public tokenAmountIn!: TokenAmount
-  public tokenOut!: Token
+  protected tokenAmountIn!: TokenAmount
+  protected tokenOut!: Token
   protected slippage!: DetailedSlippage
   protected deadline!: number
   protected ttl!: number
