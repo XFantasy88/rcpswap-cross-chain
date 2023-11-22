@@ -164,7 +164,9 @@ function Web3StatusInner() {
   const { chain } = useNetwork()
   const { switchNetworkAsync } = useSwitchNetwork()
 
-  const allTransactions = useAllTransactions(ChainId.ARBITRUM_NOVA)
+  const allTransactions = useAllTransactions(
+    (chain?.id ?? ChainId.ARBITRUM_NOVA) as ChainId
+  )
 
   const pending = allTransactions
     ?.filter((tx) => !tx.receipt)
@@ -218,7 +220,7 @@ function Web3StatusInner() {
 
 export default function Web3Status() {
   const chainId = useNetwork().chain?.id as ChainId
-  const allTransactions = useAllTransactions(chainId)
+  const allTransactions = useAllTransactions(chainId ?? ChainId.ARBITRUM_NOVA)
 
   const pending = allTransactions
     ?.filter((tx) => !tx.receipt)

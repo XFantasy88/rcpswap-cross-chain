@@ -44,7 +44,7 @@ const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
 
 export default function Transaction({ hash }: { hash: string }) {
   const chainId = useNetwork().chain?.id as ChainId
-  const allTransactions = useAllTransactions(chainId)
+  const allTransactions = useAllTransactions(chainId ?? ChainId.ARBITRUM_NOVA)
 
   const tx = allTransactions?.find((tx) => tx.hash === hash)
   const summary = tx?.summary
