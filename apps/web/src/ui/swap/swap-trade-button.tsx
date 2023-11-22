@@ -332,120 +332,124 @@ export default function SwapTradeButton() {
   )
 
   return (
-    <Checker.Connect>
-      <Checker.Network chainId={chainId0}>
-        <Checker.Amounts chainId={chainId0} amounts={[parsedAmount]}>
-          <Checker.Tokens tokens={[token0, token1]}>
-            <Checker.Error
-              error={
-                isLoading || isSymbiosisLoading
-                  ? "Fetching the best price"
-                  : chainId0 !== chainId1 && symbiosisError
-                  ? (symbiosisError as any)?.code ===
-                      ErrorCode.AMOUNT_LESS_THAN_FEE ||
-                    (symbiosisError as any)?.code === ErrorCode.AMOUNT_TOO_LOW
-                    ? "Amount is too low"
-                    : (symbiosisError as any)?.code ===
-                      ErrorCode.AMOUNT_TOO_HIGH
-                    ? "Amount is too high"
-                    : "Invalid Trade"
-                  : trade?.route?.status === RouteStatus.NoWay
-                  ? "Insufficient liquidity for this trade."
-                  : undefined
-              }
-            >
-              <Checker.ApproveERC20
-                amount={parsedAmount}
-                contract={
-                  chainId0 !== chainId1
-                    ? META_ROUTE_PROCESSOR_ADDRESS[chainId0]
-                    : ROUTE_PROCESSOR_3_ADDRESS[chainId0]
+    <Checker.Error
+      error={
+        chainId0 !== chainId1 && symbiosisError
+          ? (symbiosisError as any)?.code === ErrorCode.AMOUNT_LESS_THAN_FEE ||
+            (symbiosisError as any)?.code === ErrorCode.AMOUNT_TOO_LOW
+            ? "Amount is too low"
+            : (symbiosisError as any)?.code === ErrorCode.AMOUNT_TOO_HIGH
+            ? "Amount is too high"
+            : "Invalid Trade"
+          : undefined
+      }
+    >
+      <Checker.Connect>
+        <Checker.Network chainId={chainId0}>
+          <Checker.Amounts chainId={chainId0} amounts={[parsedAmount]}>
+            <Checker.Tokens tokens={[token0, token1]}>
+              <Checker.Error
+                error={
+                  isLoading || isSymbiosisLoading
+                    ? "Fetching the best price"
+                    : trade?.route?.status === RouteStatus.NoWay
+                    ? "Insufficient liquidity for this trade."
+                    : undefined
                 }
               >
-                {(approvalSubmitted, approvalState, approve) =>
-                  approvalState === ApprovalState.NOT_APPROVED ||
-                  approvalState === ApprovalState.PENDING ||
-                  (approvalSubmitted &&
-                    approvalState === ApprovalState.APPROVED) ? (
-                    <>
-                      <RowBetween>
-                        <ButtonConfirmed
-                          onClick={() => approve?.()}
-                          disabled={
-                            approvalState !== ApprovalState.NOT_APPROVED ||
-                            approvalSubmitted
-                          }
-                          width="48%"
-                          altDisabledStyle={
-                            approvalState === ApprovalState.PENDING
-                          }
-                          confirmed={approvalState === ApprovalState.APPROVED}
-                        >
-                          {approvalState === ApprovalState.PENDING ? (
-                            <AutoRow gap="6px" justify="center">
-                              Approving <Loader stroke="white" />
-                            </AutoRow>
-                          ) : approvalSubmitted &&
-                            approvalState === ApprovalState.APPROVED ? (
-                            "Approved"
-                          ) : (
-                            "Approve " + token0?.symbol
-                          )}
-                        </ButtonConfirmed>
-                        <ButtonError
-                          onClick={handleSwap}
-                          width="48%"
-                          id="swap-button"
-                          disabled={
-                            approvalState !== ApprovalState.APPROVED ||
-                            (priceImpactSeverity > 3 && !isExpertMode)
-                          }
-                        >
-                          <Text fontSize={16} fontWeight={500}>
-                            {isWrap
-                              ? "Wrap"
-                              : isUnWrap
-                              ? "Unwrap"
-                              : priceImpactSeverity > 3 && !isExpertMode
-                              ? "Price Impact High"
-                              : `Swap${
-                                  priceImpactSeverity > 2 ? " Anyway" : ""
-                                }`}
-                          </Text>
-                        </ButtonError>
-                      </RowBetween>
-                      <Column style={{ marginTop: "1rem" }}>
-                        <ProgressSteps
-                          steps={[approvalState === ApprovalState.APPROVED]}
-                        />
-                      </Column>
-                    </>
-                  ) : (
-                    <ButtonError
-                      onClick={handleSwap}
-                      id="swap-button"
-                      disabled={
-                        approvalState !== ApprovalState.APPROVED ||
-                        (priceImpactSeverity > 3 && !isExpertMode)
-                      }
-                    >
-                      <Text fontSize={20} fontWeight={500}>
-                        {isWrap
-                          ? "Wrap"
-                          : isUnWrap
-                          ? "Unwrap"
-                          : priceImpactSeverity > 3 && !isExpertMode
-                          ? "Price Impact High"
-                          : `Swap${priceImpactSeverity > 2 ? " Anyway" : ""}`}
-                      </Text>
-                    </ButtonError>
-                  )
-                }
-              </Checker.ApproveERC20>
-            </Checker.Error>
-          </Checker.Tokens>
-        </Checker.Amounts>
-      </Checker.Network>
-    </Checker.Connect>
+                <Checker.ApproveERC20
+                  amount={parsedAmount}
+                  contract={
+                    chainId0 !== chainId1
+                      ? META_ROUTE_PROCESSOR_ADDRESS[chainId0]
+                      : ROUTE_PROCESSOR_3_ADDRESS[chainId0]
+                  }
+                >
+                  {(approvalSubmitted, approvalState, approve) =>
+                    approvalState === ApprovalState.NOT_APPROVED ||
+                    approvalState === ApprovalState.PENDING ||
+                    (approvalSubmitted &&
+                      approvalState === ApprovalState.APPROVED) ? (
+                      <>
+                        <RowBetween>
+                          <ButtonConfirmed
+                            onClick={() => approve?.()}
+                            disabled={
+                              approvalState !== ApprovalState.NOT_APPROVED ||
+                              approvalSubmitted
+                            }
+                            width="48%"
+                            altDisabledStyle={
+                              approvalState === ApprovalState.PENDING
+                            }
+                            confirmed={approvalState === ApprovalState.APPROVED}
+                          >
+                            {approvalState === ApprovalState.PENDING ? (
+                              <AutoRow gap="6px" justify="center">
+                                Approving <Loader stroke="white" />
+                              </AutoRow>
+                            ) : approvalSubmitted &&
+                              approvalState === ApprovalState.APPROVED ? (
+                              "Approved"
+                            ) : (
+                              "Approve " + token0?.symbol
+                            )}
+                          </ButtonConfirmed>
+                          <ButtonError
+                            onClick={handleSwap}
+                            width="48%"
+                            id="swap-button"
+                            disabled={
+                              approvalState !== ApprovalState.APPROVED ||
+                              (priceImpactSeverity > 3 && !isExpertMode)
+                            }
+                          >
+                            <Text fontSize={16} fontWeight={500}>
+                              {isWrap
+                                ? "Wrap"
+                                : isUnWrap
+                                ? "Unwrap"
+                                : priceImpactSeverity > 3 && !isExpertMode
+                                ? "Price Impact High"
+                                : `Swap${
+                                    priceImpactSeverity > 2 ? " Anyway" : ""
+                                  }`}
+                            </Text>
+                          </ButtonError>
+                        </RowBetween>
+                        <Column style={{ marginTop: "1rem" }}>
+                          <ProgressSteps
+                            steps={[approvalState === ApprovalState.APPROVED]}
+                          />
+                        </Column>
+                      </>
+                    ) : (
+                      <ButtonError
+                        onClick={handleSwap}
+                        id="swap-button"
+                        disabled={
+                          approvalState !== ApprovalState.APPROVED ||
+                          (priceImpactSeverity > 3 && !isExpertMode)
+                        }
+                      >
+                        <Text fontSize={20} fontWeight={500}>
+                          {isWrap
+                            ? "Wrap"
+                            : isUnWrap
+                            ? "Unwrap"
+                            : priceImpactSeverity > 3 && !isExpertMode
+                            ? "Price Impact High"
+                            : `Swap${priceImpactSeverity > 2 ? " Anyway" : ""}`}
+                        </Text>
+                      </ButtonError>
+                    )
+                  }
+                </Checker.ApproveERC20>
+              </Checker.Error>
+            </Checker.Tokens>
+          </Checker.Amounts>
+        </Checker.Network>
+      </Checker.Connect>
+    </Checker.Error>
   )
 }

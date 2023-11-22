@@ -34,6 +34,7 @@ export interface SwapExactInParams {
   slippage: number
   deadline: number
   oneInchProtocols?: OneInchProtocols
+  maxDepth?: number
 }
 
 interface SwapInfo {
@@ -60,12 +61,14 @@ export abstract class BaseSwapping {
 
   protected from!: string
   protected to!: string
-  protected tokenAmountIn!: TokenAmount
-  protected tokenOut!: Token
+  public tokenAmountIn!: TokenAmount
+  public tokenOut!: Token
   protected slippage!: DetailedSlippage
   protected deadline!: number
   protected ttl!: number
   protected revertableAddresses!: { AB: string; BC: string }
+
+  protected maxDepth?: number
 
   protected route!: Token[]
 
@@ -100,10 +103,12 @@ export abstract class BaseSwapping {
     slippage,
     deadline,
     oneInchProtocols,
+    maxDepth,
   }: SwapExactInParams): Promise<SwapExactIn> {
     this.oneInchProtocols = oneInchProtocols
     this.tokenAmountIn = tokenAmountIn
     this.tokenOut = tokenOut
+    this.maxDepth = maxDepth
 
     this.transitTokenIn = this.symbiosis.transitToken(
       this.tokenAmountIn.token.chainId,
@@ -388,6 +393,7 @@ export abstract class BaseSwapping {
       clientId: this.symbiosis.clientId,
       ttl: this.ttl,
       oneInchProtocols: this.oneInchProtocols,
+      maxDepth: this.maxDepth,
     })
   }
 
@@ -446,6 +452,7 @@ export abstract class BaseSwapping {
       clientId: this.symbiosis.clientId,
       ttl: this.ttl,
       oneInchProtocols: this.oneInchProtocols,
+      maxDepth: this.maxDepth,
     })
   }
 

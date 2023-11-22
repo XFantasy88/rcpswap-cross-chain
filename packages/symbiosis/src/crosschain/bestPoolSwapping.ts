@@ -76,6 +76,7 @@ export class BestPoolSwapping {
     slippage,
     deadline,
     oneInchProtocols,
+    maxDepth,
   }: SwapExactInParams) {
     const { omniPools } = this.symbiosis.config
 
@@ -92,6 +93,7 @@ export class BestPoolSwapping {
       slippage,
       deadline,
       oneInchProtocols,
+      maxDepth,
     }
 
     const optimalOmniPool = this.getOptimalOmniPool(

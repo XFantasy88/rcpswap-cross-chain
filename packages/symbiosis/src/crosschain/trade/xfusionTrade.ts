@@ -29,6 +29,7 @@ export class XfusionTrade implements SymbiosisTrade {
   public priceImpact!: Percent
   public routerAddress!: string
   public callDataOffset?: number
+  public maxDepth?: number
   private poolsCodeMap?: Map<string, PoolCode>
 
   private readonly tokenOut: Token
@@ -43,7 +44,8 @@ export class XfusionTrade implements SymbiosisTrade {
     tokenOut: Token,
     to: string,
     slippage: number,
-    router: XfusionRouter
+    router: XfusionRouter,
+    maxDepth?: number
   ) {
     this.tokenAmountIn = tokenAmountIn
     this.tokenOut = tokenOut
@@ -51,6 +53,7 @@ export class XfusionTrade implements SymbiosisTrade {
     this.slippage = slippage
     this.router = router
     this.routerAddress = router.address
+    this.maxDepth = maxDepth
 
     this.inToken = this.getToken(this.tokenAmountIn.token)
     this.outToken = this.getToken(this.tokenOut)
@@ -78,7 +81,7 @@ export class XfusionTrade implements SymbiosisTrade {
       BigInt(this.tokenAmountIn.raw.toString()),
       this.outToken,
       Number(gasPrice.toString()),
-      100
+      this.maxDepth ?? 100
     )
 
     if (bestRoute.status === RouteStatus.NoWay) {

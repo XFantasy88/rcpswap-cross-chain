@@ -28,6 +28,7 @@ interface AggregatorTradeParams {
   clientId: string
   ttl: number
   oneInchProtocols?: OneInchProtocols
+  maxDepth?: number
 }
 
 class TradeNotInitializedError extends Error {
@@ -188,7 +189,8 @@ export class AggregatorTrade implements SymbiosisTrade {
   }
 
   private async buildXfusionTrade(): Promise<XfusionTrade> {
-    const { symbiosis, tokenAmountIn, tokenOut, to, slippage } = this.params
+    const { symbiosis, tokenAmountIn, tokenOut, to, slippage, maxDepth } =
+      this.params
     const { chainId } = tokenAmountIn.token
     let routerA: XfusionRouter = symbiosis.xfusionRouter(chainId)
 
@@ -197,7 +199,8 @@ export class AggregatorTrade implements SymbiosisTrade {
       tokenOut,
       to,
       slippage,
-      routerA
+      routerA,
+      maxDepth
     )
 
     await trade.init()

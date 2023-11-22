@@ -311,6 +311,7 @@ const useSymbiosisTrade = () => {
       parsedAmount,
       recipient,
       allowedSlippage,
+      ultraMode,
     ],
     queryFn: async () => {
       if (!token0 || !token1 || !parsedAmount) {
@@ -335,6 +336,7 @@ const useSymbiosisTrade = () => {
           recipient ?? address ?? "0xd52c556ecbd260cf3bf5b78f3f94d6878939adf7",
         deadline: Math.floor(Date.now() / 1e3) + 604800,
         slippage: +allowedSlippage * 100,
+        maxDepth: ultraMode ? 1000 : 100,
       })
 
       const amountOut = Amount.fromRawAmount(
