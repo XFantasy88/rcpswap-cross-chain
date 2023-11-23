@@ -44,6 +44,8 @@ const Option = styled(FancyButton)<{ active: boolean }>`
   :hover {
     cursor: pointer;
   }
+  display: flex;
+  justify-content: center;
   background-color: ${({ active, theme }) => active && theme.primary1};
   color: ${({ active, theme }) => (active ? theme.white : theme.text1)};
 `
@@ -69,6 +71,7 @@ const OptionCustom = styled(FancyButton)<{
   position: relative;
   padding: 0 0.75rem;
   flex: 1;
+  min-width: 5rem;
   border: ${({ theme, active, warning }) =>
     active && `1px solid ${warning ? theme.red1 : theme.primary1}`};
   &:hover {
@@ -205,7 +208,6 @@ export default function SlippageTabs({
             active={![0.1, 0.5, 1].includes(+rawSlippage)}
             warning={!slippageInputIsValid}
             tabIndex={-1}
-            style={{ minWidth: "4rem" }}
           >
             <RowBetween>
               {!!slippageInput &&
