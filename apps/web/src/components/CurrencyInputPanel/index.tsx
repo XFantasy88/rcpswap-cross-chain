@@ -171,7 +171,6 @@ interface CurrencyInputPanelProps {
   inactive?: boolean
   showPriceImpact?: boolean
   loading?: boolean
-  saving?: number
 }
 
 export default function CurrencyInputPanel({
@@ -197,7 +196,6 @@ export default function CurrencyInputPanel({
   inactive = false,
   showPriceImpact = false,
   loading = false,
-  saving = 0,
 }: CurrencyInputPanelProps) {
   const [modalOpen, setModalOpen] = useState(false)
   const { address } = useAccount()

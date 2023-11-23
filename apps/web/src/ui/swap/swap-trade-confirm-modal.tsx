@@ -78,6 +78,7 @@ export default function SwapTradeConfirmModal() {
     ),
     value: tradeToConfirm?.value ?? 0n,
     staleTime: 5000,
+    cacheTime: 10000,
   })
 
   const { writeAsync } = useContractWrite({
@@ -151,6 +152,7 @@ export default function SwapTradeConfirmModal() {
       value: token0?.isNative ? parsedAmount?.quotient ?? 0n : 0n,
       enabled: Boolean(symbiosis && symbiosis.transaction),
       staleTime: 5000,
+      cacheTime: 10000,
     })
 
   const { writeAsync: symbiosisWriteAsync } = useContractWrite({

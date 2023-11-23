@@ -1,25 +1,25 @@
-'use client'
+"use client"
 
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from "react"
 // import * as Sentry from '@sentry/nextjs'
-import { Amount, Type } from 'rcpswap/currency'
-import { UserRejectedRequestError, maxUint256 } from 'viem'
+import { Amount, Type } from "rcpswap/currency"
+import { UserRejectedRequestError, maxUint256 } from "viem"
 import {
   Address,
   useAccount,
   useContractWrite,
   usePrepareContractWrite,
-} from 'wagmi'
-import { SendTransactionResult, waitForTransaction } from 'wagmi/actions'
+} from "wagmi"
+import { SendTransactionResult, waitForTransaction } from "wagmi/actions"
 
-import { useTokenAllowance } from './useTokenAllowance'
+import { useTokenAllowance } from "./useTokenAllowance"
 
 export enum ApprovalState {
-  LOADING = 'LOADING',
-  UNKNOWN = 'UNKNOWN',
-  NOT_APPROVED = 'NOT_APPROVED',
-  PENDING = 'PENDING',
-  APPROVED = 'APPROVED',
+  LOADING = "LOADING",
+  UNKNOWN = "UNKNOWN",
+  NOT_APPROVED = "NOT_APPROVED",
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
 }
 
 interface UseTokenApprovalParams {
@@ -35,9 +35,9 @@ export const useTokenApproval = ({
   enabled = true,
   approveMax,
 }: UseTokenApprovalParams): [
-    ApprovalState,
-    ReturnType<typeof useContractWrite>,
-  ] => {
+  ApprovalState,
+  ReturnType<typeof useContractWrite>
+] => {
   const { address } = useAccount()
   const [pending, setPending] = useState(false)
   const {
@@ -58,75 +58,53 @@ export const useTokenApproval = ({
       {
         constant: false,
         inputs: [
-          { name: 'spender', type: 'address' },
-          { name: 'amount', type: 'uint256' },
+          { name: "spender", type: "address" },
+          { name: "amount", type: "uint256" },
         ],
-        name: 'approve',
+        name: "approve",
         outputs: [],
         payable: false,
-        stateMutability: 'nonpayable',
-        type: 'function',
+        stateMutability: "nonpayable",
+        type: "function",
       },
     ] as const,
     address: amount?.currency?.wrapped?.address as Address,
-    functionName: 'approve',
+    functionName: "approve",
     args: [
       spender as Address,
       approveMax ? maxUint256 : amount ? amount.quotient : 0n,
     ],
     enabled: Boolean(
       amount &&
-      spender &&
-      address &&
-      allowance &&
-      enabled &&
-      !isAllowanceLoading,
+        spender &&
+        address &&
+        allowance &&
+        enabled &&
+        !isAllowanceLoading
     ),
     // onError: (error) => Sentry.captureException(`approve prepare error: ${error.message}`),
   })
 
-  // const onSettled = useCallback(
-  //   (data: SendTransactionResult | undefined, e: Error | null) => {
-  //     if (e instanceof Error) {
-  //       if (!(e instanceof UserRejectedRequestError)) {
-  //         createErrorToast(e.message, true)
-  //       }
-  //     }
-
-  //     if (data && amount) {
-  //       setPending(true)
-
-  //       const ts = new Date().getTime()
-  //       void createToast({
-  //         account: address,
-  //         type: 'approval',
-  //         chainId: amount.currency.chainId,
-  //         txHash: data.hash,
-  //         promise: waitForTransaction({ hash: data.hash }),
-  //         summary: {
-  //           pending: `Approving ${amount.currency.symbol}`,
-  //           completed: `Successfully approved ${amount.currency.symbol}`,
-  //           failed: `Something went wrong approving ${amount.currency.symbol}`,
-  //         },
-  //         groupTimestamp: ts,
-  //         timestamp: ts,
-  //       })
-  //     }
-  //   },
-  //   [address, amount],
-  // )
+  const onSettled = useCallback(
+    (data: SendTransactionResult | undefined, e: Error | null) => {
+      if (data && amount) {
+        setPending(true)
+      }
+    },
+    [address, amount]
+  )
 
   const execute = useContractWrite({
     ...config,
-    // onSettled,
+    onSettled,
     onSuccess: (data) => {
       waitForTransaction({ hash: data.hash })
         .then(() => {
           refetch().then(() => {
-            setPending(false)
+            setPending(() => false)
           })
         })
-        .catch(() => setPending(false))
+        .catch(() => setPending(() => false))
     },
   })
 

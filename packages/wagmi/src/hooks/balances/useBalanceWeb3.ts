@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query'
-import { ChainId } from 'rcpswap/chain'
-import { Type } from 'rcpswap/currency'
-import { zeroAddress } from 'viem'
-import { Address } from 'wagmi'
+import { useQuery } from "@tanstack/react-query"
+import { ChainId } from "rcpswap/chain"
+import { Type } from "rcpswap/currency"
+import { zeroAddress } from "viem"
+import { Address } from "wagmi"
 
-import { queryFnUseBalances } from './useBalancesWeb3'
+import { queryFnUseBalances } from "./useBalancesWeb3"
 
 interface UseBalanceParams {
   chainId: ChainId | undefined
@@ -20,7 +20,7 @@ export const useBalanceWeb3 = ({
   enabled = true,
 }: UseBalanceParams) => {
   return useQuery({
-    queryKey: ['useBalance', { chainId, currency, account }],
+    queryKey: ["useBalance", { chainId, currency, account }],
     queryFn: async () => {
       if (!currency) return null
       const data = await queryFnUseBalances({
@@ -33,8 +33,8 @@ export const useBalanceWeb3 = ({
         null
       )
     },
-    refetchInterval: 60000,
-    cacheTime: 60000,
+    refetchInterval: 20000,
+    cacheTime: 20000,
     enabled: Boolean(chainId && account && enabled),
   })
 }

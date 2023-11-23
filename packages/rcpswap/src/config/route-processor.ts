@@ -72,8 +72,8 @@ export const META_ROUTE_PROCESSOR_ADDRESS: Record<
   MetaRouteProcessorChainId,
   `0x${string}`
 > = {
-  [ChainId.ARBITRUM_NOVA]: "0xdf9fa201B28c9455e2B1B3b44aE0eF24c64b019C",
-  [ChainId.POLYGON]: "0x5fb78273134a202c9cf048dfbc8785a5c2b611c1",
+  [ChainId.ARBITRUM_NOVA]: "0x36060019b864D6b12310528fdA8315d7a9A08348",
+  [ChainId.POLYGON]: "0x2e73b7b8c5431fa439980a9ad07507dc0a8b0cad",
 } as const
 export const isMetaRouteProcessorChainId = (
   chainId: ChainId
