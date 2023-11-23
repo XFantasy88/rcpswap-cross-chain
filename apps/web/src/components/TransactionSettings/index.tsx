@@ -26,6 +26,7 @@ const FancyButton = styled.button`
   border-radius: 36px;
   font-size: 1rem;
   width: auto;
+  text-align: center;
   min-width: 3.5rem;
   border: 1px solid ${({ theme }) => theme.bg3};
   outline: none;
@@ -39,7 +40,7 @@ const FancyButton = styled.button`
 `
 
 const Option = styled(FancyButton)<{ active: boolean }>`
-  margin-right: 8px;
+  margin-right: 4px;
   :hover {
     cursor: pointer;
   }
@@ -204,6 +205,7 @@ export default function SlippageTabs({
             active={![0.1, 0.5, 1].includes(+rawSlippage)}
             warning={!slippageInputIsValid}
             tabIndex={-1}
+            style={{ minWidth: "4rem" }}
           >
             <RowBetween>
               {!!slippageInput &&
