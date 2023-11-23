@@ -46,7 +46,6 @@ const StyledNetworkDropdownWrapper = styled.div<{ open: boolean }>`
   left: 50%;
   margin-top: 0.5rem;
   transform: translateX(-50%);
-  transition: all 200ms ease-in-out;
   max-height: ${({ open }) => (open ? "300px" : "0px")};
   overflow: hidden;
   z-index: 10;
