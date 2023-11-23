@@ -1,5 +1,5 @@
 import Image, { ImageProps } from "next/image"
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { FiHelpCircle } from "react-icons/fi"
 
 const BAD_SRCS: { [tokenAddress: string]: true } = {}
@@ -14,7 +14,7 @@ export interface LogoProps
 export default function Logo({ srcs, ...rest }: LogoProps) {
   const [, refresh] = useState<number>(0)
 
-  const src: string | undefined = srcs.find((src) => !BAD_SRCS[src])
+  const src = srcs.find((src) => !BAD_SRCS[src])
 
   if (src) {
     return (
