@@ -16,13 +16,14 @@ import {
 import { LinkStyledButton, TYPE, ToggleStyledText } from "@/theme"
 import { INITIAL_ALLOWED_SLIPPAGE, useSlippageTolerance } from "@rcpswap/hooks"
 import { UseTradeReturn } from "@rcpswap/router"
-import { Native } from "rcpswap/currency"
+import { Native, Price } from "rcpswap/currency"
 import { useContext, useState } from "react"
 import { Text } from "rebass"
 import { ThemeContext } from "styled-components"
 import QuestionHelper from "@/components/QuestionHelper"
 import { FaArrowDown } from "react-icons/fa"
 import AddressInputPanel from "@/components/AddressInputPanel"
+import { usePrice } from "@rcpswap/react-query"
 
 export default function SwapTradeStateInfo() {
   const theme = useContext(ThemeContext)
@@ -37,7 +38,13 @@ export default function SwapTradeStateInfo() {
   const toggleSettings = useToggleSettingsMenu()
 
   const { data: trade, isInitialLoading: isLoading } = useSwapTrade()
-  const { isInitialLoading: isSymbiosisLoading } = useSymbiosisTrade()
+  const { data: symbiosisTrade, isInitialLoading: isSymbiosisLoading } =
+    useSymbiosisTrade()
+
+  const { data: feeTokenPrice } = usePrice({
+    chainId: symbiosisTrade?.fee?.currency?.chainId,
+    address: symbiosisTrade?.fee?.currency?.wrapped?.address,
+  })
 
   const isWrap = token0?.isNative && token1?.equals(token0.wrapped)
   const isUnwrap = token1?.isNative && token0?.equals(token1.wrapped)
@@ -95,26 +102,61 @@ export default function SwapTradeStateInfo() {
             />
           </RowBetween>
         )}
-        {+slippageTolerance !== INITIAL_ALLOWED_SLIPPAGE && (
+        {symbiosisTrade &&
+          symbiosisTrade.amountIn &&
+          symbiosisTrade.amountOut && (
+            <RowBetween align="center">
+              <Text fontWeight={500} fontSize={14} color={theme?.text2}>
+                Price
+              </Text>
+              <TradePrice
+                price={
+                  new Price({
+                    baseAmount: symbiosisTrade?.amountIn,
+                    quoteAmount: symbiosisTrade?.amountOut,
+                  })
+                }
+                showInverted={showInverted}
+                setShowInverted={setShowInverted}
+              />
+            </RowBetween>
+          )}
+        {Boolean(symbiosisTrade) && (
           <RowBetween align="center">
-            <ClickableText
-              fontWeight={500}
-              fontSize={14}
+            <Text fontWeight={500} fontSize={14} color={theme?.text2}>
+              Cross-Chain Fee
+            </Text>
+            <TYPE.main
               color={theme?.text2}
-              onClick={toggleSettings}
-            >
-              Slippage Tolerance
-            </ClickableText>
-            <ClickableText
-              fontWeight={500}
+              style={{ marginLeft: "8px" }}
               fontSize={14}
-              color={theme?.text2}
-              onClick={toggleSettings}
             >
-              {slippageTolerance}%
-            </ClickableText>
+              {symbiosisTrade?.fee
+                ? `${symbiosisTrade.fee
+                    .multiply(feeTokenPrice ?? "1")
+                    .toSignificant(2)} $`
+                : "-"}
+            </TYPE.main>
           </RowBetween>
         )}
+        <RowBetween align="center">
+          <ClickableText
+            fontWeight={500}
+            fontSize={14}
+            color={theme?.text2}
+            onClick={toggleSettings}
+          >
+            Slippage Tolerance
+          </ClickableText>
+          <ClickableText
+            fontWeight={500}
+            fontSize={14}
+            color={theme?.text2}
+            onClick={toggleSettings}
+          >
+            {slippageTolerance}%
+          </ClickableText>
+        </RowBetween>
         {(isLoading || isSymbiosisLoading) && swapMode === 1 ? (
           <Row
             align="center"

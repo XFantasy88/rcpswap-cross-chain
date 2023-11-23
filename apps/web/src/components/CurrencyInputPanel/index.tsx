@@ -1,7 +1,7 @@
 "use client"
 
 import { ChainId } from "rcpswap/chain"
-import { Type, tryParseAmount } from "rcpswap/currency"
+import { Amount, Type, tryParseAmount } from "rcpswap/currency"
 import { Fraction, ZERO } from "rcpswap/math"
 import { Pool } from "@rcpswap/v2-sdk"
 import { useAccount, useBalanceWeb3 } from "@rcpswap/wagmi"
@@ -171,6 +171,7 @@ interface CurrencyInputPanelProps {
   inactive?: boolean
   showPriceImpact?: boolean
   loading?: boolean
+  fee?: Amount<Type>
 }
 
 export default function CurrencyInputPanel({
@@ -196,6 +197,7 @@ export default function CurrencyInputPanel({
   inactive = false,
   showPriceImpact = false,
   loading = false,
+  fee,
 }: CurrencyInputPanelProps) {
   const [modalOpen, setModalOpen] = useState(false)
   const { address } = useAccount()
@@ -241,6 +243,11 @@ export default function CurrencyInputPanel({
     address: otherCurrency?.wrapped?.address,
   })
 
+  const { data: feePrice } = usePrice({
+    chainId: fee?.currency?.chainId,
+    address: fee?.currency?.wrapped?.address,
+  })
+
   const otherParsedValue = useMemo(
     () => tryParseAmount(otherAmount, otherCurrency ?? undefined),
     [otherCurrency, otherAmount]
@@ -251,11 +258,14 @@ export default function CurrencyInputPanel({
       ? otherParsedValue.multiply(otherPrice)
       : undefined
 
+  const feeTotalPrice = fee && feePrice ? fee.multiply(feePrice) : undefined
+
   const impact =
     totalPrice && otherTotalPrice && otherTotalPrice.greaterThan("0")
       ? parseFloat(
           (
-            (parseFloat(totalPrice.toExact()) /
+            ((parseFloat(totalPrice.toExact()) +
+              parseFloat(feeTotalPrice?.toExact() ?? "0")) /
               parseFloat(otherTotalPrice.toExact()) -
               1) *
             100
@@ -367,7 +377,7 @@ export default function CurrencyInputPanel({
                 }
               )}`}
           &nbsp;
-          {showPriceImpact && impact && impact < -2 && !loading ? (
+          {showPriceImpact && impact && impact < -1.5 && !loading ? (
             <PriceImpact impact={loading ? 0 : impact}>
               ({loading ? "0.00" : impact.toFixed(2)}
               %)

@@ -10,7 +10,6 @@ import { useModalOpen, useToggleSettingsMenu } from "@/state/application/hooks"
 import {
   useSlippageTolerance,
   useTransactionTTL,
-  useMultihops,
   useExpertMode,
 } from "@rcpswap/hooks"
 import { TYPE } from "@/theme"
@@ -134,8 +133,6 @@ export default function SettingsTab() {
 
   const [expertMode, toggleExpertMode] = useExpertMode()
 
-  const [singleHopOnly, setSingleHopOnly] = useMultihops()
-
   // show confirmation view before turning on
   const [showConfirmation, setShowConfirmation] = useState(false)
 
@@ -236,19 +233,6 @@ export default function SettingsTab() {
                         setShowConfirmation(true)
                       }
                 }
-              />
-            </RowBetween>
-            <RowBetween>
-              <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme?.text2}>
-                  Disable Multihops
-                </TYPE.black>
-                <QuestionHelper text="Restricts swaps to direct pairs only." />
-              </RowFixed>
-              <Toggle
-                id="toggle-disable-multihop-button"
-                isActive={!singleHopOnly}
-                toggle={() => setSingleHopOnly(!singleHopOnly)}
               />
             </RowBetween>
           </AutoColumn>

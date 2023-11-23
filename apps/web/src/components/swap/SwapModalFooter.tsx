@@ -125,7 +125,7 @@ export default function SwapModalFooter({
           <RowBetween>
             <RowFixed>
               <TYPE.black color={theme?.text2} fontSize={14} fontWeight={400}>
-                Symbiosis Fee
+                Cross-Chain Fee
               </TYPE.black>
             </RowFixed>
             <TYPE.black fontSize={14}>{`${trade.fee.toSignificant(4)} ${

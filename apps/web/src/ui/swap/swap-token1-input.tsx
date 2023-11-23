@@ -41,7 +41,7 @@ export default function SwapToken1Input() {
       id="swap-currency-output"
       inactive
       showPriceImpact
-      // loading={swapMode === 1 && fusionSwap.loading}
+      fee={symbiosis?.fee}
     />
   )
 }
