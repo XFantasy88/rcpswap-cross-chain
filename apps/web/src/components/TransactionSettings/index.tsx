@@ -69,7 +69,7 @@ const OptionCustom = styled(FancyButton)<{
 }>`
   height: 2rem;
   position: relative;
-  padding: 0 0.75rem;
+  padding: 0 0.5rem;
   flex: 1;
   min-width: 5rem;
   border: ${({ theme, active, warning }) =>
