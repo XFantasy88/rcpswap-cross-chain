@@ -125,6 +125,9 @@ export default function SwapTradeStateInfo() {
           <RowBetween align="center">
             <Text fontWeight={500} fontSize={14} color={theme?.text2}>
               Cross-Chain Fee
+              <QuestionHelper
+                text={`The cross-chain fee is paid to the third party cross-chain liquidity operators, note that this fee is fixed in $ instead of % - making larger orders more economically efficient compared with smaller size orders.`}
+              />
             </Text>
             <TYPE.main
               color={theme?.text2}
@@ -134,20 +137,19 @@ export default function SwapTradeStateInfo() {
               {symbiosisTrade?.fee
                 ? `${symbiosisTrade.fee
                     .multiply(feeTokenPrice ?? "1")
-                    .toSignificant(2)} $`
+                    .toSignificant(2)}$`
                 : "-"}
             </TYPE.main>
           </RowBetween>
         )}
         <RowBetween align="center">
-          <ClickableText
-            fontWeight={500}
-            fontSize={14}
-            color={theme?.text2}
-            onClick={toggleSettings}
-          >
+          <Text fontWeight={500} fontSize={14} color={theme?.text2}>
             Slippage Tolerance
-          </ClickableText>
+            <QuestionHelper
+              text={`The trade will automatically cancel if the execution price change exceeds this percentage. 
+              Low Slippage Tolerance can cause receiving stablecoins or WETH tokens on the destination network, even if another token was selected as the destination token. Read More`}
+            />
+          </Text>
           <ClickableText
             fontWeight={500}
             fontSize={14}

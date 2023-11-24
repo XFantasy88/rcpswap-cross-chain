@@ -42,6 +42,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
+    "@rainbow-me/rainbowkit": "^1.3.0",
     "@rcpswap/hooks": "workspace:*",
     "@rcpswap/react-query": "workspace:*",
     "@rcpswap/router": "workspace:*",
@@ -60,8 +61,8 @@
     "zod": "3.21.4"
   },
   "devDependencies": {
-    "@sentry/nextjs": "7.77.0",
     "@rcpswap/typescript-config": "workspace:*",
+    "@sentry/nextjs": "7.77.0",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "@wagmi/core": "1.4.5",
