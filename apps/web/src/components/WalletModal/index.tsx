@@ -25,7 +25,7 @@ import Modal from "../Modal"
 import Option from "./Option"
 import PendingView from "./PendingView"
 import { SUPPORTED_CONNECTORS } from "@/config"
-import { wallets } from "@rcpswap/wagmi"
+// import { wallets } from "@rcpswap/wagmi"
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -202,19 +202,19 @@ export default function WalletModal({
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
-    console.log(wallets, connectors)
+    // console.log(wallets, connectors)
     return connectors.map((item) => {
-      const wallet = (wallets as any)?.[item.id]
+      // const wallet = (wallets as any)?.[item.id]
       return (
         <Option
           onClick={() => {
             tryActivation(item)
           }}
-          id={`connect-${wallet.id}`}
-          key={wallet.id}
-          active={connector?.id === wallet.id}
-          color={wallet.iconBackground}
-          header={wallet.name}
+          id={`connect-${item.id}`}
+          key={item.id}
+          active={connector === item}
+          color={SUPPORTED_CONNECTORS[item.id].color}
+          header={item.name}
           subheader={null}
           icon={SUPPORTED_CONNECTORS[item.id].image}
         ></Option>
