@@ -217,7 +217,10 @@ export default function SettingsTab() {
                 <TYPE.black fontWeight={400} fontSize={14} color={theme?.text2}>
                   Toggle Expert Mode
                 </TYPE.black>
-                <QuestionHelper text="Bypasses confirmation modals and allows high slippage trades. Use at your own risk." />
+                <QuestionHelper
+                  id="interface-settings"
+                  content="Bypasses confirmation modals and allows high slippage trades. Use at your own risk."
+                />
               </RowFixed>
               <Toggle
                 id="toggle-expert-mode-button"

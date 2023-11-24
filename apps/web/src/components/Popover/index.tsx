@@ -112,6 +112,10 @@ export default function Popover({
   }, [update])
   useInterval(updateCallback, show ? 100 : null)
 
+  const [open, setOpen] = useState(false)
+
+  console.log(open)
+
   return (
     <>
       <ReferenceElement ref={setReferenceElement as any}>
@@ -119,7 +123,7 @@ export default function Popover({
       </ReferenceElement>
       <Portal>
         <PopoverContainer
-          show={show}
+          show={show || open}
           ref={setPopperElement as any}
           style={styles.popper}
           {...attributes.popper}

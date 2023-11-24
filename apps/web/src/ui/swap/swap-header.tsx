@@ -45,7 +45,10 @@ export default function SwapHeader() {
           <TYPE.black fontWeight={500} onClick={switchSwapMode} ml={"8px"}>
             {swapMode === 0 ? "Swap" : "xFusion"}
           </TYPE.black>
-          <QuestionHelper text={swapMode === 0 ? SWAP_TEXT : FUSION_TEXT} />
+          <QuestionHelper
+            id="swap-mode-header"
+            content={swapMode === 0 ? SWAP_TEXT : FUSION_TEXT}
+          />
           {/* &nbsp;
           <span
             onClick={switchSwapMode}

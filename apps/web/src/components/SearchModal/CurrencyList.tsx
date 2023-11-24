@@ -256,7 +256,10 @@ export default function CurrencyList({
                     Expanded results from inactive Token Lists
                   </TYPE.main>
                 </RowFixed>
-                <QuestionHelper text="Tokens from inactive lists. Import specific tokens below or click 'Manage' to activate more lists." />
+                <QuestionHelper
+                  id="inactive-token-lists"
+                  content="Tokens from inactive lists. Import specific tokens below or click 'Manage' to activate more lists."
+                />
               </RowBetween>
             </LightGreyCard>
           </FixedContentRow>

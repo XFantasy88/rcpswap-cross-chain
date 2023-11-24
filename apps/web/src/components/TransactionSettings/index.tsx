@@ -174,7 +174,10 @@ export default function SlippageTabs({
           <TYPE.black fontWeight={400} fontSize={14} color={theme?.text2}>
             Slippage tolerance
           </TYPE.black>
-          <QuestionHelper text="Your transaction will revert if the price changes unfavorably by more than this percentage." />
+          <QuestionHelper
+            id="slippage-tolerance-setting"
+            content="Your transaction will revert if the price changes unfavorably by more than this percentage."
+          />
         </RowFixed>
         <RowBetween>
           <Option
@@ -263,7 +266,10 @@ export default function SlippageTabs({
           <TYPE.black fontSize={14} fontWeight={400} color={theme?.text2}>
             Transaction deadline
           </TYPE.black>
-          <QuestionHelper text="Your transaction will revert if it is pending for more than this long." />
+          <QuestionHelper
+            id="ttl-setting"
+            content="Your transaction will revert if it is pending for more than this long."
+          />
         </RowFixed>
         <RowFixed>
           <OptionCustom style={{ width: "80px" }} tabIndex={-1}>

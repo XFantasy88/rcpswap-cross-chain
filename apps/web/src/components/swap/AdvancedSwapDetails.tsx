@@ -22,7 +22,10 @@ function TradeSummary({ trade }: { trade: UseTradeReturn }) {
             <TYPE.black fontSize={14} fontWeight={400} color={theme?.text2}>
               Minimum received
             </TYPE.black>
-            <QuestionHelper text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />
+            <QuestionHelper
+              id="minimum-received"
+              content="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
+            />
           </RowFixed>
           <RowFixed>
             <TYPE.black color={theme?.text1} fontSize={14}>
@@ -37,7 +40,10 @@ function TradeSummary({ trade }: { trade: UseTradeReturn }) {
             <TYPE.black fontSize={14} fontWeight={400} color={theme?.text2}>
               Price Impact
             </TYPE.black>
-            <QuestionHelper text="The difference between the market price and estimated price due to trade size." />
+            <QuestionHelper
+              id="price-impact-detail"
+              content="The difference between the market price and estimated price due to trade size."
+            />
           </RowFixed>
           <FormattedPriceImpact priceImpact={trade.priceImpact} />
         </RowBetween>
@@ -48,7 +54,8 @@ function TradeSummary({ trade }: { trade: UseTradeReturn }) {
               Liquidity Provider Fee
             </TYPE.black>
             <QuestionHelper
-              text={`A portion of each trade (0.25%) goes to liquidity providers and 0.05% for RCPswap Treasury.`}
+              id="lp-fee"
+              content={`A portion of each trade (0.25%) goes to liquidity providers and 0.05% for RCPswap Treasury.`}
             />
           </RowFixed>
           <TYPE.black fontSize={14} color={theme?.text1}>
@@ -89,7 +96,10 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
                   >
                     Route
                   </TYPE.black>
-                  <QuestionHelper text="Routing through these tokens resulted in the best price for your trade." />
+                  <QuestionHelper
+                    id="route-detail"
+                    content="Routing through these tokens resulted in the best price for your trade."
+                  />
                 </span>
                 <SwapRoute trade={trade} />
               </RowBetween>

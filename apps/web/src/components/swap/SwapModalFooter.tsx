@@ -97,7 +97,10 @@ export default function SwapModalFooter({
                 <TYPE.black fontSize={14} fontWeight={400} color={theme?.text2}>
                   Minimum received
                 </TYPE.black>
-                <QuestionHelper text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />
+                <QuestionHelper
+                  id="minimum-received-footer"
+                  content="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
+                />
               </RowFixed>
               <RowFixed>
                 <TYPE.black fontSize={14}>
@@ -116,7 +119,10 @@ export default function SwapModalFooter({
               <TYPE.black color={theme?.text2} fontSize={14} fontWeight={400}>
                 Price Impact
               </TYPE.black>
-              <QuestionHelper text="The difference between the market price and your price due to trade size." />
+              <QuestionHelper
+                id="price-impact-footer"
+                content="The difference between the market price and your price due to trade size."
+              />
             </RowFixed>
             <FormattedPriceImpact priceImpact={trade?.priceImpact} />
           </RowBetween>
@@ -140,7 +146,8 @@ export default function SwapModalFooter({
                 Liquidity Provider Fee
               </TYPE.black>
               <QuestionHelper
-                text={`A portion of each trade (0.25%) goes to liquidity providers and 0.05% for RCPswap Treasury.`}
+                id="lp-fee-footer"
+                content={`A portion of each trade (0.25%) goes to liquidity providers and 0.05% for RCPswap Treasury.`}
               />
             </RowFixed>
             <TYPE.black fontSize={14}>
@@ -159,7 +166,8 @@ export default function SwapModalFooter({
                 Saving
               </Text>
               <QuestionHelper
-                text={`Saving compared with the best price found on any DEX on Nova.`}
+                id="saving-footer"
+                content={`Saving compared with the best price found on any DEX on Nova.`}
               />
             </RowFixed>
             <TYPE.black fontSize={14}>
