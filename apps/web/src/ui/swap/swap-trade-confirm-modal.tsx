@@ -114,7 +114,7 @@ export default function SwapTradeConfirmModal() {
       addTransaction(address ?? "", chainId0, data.hash, baseText)
 
       waitForTransaction({ hash: data.hash }).then((receipt) => {
-        finalizeTransaction(data.hash, receipt)
+        finalizeTransaction(data.hash, "success", receipt)
 
         addPopup(
           {
@@ -185,63 +185,69 @@ export default function SwapTradeConfirmModal() {
       }`
 
       addTransaction(address ?? "", chainId0, data.hash, baseText)
+      try {
+        waitForTransaction({ hash: data.hash }).then(async (receipt) => {
+          await symbiosisRef.current?.symbiosis
+            ?.waitForComplete(getEthersTransactionReceipt(receipt))
+            .then(async (log: any) => {
+              console.log(log)
+              const swapData = symbiosisRef.current
+              if (!log || !swapData) return
+              const expectedTokenOut = swapData.amountOut?.currency
 
-      waitForTransaction({ hash: data.hash }).then(async (receipt) => {
-        await symbiosisRef.current?.symbiosis
-          ?.waitForComplete(getEthersTransactionReceipt(receipt))
-          .then(async (log: any) => {
-            console.log(log)
-            const swapData = symbiosisRef.current
-            if (!log || !swapData) return
-            const expectedTokenOut = swapData.amountOut?.currency
+              const transitTokenSent =
+                await symbiosisRef.current?.symbiosis?.findTransitTokenSent(
+                  log.transactionHash
+                )
 
-            const transitTokenSent =
-              await symbiosisRef.current?.symbiosis?.findTransitTokenSent(
+              console.log(transitTokenSent)
+
+              let formatedText
+
+              if (transitTokenSent) {
+                formatedText = `Received ${transitTokenSent?.token?.symbol} instead of ${expectedTokenOut?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`
+              } else {
+                formatedText = `Swap ${symbiosisRef.current?.amountIn?.toSignificant(
+                  3
+                )} ${
+                  symbiosisRef.current?.amountIn?.currency.symbol
+                } for ${symbiosisRef.current?.amountOut?.toSignificant(3)} ${
+                  symbiosisRef.current?.amountOut?.currency.symbol
+                } ${
+                  recipient !== undefined &&
+                  recipient !== address &&
+                  isAddress(recipient)
+                    ? `to ${getShortenAddress(recipient)}`
+                    : ""
+                }`
+              }
+
+              console.log(formatedText)
+
+              addPopup(
+                {
+                  txn: {
+                    hash: log?.transactionHash,
+                    success: !transitTokenSent,
+                    summary: formatedText,
+                    chainId: expectedTokenOut?.chainId,
+                  },
+                },
                 log.transactionHash
               )
+            })
 
-            console.log(transitTokenSent)
-
-            let formatedText
-
-            if (transitTokenSent) {
-              formatedText = `Received ${transitTokenSent?.token?.symbol} instead of ${expectedTokenOut?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`
-            } else {
-              formatedText = `Swap ${symbiosisRef.current?.amountIn?.toSignificant(
-                3
-              )} ${
-                symbiosisRef.current?.amountIn?.currency.symbol
-              } for ${symbiosisRef.current?.amountOut?.toSignificant(3)} ${
-                symbiosisRef.current?.amountOut?.currency.symbol
-              } ${
-                recipient !== undefined &&
-                recipient !== address &&
-                isAddress(recipient)
-                  ? `to ${getShortenAddress(recipient)}`
-                  : ""
-              }`
-            }
-
-            console.log(formatedText)
-
-            addPopup(
-              {
-                txn: {
-                  hash: log?.transactionHash,
-                  success: !transitTokenSent,
-                  summary: formatedText,
-                  chainId: expectedTokenOut?.chainId,
-                },
-              },
-              log.transactionHash
-            )
-          })
-
-        finalizeTransaction(data.hash, receipt)
+          finalizeTransaction(data.hash, "success", receipt)
+          setAttemptingTxn(false)
+          setTxHash(data.hash)
+          setSwapErrorMessage(undefined)
+        })
+      } catch (err) {
+        finalizeTransaction(data.hash, "failed")
         setAttemptingTxn(false)
         setTxHash(data.hash)
-        setSwapErrorMessage(undefined)
-      })
+        setSwapErrorMessage("Failed to listen event")
+      }
     },
     onError: (error) => {
       setSwapErrorMessage(error.message)

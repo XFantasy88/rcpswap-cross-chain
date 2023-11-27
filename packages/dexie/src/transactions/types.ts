@@ -20,4 +20,5 @@ export type Transaction = {
   addedTime: number
   confirmedTime?: number
   from: string
+  status?: string
 }

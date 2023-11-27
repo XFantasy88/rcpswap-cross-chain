@@ -4,10 +4,11 @@ import { db } from "../db"
 
 export const finalizeTransaction = (
   hash: string,
-  receipt: SerializableTransactionReceipt
+  status: "success" | "failed",
+  receipt?: SerializableTransactionReceipt
 ) => {
   db.transactions
     .where("hash")
     .equals(hash)
-    .modify({ receipt, confirmedTime: Date.now() })
+    .modify({ receipt, confirmedTime: Date.now(), status })
 }

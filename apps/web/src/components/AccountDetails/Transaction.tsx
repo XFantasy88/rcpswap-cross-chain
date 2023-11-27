@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { FiCheckCircle, FiTriangle } from "react-icons/fi"
+import { FiCheckCircle, FiAlertTriangle } from "react-icons/fi"
 
 import { getEtherscanLink, useNetwork } from "@rcpswap/wagmi"
 import { ChainId } from "rcpswap/chain"
@@ -48,7 +48,7 @@ export default function Transaction({ hash }: { hash: string }) {
 
   const tx = allTransactions?.find((tx) => tx.hash === hash)
   const summary = tx?.summary
-  const pending = !tx?.receipt
+  const pending = tx?.status === undefined
   const success =
     !pending &&
     tx &&
@@ -75,7 +75,7 @@ export default function Transaction({ hash }: { hash: string }) {
           ) : success ? (
             <FiCheckCircle size="16" />
           ) : (
-            <FiTriangle size="16" />
+            <FiAlertTriangle size="16" />
           )}
         </IconWrapper>
       </TransactionState>

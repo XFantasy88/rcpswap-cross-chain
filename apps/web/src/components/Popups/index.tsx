@@ -49,8 +49,6 @@ export default function Popups() {
   // get all popups
   const activePopups = useActivePopups()
 
-  console.log(activePopups)
-
   return (
     <>
       <FixedPopupColumn gap="20px">
