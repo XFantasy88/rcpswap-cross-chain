@@ -375,7 +375,12 @@ export default function SwapTradeButton() {
                   <>
                     <RowBetween>
                       <ButtonConfirmed
-                        onClick={() => approve?.()}
+                        onClick={() => {
+                          alert(
+                            swapAmount + " " + parsedAmount?.quotient.toString()
+                          )
+                          approve?.()
+                        }}
                         disabled={
                           approvalState !== ApprovalState.NOT_APPROVED ||
                           approvalSubmitted
