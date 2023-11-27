@@ -1,6 +1,7 @@
 "use client"
 
 import StepSlider from "@/components/StepSlider"
+import useMaxAmountInput from "@/hooks/useMaxAmountInput"
 import { useDerivedSwapState } from "@/ui/swap/derived-swap-state-provider"
 import { useAccount, useBalanceWeb3 } from "@rcpswap/wagmi"
 import { tryParseAmount } from "rcpswap/currency"
@@ -16,7 +17,7 @@ export default function SwapTokenSlideInput() {
     mutate: { setSwapAmount, setSwapSlidePercentage },
   } = useDerivedSwapState()
 
-  const { data: maxAmountInput } = useBalanceWeb3({
+  const maxAmountInput = useMaxAmountInput({
     account: address,
     currency: token0,
     chainId: chainId0,

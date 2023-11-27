@@ -1,0 +1,34 @@
+import { useBalanceWeb3 } from "@rcpswap/wagmi"
+import { ChainId } from "rcpswap/chain"
+import { Amount, Type } from "rcpswap/currency"
+import { parseEther } from "viem"
+
+const feeAmount = {
+  [ChainId.ARBITRUM_NOVA]: parseEther("0.0005"),
+  [ChainId.POLYGON]: parseEther("0.25"),
+}
+
+const useMaxAmountInput = ({
+  account,
+  currency,
+  chainId,
+}: {
+  account: `0x${string}` | undefined
+  currency: Type | undefined
+  chainId: ChainId | undefined
+}) => {
+  const { data: maxAmountInput } = useBalanceWeb3({
+    account,
+    currency,
+    chainId,
+  })
+
+  if (currency?.isNative && chainId) {
+    return maxAmountInput?.subtract(
+      Amount.fromRawAmount(currency, feeAmount[chainId])
+    )
+  }
+  return maxAmountInput
+}
+
+export default useMaxAmountInput

@@ -5,7 +5,9 @@ import { AutoColumn } from "../Column"
 import PopupItem from "./PopupItem"
 
 const MobilePopupWrapper = styled.div<{ height: string | number }>`
-  position: relative;
+  position: fixed;
+  z-index: 5;
+  top: 30px;
   max-width: 100%;
   height: ${({ height }) => height};
   margin: ${({ height }) => (height ? "0 auto" : 0)};
@@ -46,6 +48,8 @@ const FixedPopupColumn = styled(AutoColumn)<{ extraPadding: boolean }>`
 export default function Popups() {
   // get all popups
   const activePopups = useActivePopups()
+
+  console.log(activePopups)
 
   return (
     <>
