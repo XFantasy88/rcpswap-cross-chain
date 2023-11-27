@@ -245,7 +245,7 @@ export default function PoolAddWidget({
       setTxHash(data.hash)
 
       waitForTransaction({ hash: data.hash }).then((receipt) => {
-        finalizeTransaction(data.hash, receipt)
+        finalizeTransaction(data.hash, "success", receipt)
 
         addPopup(
           {

@@ -261,7 +261,7 @@ export default function PoolRemoveWidget({
       setTxHash(data.hash)
 
       waitForTransaction({ hash: data.hash }).then((receipt) => {
-        finalizeTransaction(data.hash, receipt)
+        finalizeTransaction(data.hash, "success", receipt)
 
         addPopup(
           {
