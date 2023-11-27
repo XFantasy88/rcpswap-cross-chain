@@ -29,11 +29,6 @@ const ApproveERC20: FC<CheckerProps> = ({
     enabled,
   })
 
-  const approve = () => {
-    alert(amount?.quotient.toString())
-    write?.()
-  }
-
   useEffect(() => {
     if (state === ApprovalState.PENDING) setApprovalSubmitted(true)
   }, [state])
@@ -42,7 +37,7 @@ const ApproveERC20: FC<CheckerProps> = ({
     setApprovalSubmitted(false)
   }, [amount])
 
-  return children(approvalSubmitted, state, approve)
+  return children(approvalSubmitted, state, write)
 }
 
 export default ApproveERC20

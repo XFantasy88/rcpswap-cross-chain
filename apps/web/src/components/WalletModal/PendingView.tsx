@@ -5,7 +5,7 @@ import Option from "./Option"
 import { darken } from "polished"
 import Loader from "../Loader"
 import { Connector } from "wagmi"
-import { SUPPORTED_CONNECTORS } from "@/config"
+import { wallets } from "@rcpswap/wagmi"
 
 const PendingSection = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -74,6 +74,8 @@ export default function PendingView({
   setPendingError: (error: boolean) => void
   tryActivation: (connector: Connector) => void
 }) {
+  const wallet = wallets.find((item) => item.id === connector?.id)
+
   return (
     <PendingSection>
       <LoadingMessage error={error}>
@@ -99,14 +101,14 @@ export default function PendingView({
         </LoadingWrapper>
       </LoadingMessage>
 
-      {connector && (
+      {connector && wallet && (
         <Option
           id={`connect-${connector.id}`}
           clickable={false}
-          color={SUPPORTED_CONNECTORS[connector.id].color}
+          color={wallet.color}
           header={connector.name}
-          subheader={SUPPORTED_CONNECTORS[connector.id].description}
-          icon={SUPPORTED_CONNECTORS[connector.id].image}
+          subheader={wallet?.description}
+          icon={wallet.icon}
         />
       )}
     </PendingSection>

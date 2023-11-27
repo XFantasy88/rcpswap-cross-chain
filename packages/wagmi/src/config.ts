@@ -1,12 +1,5 @@
 import { allChains, allProviders } from "@rcpswap/wagmi-config"
-import { configureChains, createConfig } from "wagmi"
-// import { metaMaskWallet } from "@rainbow-me/rainbowkit/wallets"
-// import { injectedWallet } from "@rainbow-me/rainbowkit/wallets"
-// import { walletConnectWallet } from "@rainbow-me/rainbowkit/wallets"
-// import { coinbaseWallet } from "@rainbow-me/rainbowkit/wallets"
-// import { ledgerWallet } from "@rainbow-me/rainbowkit/wallets"
-// import { trustWallet } from "@rainbow-me/rainbowkit/wallets"
-// import { connectorsForWallets } from "@rainbow-me/rainbowkit"
+import { Connector, configureChains, createConfig } from "wagmi"
 
 import { InjectedConnector } from "wagmi/connectors/injected"
 import { MetaMaskConnector } from "wagmi/connectors/metaMask"
@@ -20,40 +13,75 @@ const { chains, publicClient } = configureChains(allChains, allProviders, {
   pollingInterval: 4_000,
 })
 
-// export const wallets = {
-//   metaMask: metaMaskWallet({ chains, projectId }),
-//   walletConnect: walletConnectWallet({ chains, projectId }),
-//   coinbaseWallet: coinbaseWallet({ chains, appName: "RCPSwap" }),
-//   ledgerWallet: ledgerWallet({ chains, projectId }),
-//   trustWallet: trustWallet({ chains, projectId }),
-//   // ledgerWallet({ chains, projectId }),
-// } as const
+const isMetamaskInstalled = () => {
+  if (typeof window === "undefined") {
+    return false
+  }
 
-export const wagmiConfig = createConfig({
-  publicClient,
-  autoConnect: true,
-  // connectors: connectorsForWallets(Object.values(wallets)).filter(
-  //   (item, i, connectors) => connectors.indexOf(item) === i
-  // ),
-  connectors: [
-    new InjectedConnector({
+  if (window.ethereum?.isMetaMask) {
+    return true
+  }
+
+  if (window.ethereum?.providers?.some((p: any) => p?.isMetaMask)) {
+    return true
+  }
+
+  return false
+}
+
+export type WalletConfig = {
+  id: string
+  title: string
+  icon: string
+  color: string
+  description: string
+  connector: Connector<any, any>
+  installed?: boolean
+  deepLink?: string
+}
+
+export const wallets: WalletConfig[] = [
+  {
+    id: "injected",
+    title: "Injected",
+    icon: `/wallets/injected.png`,
+    color: "#010101",
+    description: "Injected web3 provider.",
+    connector: new InjectedConnector({
       chains,
       options: {
         name: "Injected",
         shimDisconnect: true,
       },
     }),
-    new MetaMaskConnector({
+    installed: typeof window !== "undefined" && Boolean(window.ethereum),
+    deepLink: "https://metamask.app.link/dapp/rcpswap.com/",
+  },
+  {
+    id: "metaMask",
+    title: "Metamask",
+    icon: `/wallets/metamask.png`,
+    color: "#E8831D",
+    description: "Easy-to-use browser extension.",
+    get installed() {
+      return isMetamaskInstalled()
+      // && metaMaskConnector.ready
+    },
+    connector: new MetaMaskConnector({
       chains,
       options: {
         shimDisconnect: true,
       },
     }),
-    new LedgerConnector({
-      chains,
-      options: {},
-    }),
-    new WalletConnectConnector({
+    deepLink: "https://metamask.app.link/dapp/rcpswap.com/",
+  },
+  {
+    id: "walletConnect",
+    title: "WalletConnect",
+    icon: `/wallets/wallet-connect.png`,
+    color: "#315CF5",
+    description: "Use Coinbase Wallet app on mobile device",
+    connector: new WalletConnectConnector({
       chains,
       options: {
         showQrModal: true,
@@ -66,15 +94,41 @@ export const wagmiConfig = createConfig({
         },
       },
     }),
-    new CoinbaseWalletConnector({
-      // TODO: Flesh out coinbase wallet connect options?
+  },
+  {
+    id: "coinbaseWallet",
+    title: "Coinbase Wallet",
+    icon: `/wallets/coinbase.png`,
+    color: "#315CF5",
+    description: "Open in Coinbase Wallet app.",
+    connector: new CoinbaseWalletConnector({
       chains,
       options: {
         appName: "RCPSwap",
         appLogoUrl: "https://www.rcpswap.com/icon.png",
       },
     }),
-  ],
+  },
+  {
+    id: "ledger",
+    title: "Ledger",
+    icon: `/wallets/ledger.png`,
+    color: "#fafafa",
+    description: "Hardware & Cold Wallet.",
+    connector: new LedgerConnector({
+      chains,
+      options: {},
+    }),
+  },
+]
+
+export const wagmiConfig = createConfig({
+  publicClient,
+  autoConnect: true,
+  // connectors: connectorsForWallets(Object.values(wallets)).filter(
+  //   (item, i, connectors) => connectors.indexOf(item) === i
+  // ),
+  connectors: wallets.map((wallet) => wallet.connector),
 })
 
 // export const config = createWagmiConfig()

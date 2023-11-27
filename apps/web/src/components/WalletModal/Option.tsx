@@ -111,7 +111,7 @@ export default function Option({
   color: string
   header: React.ReactNode
   subheader: React.ReactNode | null
-  icon: StaticImageData
+  icon: string
   active?: boolean
   id: string
 }) {
@@ -138,12 +138,7 @@ export default function Option({
         {subheader && <SubHeader>{subheader}</SubHeader>}
       </OptionCardLeft>
       <IconWrapper size={size}>
-        <Image
-          src={icon.src}
-          width={icon.width}
-          height={icon.height}
-          alt={"Icon"}
-        />
+        <Image src={icon} width={100} height={100} alt={"Icon"} />
       </IconWrapper>
     </OptionCardClickable>
   )
