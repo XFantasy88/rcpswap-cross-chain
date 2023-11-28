@@ -6,8 +6,10 @@ import PopupItem from "./PopupItem"
 
 const MobilePopupWrapper = styled.div<{ height: string | number }>`
   position: fixed;
-  z-index: 5;
+  z-index: 10;
   top: 30px;
+  left: 0;
+  right: 0;
   max-width: 100%;
   height: ${({ height }) => height};
   margin: ${({ height }) => (height ? "0 auto" : 0)};
@@ -57,7 +59,7 @@ export default function Popups() {
             key={item.key}
             content={item.content}
             popKey={item.key}
-            removeAfterMs={item.removeAfterMs}
+            removeAfterMs={3000000}
           />
         ))}
       </FixedPopupColumn>
@@ -71,7 +73,7 @@ export default function Popups() {
                 key={item.key}
                 content={item.content}
                 popKey={item.key}
-                removeAfterMs={item.removeAfterMs}
+                removeAfterMs={3000000}
               />
             ))}
         </MobilePopupInner>
