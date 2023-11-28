@@ -14,9 +14,11 @@ import {
 import { mainnetConfig } from "@rcpswap/symbiosis"
 import { metaRouteProcessorAbi, routeProcessor2Abi } from "rcpswap/abi"
 import {
+  ApprovalState,
   getPublicClient,
   getShortenAddress,
   isAddress,
+  useTokenApproval,
   waitForTransaction,
 } from "@rcpswap/wagmi"
 import { Amount, tryParseAmount } from "rcpswap/currency"
@@ -46,8 +48,17 @@ export default function SwapTradeConfirmModal() {
 
   const parsedAmount = useMemo(
     () => tryParseAmount(swapAmount, token0),
-    [swapAmount, token0]
+    [token0, swapAmount]
   )
+
+  const [approvalState] = useTokenApproval({
+    amount: parsedAmount,
+    spender:
+      chainId0 !== chainId1
+        ? META_ROUTE_PROCESSOR_ADDRESS[chainId0]
+        : ROUTE_PROCESSOR_3_ADDRESS[chainId0],
+    enabled: Boolean(parsedAmount),
+  })
 
   const {
     state: {
@@ -74,7 +85,8 @@ export default function SwapTradeConfirmModal() {
     args: tradeToConfirm?.writeArgs as any,
     enabled: Boolean(
       tradeToConfirm?.writeArgs &&
-        tradeToConfirm.route.status !== RouteStatus.NoWay
+        tradeToConfirm.route.status !== RouteStatus.NoWay &&
+        approvalState === ApprovalState.APPROVED
     ),
     value: tradeToConfirm?.value ?? 0n,
     staleTime: 5000,
@@ -150,7 +162,11 @@ export default function SwapTradeConfirmModal() {
         symbiosis?.transaction?.data,
       ],
       value: token0?.isNative ? parsedAmount?.quotient ?? 0n : 0n,
-      enabled: Boolean(symbiosis && symbiosis.transaction),
+      enabled: Boolean(
+        symbiosis &&
+          symbiosis.transaction &&
+          approvalState === ApprovalState.APPROVED
+      ),
       staleTime: 5000,
       cacheTime: 10000,
     })

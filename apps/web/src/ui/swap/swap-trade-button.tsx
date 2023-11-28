@@ -17,6 +17,7 @@ import {
   usePrepareContractWrite,
   usePrepareSendTransaction,
   useSendTransaction,
+  useTokenApproval,
   waitForTransaction,
 } from "@rcpswap/wagmi"
 import {
@@ -74,6 +75,20 @@ export default function SwapTradeButton() {
   const addTransaction = useAddTransaction()
   const addPopup = useAddPopup()
 
+  const parsedAmount = useMemo(
+    () => tryParseAmount(swapAmount, token0),
+    [token0, swapAmount]
+  )
+
+  const [approvalState] = useTokenApproval({
+    amount: parsedAmount,
+    spender:
+      chainId0 !== chainId1
+        ? META_ROUTE_PROCESSOR_ADDRESS[chainId0]
+        : ROUTE_PROCESSOR_3_ADDRESS[chainId0],
+    enabled: Boolean(parsedAmount),
+  })
+
   const { config, error } = usePrepareContractWrite({
     chainId: chainId0,
     address: ROUTE_PROCESSOR_3_ADDRESS[chainId0],
@@ -83,7 +98,8 @@ export default function SwapTradeButton() {
     enabled: Boolean(
       trade?.writeArgs &&
         trade.route.status !== RouteStatus.NoWay &&
-        chainId0 === chainId1
+        chainId0 === chainId1 &&
+        approvalState === ApprovalState.APPROVED
     ),
     value: trade?.value ?? 0n,
     staleTime: 5000,
@@ -157,11 +173,6 @@ export default function SwapTradeButton() {
   //     enabled: symbiosis && symbiosis.transaction && chainId0 !== chainId1,
   //   })
 
-  const parsedAmount = useMemo(
-    () => tryParseAmount(swapAmount, token0),
-    [token0, swapAmount]
-  )
-
   const { data: symbiosisConfig, error: symbiosisTxError } =
     usePrepareContractWrite({
       chainId: chainId0,
@@ -177,7 +188,11 @@ export default function SwapTradeButton() {
         symbiosis?.transaction?.data,
       ],
       value: token0?.isNative ? parsedAmount?.quotient ?? 0n : 0n,
-      enabled: Boolean(symbiosis && symbiosis.transaction),
+      enabled: Boolean(
+        symbiosis &&
+          symbiosis.transaction &&
+          approvalState === ApprovalState.APPROVED
+      ),
       staleTime: 5000,
       cacheTime: 10000,
     })
