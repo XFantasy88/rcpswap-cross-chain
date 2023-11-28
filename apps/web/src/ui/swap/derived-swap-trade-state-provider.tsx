@@ -1,5 +1,6 @@
 import { StepType } from "@/components/TransactionConfirmationModal"
 import { UseTradeReturn } from "@rcpswap/router"
+import { Type } from "rcpswap/currency"
 import React, { FC, createContext, useContext, useMemo, useState } from "react"
 
 interface State {
@@ -8,16 +9,20 @@ interface State {
     setTradeToConfirm: (trade: any) => void
     setAttemptingTxn: (state: boolean) => void
     setSwapErrorMessage: (message: string | undefined) => void
+    setSwapWarningMessage: (message: string | undefined) => void
     setTxHash: (hash: string | undefined) => void
     setSteps: (value: StepType[]) => void
+    setCurrencyToAdd: (currency: Type | undefined) => void
   }
   state: {
     showConfirm: boolean
     tradeToConfirm: any
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
+    swapWarningMessage: string | undefined
     txHash: string | undefined
     steps: StepType[]
+    currencyToAdd: Type | undefined
   }
 }
 
@@ -36,6 +41,12 @@ const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false)
   const [swapErrorMessage, setSwapErrorMessage] = useState<string | undefined>()
   const [txHash, setTxHash] = useState<string | undefined>()
+  const [swapWarningMessage, setSwapWarningMessage] = useState<
+    string | undefined
+  >()
+  const [currencyToAdd, setCurrencyToAdd] = useState<Type | undefined>(
+    undefined
+  )
 
   return (
     <DerivedSwapTradeStateContext.Provider
@@ -48,6 +59,8 @@ const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
             setSwapErrorMessage,
             setTxHash,
             setSteps,
+            setSwapWarningMessage,
+            setCurrencyToAdd,
           },
           state: {
             showConfirm,
@@ -56,6 +69,8 @@ const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
             swapErrorMessage,
             txHash,
             steps,
+            swapWarningMessage,
+            currencyToAdd,
           },
         }),
         [
@@ -71,6 +86,10 @@ const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
           setTxHash,
           steps,
           setSteps,
+          swapWarningMessage,
+          setSwapWarningMessage,
+          currencyToAdd,
+          setCurrencyToAdd,
         ]
       )}
     >

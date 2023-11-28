@@ -6,7 +6,8 @@ import TransactionConfirmationModal, {
 } from "../TransactionConfirmationModal"
 import SwapModalFooter from "./SwapModalFooter"
 import SwapModalHeader from "./SwapModalHeader"
-import { Amount } from "rcpswap/currency"
+import { Amount, Type } from "rcpswap/currency"
+import { ChainId } from "rcpswap/chain"
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
@@ -38,12 +39,15 @@ export default function ConfirmSwapModal({
   onDismiss,
   recipient,
   swapErrorMessage,
+  swapWarningMessage,
   isOpen,
   attemptingTxn,
   txHash,
   swapMode,
   isCross,
   steps,
+  chainId,
+  currencyToAdd,
 }: {
   isOpen: boolean
   trade: any
@@ -58,6 +62,9 @@ export default function ConfirmSwapModal({
   swapMode: number
   isCross: boolean
   steps: StepType[]
+  swapWarningMessage?: string
+  chainId?: ChainId
+  currencyToAdd?: Type
 }) {
   const showAcceptChanges = useMemo(
     () =>
@@ -124,8 +131,10 @@ export default function ConfirmSwapModal({
       hash={txHash}
       content={confirmationContent}
       pendingText={pendingText}
-      currencyToAdd={trade?.amountOut?.currency}
+      currencyToAdd={currencyToAdd ?? trade?.amountOut?.currency}
       steps={steps}
+      txWarning={swapWarningMessage}
+      chainId={chainId}
     />
   )
 }

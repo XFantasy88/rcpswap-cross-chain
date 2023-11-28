@@ -232,6 +232,92 @@ function TransactionSubmittedContent({
   )
 }
 
+function TransactionSubmittedWarningContent({
+  onDismiss,
+  chainId,
+  hash,
+  currencyToAdd,
+  warning,
+}: {
+  onDismiss: () => void
+  hash: string | undefined
+  chainId: ChainId
+  warning: string
+  currencyToAdd?: Type | undefined
+}) {
+  const theme = useContext(ThemeContext)
+  const { addToken, success } = useAddTokenToMetamask(currencyToAdd)
+  const { connector } = useAccount()
+
+  const explorerName = useMemo(() => getExplorerName(chainId), [chainId])
+
+  return (
+    <Wrapper>
+      <Section>
+        <RowBetween>
+          <div />
+          <CloseIcon onClick={onDismiss} />
+        </RowBetween>
+        <ConfirmedIcon>
+          <FiAlertTriangle strokeWidth={0.5} size={90} color={theme?.yellow1} />
+        </ConfirmedIcon>
+        <AutoColumn gap="12px" justify={"center"}>
+          <Text fontWeight={500} fontSize={20}>
+            Transaction Submitted
+          </Text>
+          <Text textAlign={"center"}>{warning}</Text>
+          {chainId && hash && (
+            <StyledInternalLink
+              href={getEtherscanLink(chainId, hash, "transaction")}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Text fontWeight={500} fontSize={14} color={theme?.primary1}>
+                View on {explorerName}
+              </Text>
+            </StyledInternalLink>
+          )}
+          {currencyToAdd &&
+            (connector?.id === "metaMask" || connector?.id === "injected") && (
+              <ButtonLight
+                mt="12px"
+                padding="6px 12px"
+                width="fit-content"
+                onClick={addToken}
+              >
+                {!success ? (
+                  <RowFixed>
+                    Add {currencyToAdd?.wrapped?.symbol} to Metamask{" "}
+                    <StyledLogo
+                      src={MetaMaskLogo.src}
+                      width={MetaMaskLogo.width}
+                      height={MetaMaskLogo.height}
+                      alt="metamask"
+                    />
+                  </RowFixed>
+                ) : (
+                  <RowFixed>
+                    Added {currencyToAdd?.wrapped?.symbol}{" "}
+                    <FiCheckCircle
+                      size={"16px"}
+                      stroke={theme?.green1}
+                      style={{ marginLeft: "6px" }}
+                    />
+                  </RowFixed>
+                )}
+              </ButtonLight>
+            )}
+          <ButtonPrimary onClick={onDismiss} style={{ margin: "20px 0 0 0" }}>
+            <Text fontWeight={500} fontSize={20}>
+              Close
+            </Text>
+          </ButtonPrimary>
+        </AutoColumn>
+      </Section>
+    </Wrapper>
+  )
+}
+
 export function ConfirmationModalContent({
   title,
   bottomContent,
@@ -319,6 +405,8 @@ interface ConfirmationModalProps {
   pendingText: string
   steps: StepType[]
   currencyToAdd?: Type | undefined
+  txWarning?: string
+  chainId?: ChainId
 }
 
 export default function TransactionConfirmationModal({
@@ -330,11 +418,13 @@ export default function TransactionConfirmationModal({
   content,
   currencyToAdd,
   steps,
+  txWarning,
+  chainId,
 }: ConfirmationModalProps) {
   // const { chainId } = useActiveWeb3React()
-  const chainId = useNetwork().chain?.id
+  const { chain } = useNetwork()
 
-  if (!chainId) return null
+  if (!chainId || !chain) return null
 
   // confirmation screen
   return (
@@ -346,12 +436,22 @@ export default function TransactionConfirmationModal({
           steps={steps}
         />
       ) : hash ? (
-        <TransactionSubmittedContent
-          chainId={chainId as ChainId}
-          hash={hash}
-          onDismiss={onDismiss}
-          currencyToAdd={currencyToAdd}
-        />
+        txWarning ? (
+          <TransactionSubmittedWarningContent
+            chainId={(chainId ?? chain.id) as ChainId}
+            hash={hash}
+            warning={txWarning}
+            onDismiss={onDismiss}
+            currencyToAdd={currencyToAdd}
+          />
+        ) : (
+          <TransactionSubmittedContent
+            chainId={(chainId ?? chain.id) as ChainId}
+            hash={hash}
+            onDismiss={onDismiss}
+            currencyToAdd={currencyToAdd}
+          />
+        )
       ) : (
         content()
       )}
