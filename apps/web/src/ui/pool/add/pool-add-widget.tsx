@@ -9,6 +9,7 @@ import { BlueCard, LightCard } from "@/components/Card"
 import { AutoColumn, ColumnCenter } from "@/components/Column"
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
+  StepType,
 } from "@/components/TransactionConfirmationModal"
 import CurrencyInputPanel from "@/components/CurrencyInputPanel"
 import DoubleCurrencyLogo from "@/components/DoubleLogo"
@@ -26,6 +27,7 @@ import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi"
 import { ChainId } from "rcpswap/chain"
 import {
   SwapV2PoolState,
+  getEtherscanLink,
   useCurrency,
   waitForTransaction,
 } from "@rcpswap/wagmi"
@@ -100,6 +102,7 @@ export default function PoolAddWidget({
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
+  const [steps, setSteps] = useState<StepType[]>([])
 
   // txn values
   const [allowedSlippage] = useSlippageTolerance() // custom from users
@@ -231,6 +234,14 @@ export default function PoolAddWidget({
     onSuccess: async (data) => {
       setAttemptingTxn(false)
 
+      setSteps((prev) => [
+        {
+          ...prev[0],
+          status: "success",
+          link: getEtherscanLink(chainId, data.hash, "transaction"),
+        },
+      ])
+
       const baseText =
         "Add " +
         parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
@@ -267,6 +278,14 @@ export default function PoolAddWidget({
   const onAdd = async () => {
     try {
       setAttemptingTxn(true)
+
+      setSteps([
+        {
+          title: "Sending the transaction to Arbitrum Nova",
+          desc: "Explore the Sent Transaction",
+          status: "pending",
+        },
+      ])
       await writeAsync?.()
     } catch (err) {
       console.log(err)
@@ -402,6 +421,7 @@ export default function PoolAddWidget({
             onDismiss={handleDismissConfirmation}
             attemptingTxn={attemptingTxn}
             hash={txHash}
+            steps={steps}
             content={() => (
               <ConfirmationModalContent
                 title={

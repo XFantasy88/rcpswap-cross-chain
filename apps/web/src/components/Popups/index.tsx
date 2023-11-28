@@ -59,7 +59,7 @@ export default function Popups() {
             key={item.key}
             content={item.content}
             popKey={item.key}
-            removeAfterMs={3000000}
+            removeAfterMs={item.removeAfterMs}
           />
         ))}
       </FixedPopupColumn>
@@ -73,7 +73,7 @@ export default function Popups() {
                 key={item.key}
                 content={item.content}
                 popKey={item.key}
-                removeAfterMs={3000000}
+                removeAfterMs={item.removeAfterMs}
               />
             ))}
         </MobilePopupInner>

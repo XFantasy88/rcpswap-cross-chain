@@ -26,7 +26,7 @@ export default function TransactionPopup({
   // const { chainId } = useActiveWeb3React()
   const { chain } = useNetwork()
   const theme = useContext(ThemeContext)
-  const explorerName = getExplorerName(chainId)
+  const explorerName = getExplorerName(chainId ?? ChainId.ARBITRUM_NOVA)
 
   return (
     <RowNoFlex>

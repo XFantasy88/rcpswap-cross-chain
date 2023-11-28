@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from "react"
 import Image from "next/image"
-import { Text } from "rebass"
+import { Flex, Text } from "rebass"
 import styled, { ThemeContext } from "styled-components"
 import { ChainId } from "rcpswap/chain"
 import { Type } from "rcpswap/currency"
@@ -17,19 +17,33 @@ import { useAddTokenToMetamask } from "@rcpswap/wagmi"
 import Modal from "../Modal"
 import { StyledInternalLink } from "@/theme"
 import { CloseIcon, CustomLightSpinner } from "@/theme/components"
-import { RowBetween, RowFixed } from "../Row"
-import { FiAlertTriangle, FiArrowUpCircle, FiCheckCircle } from "react-icons/fi"
+import Row, { RowBetween, RowFixed, RowFlat } from "../Row"
+import {
+  FiAlertTriangle,
+  FiArrowUpCircle,
+  FiCheckCircle,
+  FiExternalLink,
+} from "react-icons/fi"
+import { RxDotFilled } from "react-icons/rx"
 import { ButtonPrimary, ButtonLight } from "../Button"
-import { AutoColumn, ColumnCenter } from "../Column"
+import Column, { AutoColumn, ColumnCenter } from "../Column"
 
 import Circle from "@/assets/images/blue-loader.svg"
 import MetaMaskLogo from "@/assets/images/wallets/metamask.svg"
+import Loader from "../Loader"
+import Link from "next/link"
+import CircleProgressBar from "../CircleProgressBar"
 
 const Wrapper = styled.div`
   width: 100%;
 `
 const Section = styled(AutoColumn)`
   padding: 24px;
+`
+
+const PendingHeaderSection = styled(AutoColumn)`
+  padding: 24px;
+  background-color: ${({ theme }) => theme.bg2};
 `
 
 const BottomSection = styled(Section)`
@@ -39,7 +53,7 @@ const BottomSection = styled(Section)`
 `
 
 const ConfirmedIcon = styled(ColumnCenter)`
-  padding: 60px 0;
+  padding: 20px 0;
 `
 
 const StyledLogo = styled(Image)`
@@ -48,42 +62,83 @@ const StyledLogo = styled(Image)`
   margin-left: 6px;
 `
 
+export type StepType = {
+  title: string
+  desc: string
+  link?: string
+  status?: "success" | "failed" | "pending"
+  totalRounds?: number
+  currentRounds?: number
+}
+
 function ConfirmationPendingContent({
   onDismiss,
   pendingText,
+  steps,
 }: {
   onDismiss: () => void
   pendingText: string
+  steps: StepType[]
 }) {
+  const theme = useContext(ThemeContext)
+
   return (
     <Wrapper>
-      <Section>
+      <PendingHeaderSection>
         <RowBetween>
           <div />
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
-        <ConfirmedIcon>
-          <CustomLightSpinner
-            src={Circle.src}
-            width={Circle.width}
-            height={Circle.height}
-            alt="loader"
-            size={"90px"}
-          />
-        </ConfirmedIcon>
-        <AutoColumn gap="12px" justify={"center"}>
-          <Text fontWeight={500} fontSize={20} textAlign={'center'}>
+        <AutoColumn gap="12px">
+          <Text fontWeight={500} fontSize={24}>
             Waiting For Confirmation
           </Text>
-          <AutoColumn gap="12px" justify={"center"}>
-            <Text fontWeight={600} fontSize={14} color="" textAlign="center">
+          <AutoColumn gap="12px">
+            <Text fontWeight={500} fontSize={14} color={theme?.text2}>
               {pendingText}
             </Text>
           </AutoColumn>
-          <Text fontSize={12} color="#565A69" textAlign="center">
-            Confirm this transaction in your wallet
-          </Text>
         </AutoColumn>
+      </PendingHeaderSection>
+      <Section>
+        <Text>Swapping...</Text>
+        {steps.map((step, i) => (
+          <RowBetween key={i} align="start" marginTop={"24px"}>
+            <Flex marginRight={"8px"} marginTop={"2px"} minWidth={"16px"}>
+              {step.status === "pending" ? (
+                <Loader />
+              ) : step.status === "success" ? (
+                <FiCheckCircle size={"16px"} stroke={theme?.green1} />
+              ) : step.status === "failed" ? (
+                <FiAlertTriangle size={"16px"} stroke={theme?.red2} />
+              ) : (
+                <RxDotFilled size={"16px"} stroke={theme?.text3} />
+              )}
+            </Flex>
+
+            <Column style={{ width: "100%" }}>
+              <Text>{step.title}</Text>
+              {step.status && (
+                <Text color={theme?.text3} marginTop={"4px"} fontSize={"90%"}>
+                  {step.desc}{" "}
+                  {step?.link && (
+                    <Link href={step.link} target="_blank" rel="noreferrer">
+                      <FiExternalLink stroke={theme?.text3} />
+                    </Link>
+                  )}
+                </Text>
+              )}
+            </Column>
+            {step.status &&
+              step.currentRounds !== undefined &&
+              step.totalRounds !== undefined && (
+                <CircleProgressBar
+                  current={step.currentRounds}
+                  total={step.totalRounds}
+                />
+              )}
+          </RowBetween>
+        ))}
       </Section>
     </Wrapper>
   )
@@ -262,6 +317,7 @@ interface ConfirmationModalProps {
   content: () => React.ReactNode
   attemptingTxn: boolean
   pendingText: string
+  steps: StepType[]
   currencyToAdd?: Type | undefined
 }
 
@@ -273,6 +329,7 @@ export default function TransactionConfirmationModal({
   pendingText,
   content,
   currencyToAdd,
+  steps,
 }: ConfirmationModalProps) {
   // const { chainId } = useActiveWeb3React()
   const chainId = useNetwork().chain?.id
@@ -286,6 +343,7 @@ export default function TransactionConfirmationModal({
         <ConfirmationPendingContent
           onDismiss={onDismiss}
           pendingText={pendingText}
+          steps={steps}
         />
       ) : hash ? (
         <TransactionSubmittedContent

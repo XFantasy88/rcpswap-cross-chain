@@ -13,6 +13,7 @@ import { BlueCard, LightCard } from "@/components/Card"
 import { AutoColumn, ColumnCenter } from "@/components/Column"
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
+  StepType,
 } from "@/components/TransactionConfirmationModal"
 import CurrencyInputPanel from "@/components/CurrencyInputPanel"
 import DoubleCurrencyLogo from "@/components/DoubleLogo"
@@ -34,6 +35,7 @@ import {
 } from "@/components/swap/styleds"
 import {
   ApprovalState,
+  getEtherscanLink,
   useAccount,
   useContractWrite,
   useCurrency,
@@ -95,6 +97,7 @@ export default function PoolRemoveWidget({
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [showDetailed, setShowDetailed] = useState<boolean>(false)
   const [attemptingTxn, setAttemptingTxn] = useState(false) // clicked confirm
+  const [steps, setSteps] = useState<StepType[]>([])
 
   // txn values
   const [txHash, setTxHash] = useState<string>("")
@@ -246,6 +249,14 @@ export default function PoolRemoveWidget({
     onSuccess: async (data) => {
       setAttemptingTxn(false)
 
+      setSteps((prev) => [
+        {
+          ...prev[0],
+          status: "success",
+          link: getEtherscanLink(chainId, data.hash, "transaction"),
+        },
+      ])
+
       const baseText =
         "Remove " +
         parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
@@ -283,6 +294,13 @@ export default function PoolRemoveWidget({
   async function onRemove() {
     try {
       setAttemptingTxn(true)
+      setSteps([
+        {
+          title: "Sending the transaction to Arbitrum Nova",
+          desc: "Explore the Sent Transaction",
+          status: "pending",
+        },
+      ])
       await writeAsync?.()
     } catch (err) {
       console.log(err)
@@ -446,6 +464,7 @@ export default function PoolRemoveWidget({
             onDismiss={handleDismissConfirmation}
             attemptingTxn={attemptingTxn}
             hash={txHash ? txHash : ""}
+            steps={steps}
             content={() => (
               <ConfirmationModalContent
                 title={"You will receive"}

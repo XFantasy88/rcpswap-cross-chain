@@ -17,3 +17,8 @@ export const SUPPORTED_DEX_INFO: { [key: string]: { image: string } } = {
   Arb: { image: "/dex/arbswap.png" },
   Sushi: { image: "/dex/sushiswap.png" },
 } as const
+
+export const SYMBIOSIS_CONFIRMATION_BLOCK_COUNT = {
+  [ChainId.ARBITRUM_NOVA]: 2,
+  [ChainId.POLYGON]: 17,
+}

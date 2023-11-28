@@ -1,3 +1,4 @@
+import { StepType } from "@/components/TransactionConfirmationModal"
 import { UseTradeReturn } from "@rcpswap/router"
 import React, { FC, createContext, useContext, useMemo, useState } from "react"
 
@@ -8,6 +9,7 @@ interface State {
     setAttemptingTxn: (state: boolean) => void
     setSwapErrorMessage: (message: string | undefined) => void
     setTxHash: (hash: string | undefined) => void
+    setSteps: (value: StepType[]) => void
   }
   state: {
     showConfirm: boolean
@@ -15,6 +17,7 @@ interface State {
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
+    steps: StepType[]
   }
 }
 
@@ -27,6 +30,7 @@ interface DerivedSwapTradeStateProviderProps {
 const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
   children,
 }) => {
+  const [steps, setSteps] = useState<StepType[]>([])
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [tradeToConfirm, setTradeToConfirm] = useState<any>()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false)
@@ -43,6 +47,7 @@ const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
             setAttemptingTxn,
             setSwapErrorMessage,
             setTxHash,
+            setSteps,
           },
           state: {
             showConfirm,
@@ -50,6 +55,7 @@ const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
             attemptingTxn,
             swapErrorMessage,
             txHash,
+            steps,
           },
         }),
         [
@@ -63,6 +69,8 @@ const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
           setAttemptingTxn,
           setSwapErrorMessage,
           setTxHash,
+          steps,
+          setSteps,
         ]
       )}
     >

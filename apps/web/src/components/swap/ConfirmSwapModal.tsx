@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from "react"
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
+  StepType,
   TransactionErrorContent,
 } from "../TransactionConfirmationModal"
 import SwapModalFooter from "./SwapModalFooter"
@@ -41,6 +42,8 @@ export default function ConfirmSwapModal({
   attemptingTxn,
   txHash,
   swapMode,
+  isCross,
+  steps,
 }: {
   isOpen: boolean
   trade: any
@@ -53,6 +56,8 @@ export default function ConfirmSwapModal({
   swapErrorMessage: string | undefined
   onDismiss: () => void
   swapMode: number
+  isCross: boolean
+  steps: StepType[]
 }) {
   const showAcceptChanges = useMemo(
     () =>
@@ -66,6 +71,7 @@ export default function ConfirmSwapModal({
     return trade || swapMode === 1 ? (
       <SwapModalHeader
         trade={trade}
+        isCross={isCross}
         recipient={recipient}
         showAcceptChanges={showAcceptChanges}
         onAcceptChanges={onAcceptChanges}
@@ -119,6 +125,7 @@ export default function ConfirmSwapModal({
       content={confirmationContent}
       pendingText={pendingText}
       currencyToAdd={trade?.amountOut?.currency}
+      steps={steps}
     />
   )
 }
