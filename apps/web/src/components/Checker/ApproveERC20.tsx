@@ -1,7 +1,7 @@
 "use client"
 
-import { FC, useEffect, useState } from "react"
-import { Amount, Type } from "rcpswap/currency"
+import { FC, useEffect, useMemo, useState } from "react"
+import { Amount, Type, tryParseAmount } from "rcpswap/currency"
 import { ApprovalState, useTokenApproval } from "@rcpswap/wagmi"
 import { Address } from "wagmi"
 
@@ -23,8 +23,23 @@ const ApproveERC20: FC<CheckerProps> = ({
   children,
 }) => {
   const [approvalSubmitted, setApprovalSubmitted] = useState(false)
+  const parsedAmount = useMemo(
+    () =>
+      tryParseAmount(
+        amount
+          ? parseFloat(amount.toExact()).toLocaleString("en", {
+              maximumFractionDigits: 12,
+              // @ts-ignore
+              roundingMode: "ceil",
+            })
+          : undefined,
+        amount?.currency
+      ),
+    [amount]
+  )
+
   const [state, { write }] = useTokenApproval({
-    amount,
+    amount: parsedAmount,
     spender: contract,
     enabled,
   })
