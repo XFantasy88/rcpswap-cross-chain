@@ -33,7 +33,7 @@ export default function SwapModalFooter({
   const theme = useContext(ThemeContext)
 
   const realizedLPFee = useMemo(
-    () => (trade.route ? computeRealizedLPFee(trade) : undefined),
+    () => (trade?.route ? computeRealizedLPFee(trade) : undefined),
     [trade]
   )
 

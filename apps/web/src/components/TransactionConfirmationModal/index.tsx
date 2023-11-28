@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react"
+import React, { useContext, useMemo, useState } from "react"
 import Image from "next/image"
 import { Flex, Text } from "rebass"
 import styled, { ThemeContext } from "styled-components"
@@ -33,6 +33,7 @@ import MetaMaskLogo from "@/assets/images/wallets/metamask.svg"
 import Loader from "../Loader"
 import Link from "next/link"
 import CircleProgressBar from "../CircleProgressBar"
+import SlippageInfoModal from "../SlippageInfoModal"
 
 const Wrapper = styled.div`
   width: 100%;
@@ -248,73 +249,93 @@ function TransactionSubmittedWarningContent({
   const theme = useContext(ThemeContext)
   const { addToken, success } = useAddTokenToMetamask(currencyToAdd)
   const { connector } = useAccount()
+  const [showSlippageInfo, setShowSlippageInfo] = useState(false)
 
   const explorerName = useMemo(() => getExplorerName(chainId), [chainId])
 
   return (
-    <Wrapper>
-      <Section>
-        <RowBetween>
-          <div />
-          <CloseIcon onClick={onDismiss} />
-        </RowBetween>
-        <ConfirmedIcon>
-          <FiAlertTriangle strokeWidth={0.5} size={90} color={theme?.yellow1} />
-        </ConfirmedIcon>
-        <AutoColumn gap="12px" justify={"center"}>
-          <Text fontWeight={500} fontSize={20}>
-            Transaction Submitted
-          </Text>
-          <Text textAlign={"center"}>{warning}</Text>
-          {chainId && hash && (
-            <StyledInternalLink
-              href={getEtherscanLink(chainId, hash, "transaction")}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Text fontWeight={500} fontSize={14} color={theme?.primary1}>
-                View on {explorerName}
-              </Text>
-            </StyledInternalLink>
-          )}
-          {currencyToAdd &&
-            (connector?.id === "metaMask" || connector?.id === "injected") && (
-              <ButtonLight
-                mt="12px"
-                padding="6px 12px"
-                width="fit-content"
-                onClick={addToken}
-              >
-                {!success ? (
-                  <RowFixed>
-                    Add {currencyToAdd?.wrapped?.symbol} to Metamask{" "}
-                    <StyledLogo
-                      src={MetaMaskLogo.src}
-                      width={MetaMaskLogo.width}
-                      height={MetaMaskLogo.height}
-                      alt="metamask"
-                    />
-                  </RowFixed>
-                ) : (
-                  <RowFixed>
-                    Added {currencyToAdd?.wrapped?.symbol}{" "}
-                    <FiCheckCircle
-                      size={"16px"}
-                      stroke={theme?.green1}
-                      style={{ marginLeft: "6px" }}
-                    />
-                  </RowFixed>
-                )}
-              </ButtonLight>
-            )}
-          <ButtonPrimary onClick={onDismiss} style={{ margin: "20px 0 0 0" }}>
+    <>
+      <Wrapper>
+        <Section>
+          <RowBetween>
+            <div />
+            <CloseIcon onClick={onDismiss} />
+          </RowBetween>
+          <ConfirmedIcon>
+            <FiAlertTriangle
+              strokeWidth={0.5}
+              size={90}
+              color={theme?.yellow1}
+            />
+          </ConfirmedIcon>
+          <AutoColumn gap="12px" justify={"center"}>
             <Text fontWeight={500} fontSize={20}>
-              Close
+              Transaction Reverted
             </Text>
-          </ButtonPrimary>
-        </AutoColumn>
-      </Section>
-    </Wrapper>
+            <Text textAlign={"center"}>{warning}</Text>
+            <Text fontSize={"90%"}>
+              <a
+                style={{ textDecoration: "underline", cursor: "pointer" }}
+                onClick={() => setShowSlippageInfo(true)}
+              >
+                Read More
+              </a>
+            </Text>
+            {chainId && hash && (
+              <StyledInternalLink
+                href={getEtherscanLink(chainId, hash, "transaction")}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Text fontWeight={500} fontSize={14} color={theme?.primary1}>
+                  View on {explorerName}
+                </Text>
+              </StyledInternalLink>
+            )}
+            {currencyToAdd &&
+              (connector?.id === "metaMask" ||
+                connector?.id === "injected") && (
+                <ButtonLight
+                  mt="12px"
+                  padding="6px 12px"
+                  width="fit-content"
+                  onClick={addToken}
+                >
+                  {!success ? (
+                    <RowFixed>
+                      Add {currencyToAdd?.wrapped?.symbol} to Metamask{" "}
+                      <StyledLogo
+                        src={MetaMaskLogo.src}
+                        width={MetaMaskLogo.width}
+                        height={MetaMaskLogo.height}
+                        alt="metamask"
+                      />
+                    </RowFixed>
+                  ) : (
+                    <RowFixed>
+                      Added {currencyToAdd?.wrapped?.symbol}{" "}
+                      <FiCheckCircle
+                        size={"16px"}
+                        stroke={theme?.green1}
+                        style={{ marginLeft: "6px" }}
+                      />
+                    </RowFixed>
+                  )}
+                </ButtonLight>
+              )}
+            <ButtonPrimary onClick={onDismiss} style={{ margin: "20px 0 0 0" }}>
+              <Text fontWeight={500} fontSize={20}>
+                Close
+              </Text>
+            </ButtonPrimary>
+          </AutoColumn>
+        </Section>
+      </Wrapper>
+      <SlippageInfoModal
+        isOpen={showSlippageInfo}
+        onDismiss={() => setShowSlippageInfo(false)}
+      />
+    </>
   )
 }
 
@@ -424,7 +445,7 @@ export default function TransactionConfirmationModal({
   // const { chainId } = useActiveWeb3React()
   const { chain } = useNetwork()
 
-  if (!chainId || !chain) return null
+  if (!chainId && !chain) return null
 
   // confirmation screen
   return (
@@ -438,7 +459,7 @@ export default function TransactionConfirmationModal({
       ) : hash ? (
         txWarning ? (
           <TransactionSubmittedWarningContent
-            chainId={(chainId ?? chain.id) as ChainId}
+            chainId={(chainId ?? chain?.id) as ChainId}
             hash={hash}
             warning={txWarning}
             onDismiss={onDismiss}
@@ -446,7 +467,7 @@ export default function TransactionConfirmationModal({
           />
         ) : (
           <TransactionSubmittedContent
-            chainId={(chainId ?? chain.id) as ChainId}
+            chainId={(chainId ?? chain?.id) as ChainId}
             hash={hash}
             onDismiss={onDismiss}
             currencyToAdd={currencyToAdd}
