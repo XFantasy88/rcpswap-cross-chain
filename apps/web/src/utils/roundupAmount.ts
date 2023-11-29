@@ -3,8 +3,14 @@ import BigNumber from "bignumber.js"
 
 export const roundupAmount = (amount: Amount<Type> | undefined) => {
   if (!amount) return undefined
-  const parsedAmount = new BigNumber(amount.toExact())
-  const roundedAmount = parsedAmount.toFixed(7, 0)
+  // const parsedAmount = new BigNumber(amount.toExact())
+  const roundedAmount = parseFloat(amount.toExact())
+    .toLocaleString("en", {
+      maximumFractionDigits: 7,
+      //@ts-ignore
+      roundingMode: "ceil",
+    })
+    .replaceAll(",", "")
   console.log(amount.toExact(), roundedAmount)
   return tryParseAmount(roundedAmount, amount.currency)
 }
