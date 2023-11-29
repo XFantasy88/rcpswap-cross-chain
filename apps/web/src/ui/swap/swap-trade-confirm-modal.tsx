@@ -375,7 +375,7 @@ export default function SwapTradeConfirmModal() {
     }
   }, [setShowConfirm, txHash, setSwapAmount])
 
-  const handleSwap = useCallback(async () => {
+  const handleSwap = async () => {
     try {
       if (
         (chainId0 === chainId1 && error) ||
@@ -439,18 +439,7 @@ export default function SwapTradeConfirmModal() {
     } catch (err) {
       console.log(err)
     }
-  }, [
-    tradeToConfirm,
-    writeAsync,
-    error,
-    symbiosisWriteAsync,
-    symbiosisTxError,
-    chainId0,
-    chainId1,
-    setAttemptingTxn,
-    setSwapErrorMessage,
-    setTxHash,
-  ])
+  }
 
   return (
     <ConfirmSwapModal
