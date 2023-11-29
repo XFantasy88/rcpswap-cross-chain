@@ -24,9 +24,12 @@ const useMaxAmountInput = ({
   })
 
   if (currency?.isNative && chainId) {
-    return maxAmountInput?.subtract(
+    const newMaxAmount = maxAmountInput?.subtract(
       Amount.fromRawAmount(currency, feeAmount[chainId])
     )
+    return newMaxAmount?.greaterThan("0")
+      ? newMaxAmount
+      : Amount.fromRawAmount(currency, "0")
   }
   return maxAmountInput
 }
