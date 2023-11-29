@@ -27,11 +27,13 @@ const ApproveERC20: FC<CheckerProps> = ({
     () =>
       tryParseAmount(
         amount
-          ? parseFloat(amount.toExact()).toLocaleString("en", {
-              maximumFractionDigits: 12,
-              // @ts-ignore
-              roundingMode: "ceil",
-            })
+          ? parseFloat(amount.toExact())
+              .toLocaleString("en", {
+                maximumFractionDigits: 12,
+                // @ts-ignore
+                roundingMode: "ceil",
+              })
+              .replaceAll(",", "")
           : undefined,
         amount?.currency
       ),
