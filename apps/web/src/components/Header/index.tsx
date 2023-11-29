@@ -140,15 +140,21 @@ const BalanceText = styled.div`
   padding-left: 0.75rem;
   padding-right: 0.5rem;
   flex-shrink: 0;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    display: none;
-  `};
 `
 
 const NetworkLogo = styled.img`
   width: 20px;
   height: auto;
   margin-right: 6px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    margin-right: 0;
+  `};
+`
+
+const Balance = styled.span`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    display: none;
+  `};
 `
 
 const Title = styled.a`
@@ -292,11 +298,13 @@ export default function Header() {
                   }
                   alt="nova"
                 />
-                {Amount.fromRawAmount(
-                  Native.onChain(ChainId.ARBITRUM_NOVA),
-                  userEthBalance?.value ?? 0n
-                ).toSignificant(4)}{" "}
-                {userEthBalance?.symbol}
+                <Balance>
+                  {Amount.fromRawAmount(
+                    Native.onChain(ChainId.ARBITRUM_NOVA),
+                    userEthBalance?.value ?? 0n
+                  ).toSignificant(4)}{" "}
+                  {userEthBalance?.symbol}
+                </Balance>
               </BalanceText>
             ) : null}
             <Web3Status />
