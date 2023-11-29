@@ -351,8 +351,8 @@ export function splitSlippage(
   let cMul = 1.0
 
   if (extraSwapsCount == 2) {
-    aMul = 0.8
-    cMul = 1.2
+    aMul = 0.5
+    cMul = 1.5
   }
 
   const MAX_STABLE_SLIPPAGE = 50 // 0.5%
