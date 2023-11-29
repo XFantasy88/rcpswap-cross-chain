@@ -66,6 +66,9 @@ export default function ConfirmSwapModal({
   chainId?: ChainId
   currencyToAdd?: Type
 }) {
+  const successed =
+    steps.length > 0 && steps[steps.length - 1].status === "success"
+
   const showAcceptChanges = useMemo(
     () =>
       Boolean(
@@ -99,7 +102,9 @@ export default function ConfirmSwapModal({
   }, [onConfirm, showAcceptChanges, swapErrorMessage, trade])
 
   // text to show while loading
-  const pendingText = `Swapping ${trade?.amountIn?.toSignificant(6)} ${
+  const pendingText = `${
+    successed ? "Swapped" : `Swapping`
+  } ${trade?.amountIn?.toSignificant(6)} ${
     trade?.amountIn?.currency.symbol
   } for ${trade?.amountOut
     ?.subtract(

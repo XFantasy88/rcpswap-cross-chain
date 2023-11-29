@@ -21,6 +21,7 @@ import Menu from "../Menu"
 import Row, { RowFixed } from "../Row"
 import { YellowCard } from "../Card"
 import Web3Status from "../Web3Status"
+import { SUPPORTED_NETWORK_INFO } from "@/config"
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -230,7 +231,8 @@ export default function Header() {
 
   const { data: userEthBalance } = useBalance({
     address,
-    chainId: ChainId.ARBITRUM_NOVA,
+    chainId: chain?.id,
+    enabled: Boolean(chain && address),
   })
 
   const { darkMode, toggleDarkMode } = useDarkMode()
@@ -281,9 +283,13 @@ export default function Header() {
             {address && !chain?.unsupported ? (
               <BalanceText>
                 <NetworkLogo
-                  src={NovaLogo.src}
-                  width={NovaLogo.width}
-                  height={NovaLogo.height}
+                  src={SUPPORTED_NETWORK_INFO[chain?.id as ChainId].image.src}
+                  width={
+                    SUPPORTED_NETWORK_INFO[chain?.id as ChainId].image.width
+                  }
+                  height={
+                    SUPPORTED_NETWORK_INFO[chain?.id as ChainId].image.height
+                  }
                   alt="nova"
                 />
                 {Amount.fromRawAmount(

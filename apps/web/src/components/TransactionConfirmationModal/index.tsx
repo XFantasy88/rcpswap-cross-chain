@@ -82,6 +82,8 @@ function ConfirmationPendingContent({
   steps: StepType[]
 }) {
   const theme = useContext(ThemeContext)
+  const successed =
+    steps.length > 0 && steps[steps.length - 1].status === "success"
 
   return (
     <Wrapper>
@@ -92,7 +94,7 @@ function ConfirmationPendingContent({
         </RowBetween>
         <AutoColumn gap="12px">
           <Text fontWeight={500} fontSize={24}>
-            Waiting For Confirmation
+            {successed ? "Completed" : `Waiting For Confirmation`}
           </Text>
           <AutoColumn gap="12px">
             <Text fontWeight={500} fontSize={14} color={theme?.text2}>
@@ -102,7 +104,7 @@ function ConfirmationPendingContent({
         </AutoColumn>
       </PendingHeaderSection>
       <Section>
-        <Text>Swapping...</Text>
+        <Text>{successed ? "Done!" : `Swapping...`}</Text>
         {steps.map((step, i) => (
           <RowBetween key={i} align="start" marginTop={"24px"}>
             <Flex marginRight={"8px"} marginTop={"2px"} minWidth={"16px"}>
