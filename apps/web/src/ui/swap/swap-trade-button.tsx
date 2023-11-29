@@ -466,6 +466,7 @@ export default function SwapTradeButton() {
     symbiosisWriteAsync,
     symbiosisConfig,
     symbiosisTxError,
+    approvalState,
   ])
 
   const isWrap = token0?.isNative && token1?.equals(token0.wrapped)

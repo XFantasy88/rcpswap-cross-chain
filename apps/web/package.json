@@ -33,6 +33,7 @@
     "@web3-react/core": "^8.2.3",
     "ajv": "^6.12.3",
     "axios": "^1.6.1",
+    "bignumber.js": "^9.1.2",
     "cids": "^1.1.9",
     "ethers": "5.7.2",
     "inter-ui": "^3.19.3",
