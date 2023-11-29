@@ -14,7 +14,7 @@ import { CloseIcon, TYPE, ButtonText, IconWrapper } from "@/theme"
 import { filterTokens, isAddress, useTokenWithCache } from "@rcpswap/wagmi"
 import AutoSizer from "react-virtualized-auto-sizer"
 import styled from "styled-components"
-import { FiEdit } from "react-icons/fi"
+import { FiEdit, FiHelpCircle } from "react-icons/fi"
 import { useCustomTokens, useDebounce, useOnClickOutside } from "@rcpswap/hooks"
 
 import useTheme from "@/hooks/useTheme"
@@ -28,6 +28,9 @@ import { PaddedColumn, SearchInput, Separator } from "./styleds"
 import ImportRow from "./ImportRow"
 import useToggle from "@/hooks/useToggle"
 import { useAllTokens, useFoundOnInactiveList } from "@/hooks/Tokens"
+import { Text } from "rebass"
+import QuestionHelper from "../QuestionHelper"
+import Link from "next/link"
 
 const ContentWrapper = styled(Column)`
   width: 100%;
@@ -188,6 +191,26 @@ export function CurrencySearch({
             ref={inputRef as RefObject<HTMLInputElement>}
             onChange={handleInput}
             onKeyDown={handleEnter}
+          />
+        </Row>
+        <Row>
+          <Text color={theme?.text2} fontSize={"90%"}>
+            Token Listing
+          </Text>
+          <QuestionHelper
+            id="add-token-search"
+            content={
+              <Text>
+                Contact:{" "}
+                <Link
+                  href={"mailto:team@moonsdust.com"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  team@moonsdust.com
+                </Link>
+              </Text>
+            }
           />
         </Row>
         {showCommonBases && (
