@@ -27,26 +27,21 @@ const ApproveERC20: FC<CheckerProps> = ({
 
   const rounded = roundupAmount(amount)
   const [state, { write }] = useTokenApproval({
-    amount: amount,
+    amount: rounded,
     spender: contract,
     enabled,
-    approveMax: true,
+    // approveMax: true,
   })
 
   useEffect(() => {
     if (state === ApprovalState.PENDING) setApprovalSubmitted(true)
   }, [state])
 
-  const approve = () => {
-    alert(rounded?.quotient)
-    write?.()
-  }
-
   useEffect(() => {
     setApprovalSubmitted(false)
   }, [amount])
 
-  return children(approvalSubmitted, state, approve)
+  return children(approvalSubmitted, state, write)
 }
 
 export default ApproveERC20
