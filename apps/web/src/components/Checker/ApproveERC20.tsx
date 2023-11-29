@@ -25,8 +25,9 @@ const ApproveERC20: FC<CheckerProps> = ({
 }) => {
   const [approvalSubmitted, setApprovalSubmitted] = useState(false)
 
+  const rounded = roundupAmount(amount)
   const [state, { write }] = useTokenApproval({
-    amount: roundupAmount(amount),
+    amount: rounded,
     spender: contract,
     enabled,
   })
@@ -36,7 +37,7 @@ const ApproveERC20: FC<CheckerProps> = ({
   }, [state])
 
   const approve = () => {
-    alert(roundupAmount(amount)?.quotient)
+    alert(rounded?.quotient)
     write?.()
   }
 
