@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js"
 export const roundupAmount = (amount: Amount<Type> | undefined) => {
   if (!amount) return undefined
   const parsedAmount = new BigNumber(amount.toExact())
-  const roundedAmount = parsedAmount.toFixed(10, 0)
+  const roundedAmount = parsedAmount.toFixed(7, 0)
   console.log(amount.toExact(), roundedAmount)
   return tryParseAmount(roundedAmount, amount.currency)
 }
