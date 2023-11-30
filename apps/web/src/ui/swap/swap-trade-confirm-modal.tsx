@@ -32,6 +32,7 @@ import { fetchBlockNumber } from "wagmi/actions"
 import { SYMBIOSIS_CONFIRMATION_BLOCK_COUNT } from "@/config"
 import { StepType } from "@/components/TransactionConfirmationModal"
 import { convertAmountFromSymbiosis } from "@/utils"
+import { TransactionExecutionError } from "viem"
 
 export default function SwapTradeConfirmModal() {
   const {
@@ -163,7 +164,11 @@ export default function SwapTradeConfirmModal() {
       })
     },
     onError: (error) => {
-      setSwapErrorMessage(error.message)
+      setSwapErrorMessage(
+        error instanceof TransactionExecutionError
+          ? "User rejected the transaction."
+          : "Transaction failed, this can be caused by prices changes - try increasing slippage"
+      )
       setAttemptingTxn(false)
       setTxHash(undefined)
     },
@@ -357,7 +362,11 @@ export default function SwapTradeConfirmModal() {
       }
     },
     onError: (error) => {
-      setSwapErrorMessage(error.message)
+      setSwapErrorMessage(
+        error instanceof TransactionExecutionError
+          ? "User rejected the transaction."
+          : "Transaction failed, this can be caused by prices changes - try increasing slippage"
+      )
       setAttemptingTxn(false)
       setTxHash(undefined)
     },
@@ -381,8 +390,11 @@ export default function SwapTradeConfirmModal() {
         (chainId0 === chainId1 && error) ||
         (chainId0 !== chainId1 && symbiosisTxError)
       ) {
+        const errorMessage = chainId0 === chainId1 ? error : symbiosisTxError
         setSwapErrorMessage(
-          chainId0 === chainId1 ? error?.message : symbiosisTxError?.message
+          errorMessage instanceof TransactionExecutionError
+            ? "User rejected the transaction"
+            : "Transaction failed, this can be caused by prices changes - try increasing slippage"
         )
         setAttemptingTxn(false)
         setTxHash(undefined)

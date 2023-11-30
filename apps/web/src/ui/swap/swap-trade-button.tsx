@@ -42,7 +42,7 @@ import confirmPriceImpactWithoutFee from "@/components/swap/confirmPriceImpactWi
 import { useAddTransaction, finalizeTransaction } from "@rcpswap/dexie"
 import { useAddPopup } from "@/state/application/hooks"
 import { ErrorCode, Symbiosis } from "@rcpswap/symbiosis"
-import { zeroAddress } from "viem"
+import { TransactionExecutionError, zeroAddress } from "viem"
 import { ethers } from "ethers"
 import { getEthersTransactionReceipt } from "@/utils/getEthersTransactionReceipt"
 import { SYMBIOSIS_CONFIRMATION_BLOCK_COUNT } from "@/config"
@@ -176,7 +176,11 @@ export default function SwapTradeButton() {
       })
     },
     onError: (error) => {
-      setSwapErrorMessage(error.message)
+      setSwapErrorMessage(
+        error instanceof TransactionExecutionError
+          ? "User rejected the transaction."
+          : "Transaction failed, this can be caused by prices changes - try increasing slippage"
+      )
       setAttemptingTxn(false)
       setTxHash(undefined)
     },
@@ -376,7 +380,11 @@ export default function SwapTradeButton() {
       }
     },
     onError: (error) => {
-      setSwapErrorMessage(error.message)
+      setSwapErrorMessage(
+        error instanceof TransactionExecutionError
+          ? "User rejected the transaction."
+          : "Transaction failed, this can be caused by prices changes - try increasing slippages"
+      )
       setAttemptingTxn(false)
       setTxHash(undefined)
     },

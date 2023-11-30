@@ -11,6 +11,5 @@ export const roundupAmount = (amount: Amount<Type> | undefined) => {
       roundingMode: "ceil",
     })
     .replaceAll(",", "")
-  console.log(amount.toExact(), roundedAmount)
   return tryParseAmount(roundedAmount, amount.currency)
 }
