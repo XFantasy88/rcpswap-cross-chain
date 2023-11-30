@@ -96,27 +96,27 @@ export class AggregatorTrade implements SymbiosisTrade {
       aggregators.push(oneInchTrade.init())
     }
 
-    if (OpenOceanTrade.isAvailable(tokenAmountIn.token.chainId)) {
-      const openOceanTrade = new OpenOceanTrade({
-        symbiosis,
-        slippage,
-        to,
-        tokenAmountIn,
-        tokenOut,
-      })
+    // if (OpenOceanTrade.isAvailable(tokenAmountIn.token.chainId)) {
+    //   const openOceanTrade = new OpenOceanTrade({
+    //     symbiosis,
+    //     slippage,
+    //     to,
+    //     tokenAmountIn,
+    //     tokenOut,
+    //   })
 
-      const promises: Promise<OpenOceanTrade>[] = [openOceanTrade.init()]
-      if (clientId !== OPEN_OCEAN_CLIENT_ID) {
-        const limitPromise = new Promise((_resolve, reject) => {
-          setTimeout(() => {
-            reject("Timeout OO")
-          }, 5 * 1000)
-        }) as Promise<OpenOceanTrade>
-        promises.push(limitPromise)
-      }
+    //   const promises: Promise<OpenOceanTrade>[] = [openOceanTrade.init()]
+    //   if (clientId !== OPEN_OCEAN_CLIENT_ID) {
+    //     const limitPromise = new Promise((_resolve, reject) => {
+    //       setTimeout(() => {
+    //         reject("Timeout OO")
+    //       }, 5 * 1000)
+    //     }) as Promise<OpenOceanTrade>
+    //     promises.push(limitPromise)
+    //   }
 
-      aggregators.push(Promise.race(promises))
-    }
+    //   aggregators.push(Promise.race(promises))
+    // }
 
     if (IzumiTrade.isSupported(tokenAmountIn.token.chainId)) {
       const izumiTrade = new IzumiTrade({
