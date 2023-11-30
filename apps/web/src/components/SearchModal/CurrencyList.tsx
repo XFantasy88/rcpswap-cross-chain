@@ -204,7 +204,12 @@ export default function CurrencyList({
       ]
     }
     return formatted
-  }, [breakIndex, baseCurrency, currencies, showETH])
+  }, [
+    breakIndex,
+    baseCurrency,
+    JSON.stringify(currencies.map((item) => item.wrapped.address)),
+    showETH,
+  ])
 
   const theme = useTheme()
 
@@ -290,14 +295,14 @@ export default function CurrencyList({
       }
     },
     [
-      inactiveTokens,
-      onCurrencySelect,
-      otherCurrency,
-      selectedCurrency,
-      setImportToken,
-      showImportView,
-      breakIndex,
-      theme?.text1,
+      // inactiveTokens,
+      // onCurrencySelect,
+      // otherCurrency,
+      // selectedCurrency,
+      // setImportToken,
+      // showImportView,
+      // breakIndex,
+      // theme?.text1,
     ]
   )
 

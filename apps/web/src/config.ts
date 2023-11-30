@@ -20,5 +20,5 @@ export const SUPPORTED_DEX_INFO: { [key: string]: { image: string } } = {
 
 export const SYMBIOSIS_CONFIRMATION_BLOCK_COUNT = {
   [ChainId.ARBITRUM_NOVA]: 16,
-  [ChainId.POLYGON]: 17,
+  [ChainId.POLYGON]: 24,
 }
