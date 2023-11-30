@@ -410,7 +410,6 @@ export default function SwapTradeButton() {
         setShowConfirm(true)
         setTxHash(undefined)
       } else {
-        setAttemptingTxn(true)
         setSwapErrorMessage(undefined)
         setTxHash(undefined)
         setSwapWarningMessage(undefined)
@@ -456,6 +455,7 @@ export default function SwapTradeButton() {
                 },
               ]
         )
+        setAttemptingTxn(true)
         if (chainId0 === chainId1) await writeAsync?.()
         else await symbiosisWriteAsync?.()
       }

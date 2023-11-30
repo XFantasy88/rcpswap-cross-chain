@@ -407,7 +407,6 @@ export default function SwapTradeConfirmModal() {
         return
       }
 
-      setAttemptingTxn(true)
       setSwapErrorMessage(undefined)
       setTxHash(undefined)
       setCurrencyToAdd(undefined)
@@ -443,6 +442,7 @@ export default function SwapTradeConfirmModal() {
               },
             ]
       )
+      setAttemptingTxn(true)
 
       if (chainId0 === chainId1) await writeAsync?.()
       else {
