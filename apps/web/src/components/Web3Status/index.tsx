@@ -169,7 +169,7 @@ function Web3StatusInner() {
   )
 
   const pending = allTransactions
-    ?.filter((tx) => !tx.receipt)
+    ?.filter((tx) => !tx.status)
     ?.map((tx) => tx.hash)
 
   const hasPendingTransactions = !!pending?.length
@@ -223,10 +223,10 @@ export default function Web3Status() {
   const allTransactions = useAllTransactions(chainId ?? ChainId.ARBITRUM_NOVA)
 
   const pending = allTransactions
-    ?.filter((tx) => !tx.receipt)
+    ?.filter((tx) => !tx.status)
     ?.map((tx) => tx.hash)
   const confirmed = allTransactions
-    ?.filter((tx) => tx.receipt)
+    ?.filter((tx) => tx.status)
     .map((tx) => tx.hash)
 
   return (

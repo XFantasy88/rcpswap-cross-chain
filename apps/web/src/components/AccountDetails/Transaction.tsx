@@ -39,7 +39,7 @@ const TransactionState = styled(StyledInternalLink)<{
 const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
   display: flex;
   color: ${({ pending, success, theme }) =>
-    pending ? theme.primary1 : success ? theme.green1 : theme.red1};
+    pending ? theme.primary1 : success ? theme.green1 : theme.yellow1};
 `
 
 export default function Transaction({ hash }: { hash: string }) {
@@ -49,11 +49,7 @@ export default function Transaction({ hash }: { hash: string }) {
   const tx = allTransactions?.find((tx) => tx.hash === hash)
   const summary = tx?.summary
   const pending = tx?.status === undefined
-  const success =
-    !pending &&
-    tx &&
-    (tx.receipt?.status === "success" ||
-      typeof tx.receipt?.status === "undefined")
+  const success = !pending && tx && tx.receipt?.status === "success"
 
   if (!chainId) return null
 

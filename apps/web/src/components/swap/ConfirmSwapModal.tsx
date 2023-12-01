@@ -80,37 +80,38 @@ export default function ConfirmSwapModal({
   const modalHeader = useCallback(() => {
     return trade || swapMode === 1 ? (
       <SwapModalHeader
-        trade={trade}
+        trade={originalTrade}
         isCross={isCross}
         recipient={recipient}
         showAcceptChanges={showAcceptChanges}
         onAcceptChanges={onAcceptChanges}
       />
     ) : null
-  }, [onAcceptChanges, recipient, showAcceptChanges, trade])
+  }, [onAcceptChanges, recipient, showAcceptChanges, trade, originalTrade])
 
   const modalBottom = useCallback(() => {
     return trade || swapMode === 1 ? (
       <SwapModalFooter
         onConfirm={onConfirm}
-        trade={trade}
+        trade={originalTrade}
         swapMode={swapMode}
         disabledConfirm={showAcceptChanges}
         swapErrorMessage={swapErrorMessage}
       />
     ) : null
-  }, [onConfirm, showAcceptChanges, swapErrorMessage, trade])
+  }, [onConfirm, showAcceptChanges, swapErrorMessage, trade, originalTrade])
 
   // text to show while loading
   const pendingText = `${
     successed ? "Swapped" : `Swapping`
-  } ${trade?.amountIn?.toSignificant(6)} ${
-    trade?.amountIn?.currency.symbol
-  } for ${trade?.amountOut
+  } ${originalTrade?.amountIn?.toSignificant(6)} ${
+    originalTrade?.amountIn?.currency.symbol
+  } for ${originalTrade?.minAmountOut
     ?.subtract(
-      trade.feeAmount ?? Amount.fromRawAmount(trade.amountOut.currency, 0)
+      originalTrade.feeAmount ??
+        Amount.fromRawAmount(originalTrade.minAmountOut.currency, 0)
     )
-    ?.toSignificant(6)} ${trade?.amountOut?.currency.symbol}`
+    ?.toSignificant(6)} ${originalTrade?.minAmountOut?.currency.symbol}`
 
   const confirmationContent = useCallback(() => {
     return swapErrorMessage ? (
