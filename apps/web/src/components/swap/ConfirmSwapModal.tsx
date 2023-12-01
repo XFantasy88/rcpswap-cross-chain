@@ -48,6 +48,7 @@ export default function ConfirmSwapModal({
   steps,
   chainId,
   currencyToAdd,
+  swapResult,
 }: {
   isOpen: boolean
   trade: any
@@ -65,6 +66,7 @@ export default function ConfirmSwapModal({
   swapWarningMessage?: string
   chainId?: ChainId
   currencyToAdd?: Type
+  swapResult?: Amount<Type> | undefined
 }) {
   const successed =
     steps.length > 0 && steps[steps.length - 1].status === "success"
@@ -106,12 +108,16 @@ export default function ConfirmSwapModal({
     successed ? "Swapped" : `Swapping`
   } ${originalTrade?.amountIn?.toSignificant(6)} ${
     originalTrade?.amountIn?.currency.symbol
-  } for ${originalTrade?.minAmountOut
-    ?.subtract(
-      originalTrade.feeAmount ??
-        Amount.fromRawAmount(originalTrade.minAmountOut.currency, 0)
-    )
-    ?.toSignificant(6)} ${originalTrade?.minAmountOut?.currency.symbol}`
+  } for ${
+    successed && swapResult
+      ? swapResult.toSignificant(6)
+      : originalTrade?.minAmountOut
+          ?.subtract(
+            originalTrade.feeAmount ??
+              Amount.fromRawAmount(originalTrade.minAmountOut.currency, 0)
+          )
+          ?.toSignificant(6)
+  } ${originalTrade?.minAmountOut?.currency.symbol}`
 
   const confirmationContent = useCallback(() => {
     return swapErrorMessage ? (

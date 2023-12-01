@@ -1,6 +1,6 @@
 import { StepType } from "@/components/TransactionConfirmationModal"
 import { UseTradeReturn } from "@rcpswap/router"
-import { Type } from "rcpswap/currency"
+import { Amount, Type } from "rcpswap/currency"
 import React, { FC, createContext, useContext, useMemo, useState } from "react"
 
 interface State {
@@ -13,6 +13,7 @@ interface State {
     setTxHash: (hash: string | undefined) => void
     setSteps: (value: StepType[]) => void
     setCurrencyToAdd: (currency: Type | undefined) => void
+    setSwapResult: (amount: Amount<Type> | undefined) => void
   }
   state: {
     showConfirm: boolean
@@ -23,6 +24,7 @@ interface State {
     txHash: string | undefined
     steps: StepType[]
     currencyToAdd: Type | undefined
+    swapResult: Amount<Type> | undefined
   }
 }
 
@@ -47,6 +49,9 @@ const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
   const [currencyToAdd, setCurrencyToAdd] = useState<Type | undefined>(
     undefined
   )
+  const [swapResult, setSwapResult] = useState<Amount<Type> | undefined>(
+    undefined
+  )
 
   return (
     <DerivedSwapTradeStateContext.Provider
@@ -61,6 +66,7 @@ const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
             setSteps,
             setSwapWarningMessage,
             setCurrencyToAdd,
+            setSwapResult,
           },
           state: {
             showConfirm,
@@ -71,6 +77,7 @@ const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
             steps,
             swapWarningMessage,
             currencyToAdd,
+            swapResult,
           },
         }),
         [
@@ -90,6 +97,8 @@ const DerivedSwapTradeStateProvider: FC<DerivedSwapTradeStateProviderProps> = ({
           setSwapWarningMessage,
           currencyToAdd,
           setCurrencyToAdd,
+          swapResult,
+          setSwapResult,
         ]
       )}
     >

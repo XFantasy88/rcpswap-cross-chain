@@ -18,6 +18,7 @@ import {
   getPublicClient,
   getShortenAddress,
   isAddress,
+  queryFnUseBalances,
   useTokenApproval,
   waitForTransaction,
 } from "@rcpswap/wagmi"
@@ -32,7 +33,7 @@ import { fetchBlockNumber } from "wagmi/actions"
 import { SYMBIOSIS_CONFIRMATION_BLOCK_COUNT } from "@/config"
 import { StepType } from "@/components/TransactionConfirmationModal"
 import { convertAmountFromSymbiosis } from "@/utils"
-import { TransactionExecutionError } from "viem"
+import { Address, TransactionExecutionError, zeroAddress } from "viem"
 
 export default function SwapTradeConfirmModal() {
   const {
@@ -81,6 +82,7 @@ export default function SwapTradeConfirmModal() {
       steps,
       swapWarningMessage,
       currencyToAdd,
+      swapResult,
     },
     mutate: {
       setTradeToConfirm,
@@ -91,6 +93,7 @@ export default function SwapTradeConfirmModal() {
       setSteps,
       setSwapWarningMessage,
       setCurrencyToAdd,
+      setSwapResult,
     },
   } = useDerivedSwapTradeState()
 
@@ -243,6 +246,18 @@ export default function SwapTradeConfirmModal() {
 
       setSteps(newSteps)
 
+      const beforeBalance = await queryFnUseBalances({
+        chainId: chainId1,
+        currencies: [token1],
+        account: (recipient ?? address) as Address,
+      }).then((res) =>
+        res && token1
+          ? res?.[token1.isNative ? zeroAddress : token1.address]
+          : undefined
+      )
+
+      console.log(beforeBalance)
+
       addTransaction(address ?? "", chainId0, data.hash, baseText)
       try {
         waitForTransaction({ hash: data.hash })
@@ -345,6 +360,24 @@ export default function SwapTradeConfirmModal() {
               setSwapWarningMessage(
                 `Received ${symbiosisData?.transitTokenSent?.token?.symbol} instead of ${token1?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`
               )
+            } else {
+              const afterBalance = await queryFnUseBalances({
+                chainId: chainId1,
+                currencies: [token1],
+                account: (recipient ?? address) as Address,
+              }).then((res) =>
+                res && token1
+                  ? res?.[token1.isNative ? zeroAddress : token1.address]
+                  : undefined
+              )
+              setSwapResult(
+                afterBalance &&
+                  beforeBalance &&
+                  afterBalance.currency.equals(beforeBalance.currency)
+                  ? afterBalance.subtract(beforeBalance)
+                  : undefined
+              )
+              console.log(afterBalance)
             }
           })
           .catch((err) => {
@@ -411,6 +444,7 @@ export default function SwapTradeConfirmModal() {
       setTxHash(undefined)
       setCurrencyToAdd(undefined)
       setSwapWarningMessage(undefined)
+      setSwapResult(undefined)
       setSteps(
         chainId0 === chainId1
           ? [
@@ -471,6 +505,7 @@ export default function SwapTradeConfirmModal() {
       steps={steps}
       chainId={chainId0 !== chainId1 ? chainId1 : undefined}
       currencyToAdd={chainId0 !== chainId1 ? currencyToAdd : undefined}
+      swapResult={swapResult}
     />
   )
 }
