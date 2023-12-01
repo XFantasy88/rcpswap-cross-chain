@@ -308,13 +308,30 @@ export default function SwapTradeConfirmModal() {
                 if (transitTokenSent) {
                   formatedText = `Received ${transitTokenSent?.token?.symbol} instead of ${expectedTokenOut?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`
                 } else {
+                  const afterBalance = await queryFnUseBalances({
+                    chainId: chainId1,
+                    currencies: [token1],
+                    account: (recipient ?? address) as Address,
+                  }).then((res) =>
+                    res && token1
+                      ? res?.[token1.isNative ? zeroAddress : token1.address]
+                      : undefined
+                  )
+                  const result =
+                    afterBalance &&
+                    beforeBalance &&
+                    afterBalance.currency.equals(beforeBalance.currency)
+                      ? afterBalance.subtract(beforeBalance)
+                      : undefined
+                  setSwapResult(result)
+
                   formatedText = `Swap ${symbiosisRef.current?.amountIn?.toSignificant(
                     3
-                  )} ${
-                    symbiosisRef.current?.amountIn?.currency.symbol
-                  } for ${symbiosisRef.current?.amountOut?.toSignificant(3)} ${
-                    symbiosisRef.current?.amountOut?.currency.symbol
-                  } ${
+                  )} ${symbiosisRef.current?.amountIn?.currency.symbol} for ${
+                    result
+                      ? result.toSignificant(6)
+                      : symbiosisRef.current?.amountOut?.toSignificant(3)
+                  } ${symbiosisRef.current?.amountOut?.currency.symbol} ${
                     recipient !== undefined &&
                     recipient !== address &&
                     isAddress(recipient)
@@ -360,24 +377,6 @@ export default function SwapTradeConfirmModal() {
               setSwapWarningMessage(
                 `Received ${symbiosisData?.transitTokenSent?.token?.symbol} instead of ${token1?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`
               )
-            } else {
-              const afterBalance = await queryFnUseBalances({
-                chainId: chainId1,
-                currencies: [token1],
-                account: (recipient ?? address) as Address,
-              }).then((res) =>
-                res && token1
-                  ? res?.[token1.isNative ? zeroAddress : token1.address]
-                  : undefined
-              )
-              setSwapResult(
-                afterBalance &&
-                  beforeBalance &&
-                  afterBalance.currency.equals(beforeBalance.currency)
-                  ? afterBalance.subtract(beforeBalance)
-                  : undefined
-              )
-              console.log(afterBalance)
             }
           })
           .catch((err) => {
