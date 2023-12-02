@@ -21,7 +21,7 @@ import { useContext, useState } from "react"
 import { Text } from "rebass"
 import { ThemeContext } from "styled-components"
 import QuestionHelper from "@/components/QuestionHelper"
-import { FaArrowDown } from "react-icons/fa"
+import { FaArrowDown, FaClock } from "react-icons/fa"
 import AddressInputPanel from "@/components/AddressInputPanel"
 import { usePrice } from "@rcpswap/react-query"
 import SlippageInfoModal from "@/components/SlippageInfoModal"
@@ -190,7 +190,7 @@ export default function SwapTradeStateInfo() {
           {chainId0 !== chainId1 && (
             <RowBetween align="center">
               <Text fontWeight={500} fontSize={14} color={theme?.text2}>
-                Time Spend
+                Time
                 <QuestionHelper
                   id="time-spend"
                   content={
@@ -203,11 +203,14 @@ export default function SwapTradeStateInfo() {
               <Text
                 fontSize={14}
                 color={theme?.text2}
-                style={{ marginLeft: "8px" }}
+                style={{
+                  marginLeft: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
-                {chainId0 === ChainId.ARBITRUM_NOVA
-                  ? "~45s | Save 7 Days"
-                  : "~75s | Save ~60m"}
+                <FaClock style={{ marginRight: "8px" }} />
+                {chainId0 === ChainId.ARBITRUM_NOVA ? "~45s" : "~75s"}
               </Text>
             </RowBetween>
           )}
