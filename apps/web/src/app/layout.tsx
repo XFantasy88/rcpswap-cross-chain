@@ -41,20 +41,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <title>RCPSwap | Reddit Community Points Swap</title>{" "}
-      <link
-        rel="shortcut icon"
-        type="image/png"
-        href="%PUBLIC_URL%/favicon.png"
-      />
+      <link rel="shortcut icon" type="image/png" href="/favicon.png" />
       <link
         rel="apple-touch-icon"
         sizes="192x192"
-        href="%PUBLIC_URL%/android-chrome-192x192.png"
+        href="/android-chrome-192x192.png"
       />
       <link
         rel="apple-touch-icon"
         sizes="512x512"
-        href="%PUBLIC_URL%/android-chrome-512x512.png"
+        href="/android-chrome-512x512.png"
       />
       <body>
         <Providers>
