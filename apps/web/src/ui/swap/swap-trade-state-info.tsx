@@ -13,10 +13,10 @@ import {
   useSwapTrade,
   useSymbiosisTrade,
 } from "@/ui/swap/derived-swap-state-provider"
-import { LinkStyledButton, TYPE, ToggleStyledText } from "@/theme"
-import { INITIAL_ALLOWED_SLIPPAGE, useSlippageTolerance } from "@rcpswap/hooks"
+import { LinkStyledButton, TYPE } from "@/theme"
+import { useSlippageTolerance } from "@rcpswap/hooks"
 import { UseTradeReturn } from "@rcpswap/router"
-import { Native, Price } from "rcpswap/currency"
+import { Price } from "rcpswap/currency"
 import { useContext, useState } from "react"
 import { Text } from "rebass"
 import { ThemeContext } from "styled-components"
@@ -25,6 +25,7 @@ import { FaArrowDown } from "react-icons/fa"
 import AddressInputPanel from "@/components/AddressInputPanel"
 import { usePrice } from "@rcpswap/react-query"
 import SlippageInfoModal from "@/components/SlippageInfoModal"
+import { ChainId } from "rcpswap/chain"
 
 export default function SwapTradeStateInfo() {
   const theme = useContext(ThemeContext)
@@ -32,7 +33,15 @@ export default function SwapTradeStateInfo() {
   const [showSlippageInfo, setShowSlippageInfo] = useState(false)
 
   const {
-    state: { ultraMode, swapMode, token0, token1, recipient },
+    state: {
+      ultraMode,
+      swapMode,
+      token0,
+      token1,
+      recipient,
+      chainId0,
+      chainId1,
+    },
     mutate: { setUltraMode, setRecipient },
   } = useDerivedSwapState()
   const [slippageTolerance] = useSlippageTolerance()
@@ -80,13 +89,13 @@ export default function SwapTradeStateInfo() {
           ) : null}
           {swapMode === 1 && (
             <RowBetween>
-              <ToggleStyledText disabled={!ultraMode}>
+              <Text fontWeight={500} fontSize={14} color={theme?.text2}>
                 Ultra Saving
                 <QuestionHelper
                   id="ultra-saving"
                   content={`Ultra Saving enhances trade efficiency and increases savings, albeit with a trade-off of requiring additional time for route calculations.`}
                 />
-              </ToggleStyledText>
+              </Text>
               <Toggle
                 id="toggle-expert-mode-button"
                 isActive={ultraMode}
@@ -178,6 +187,30 @@ export default function SwapTradeStateInfo() {
               {slippageTolerance}%
             </ClickableText>
           </RowBetween>
+          {chainId0 !== chainId1 && (
+            <RowBetween align="center">
+              <Text fontWeight={500} fontSize={14} color={theme?.text2}>
+                Time Spend
+                <QuestionHelper
+                  id="time-spend"
+                  content={
+                    chainId0 === ChainId.ARBITRUM_NOVA
+                      ? "Transferring funds through the official bridge typically consumes approximately 7 days, whereas RCPswap completes the process in just around 45 seconds."
+                      : "Transferring funds through the official bridge typically consumes approximately 1 hour, whereas RCPswap completes the process in just around 75 seconds."
+                  }
+                />
+              </Text>
+              <Text
+                fontSize={14}
+                color={theme?.text2}
+                style={{ marginLeft: "8px" }}
+              >
+                {chainId0 === ChainId.ARBITRUM_NOVA
+                  ? "~45s | Save 7 Days"
+                  : "~75s | Save ~60m"}
+              </Text>
+            </RowBetween>
+          )}
           {(isLoading || isSymbiosisLoading) && swapMode === 1 ? (
             <Row
               align="center"

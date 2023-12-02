@@ -41,7 +41,7 @@ interface State {
     setToken0(token0: Type | undefined): void
     setToken1(token1: Type | undefined): void
     setSwapAmount(swapAmount: string): void
-    switchTokens(): void
+    switchTokens(amount?: string): void
     switchSwapMode(): void
     setRecipient(address: string | undefined): void
     setUltraMode(mode: boolean): void
@@ -113,28 +113,33 @@ const DerivedSwapStateProvider: FC<DerivedSwapStateProviderProps> = ({
     [setChainId1, setToken1, setChainId0, chainId0]
   )
 
-  const _switchToken = useCallback(() => {
-    const data = {
+  const _switchToken = useCallback(
+    (amount?: string) => {
+      const data = {
+        chainId0,
+        chainId1,
+        token0,
+        token1,
+      }
+
+      setChainId0(data.chainId1)
+      setChainId1(data.chainId0)
+      setToken0(data.token1)
+      setToken1(data.token0)
+      setSwapAmount(amount)
+    },
+    [
       chainId0,
       chainId1,
       token0,
       token1,
-    }
-
-    setChainId0(data.chainId1)
-    setChainId1(data.chainId0)
-    setToken0(data.token1)
-    setToken1(data.token0)
-  }, [
-    chainId0,
-    chainId1,
-    token0,
-    token1,
-    setChainId0,
-    setChainId1,
-    setToken0,
-    setToken1,
-  ])
+      setChainId0,
+      setChainId1,
+      setToken0,
+      setToken1,
+      setSwapAmount,
+    ]
+  )
 
   const _setToken0 = useCallback<{ (_token: Type | undefined): void }>(
     (_token) => {
