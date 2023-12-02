@@ -40,16 +40,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <title>RCPSwap | Reddit Community Points Swap</title>
+      <title>RCPSwap | Reddit Community Points Swap</title>{" "}
+      <link
+        rel="shortcut icon"
+        type="image/png"
+        href="%PUBLIC_URL%/favicon.png"
+      />
       <link
         rel="apple-touch-icon"
-        sizes="180x180"
-        href="/apple-touch-icon.png?v=2"
+        sizes="192x192"
+        href="%PUBLIC_URL%/android-chrome-192x192.png"
       />
-      <link rel="icon" type="image/png" href="/favicon.png?v=2" />
-      <link rel="manifest" href="/site.webmanifest?v=2" />
-      <link rel="mask-icon" href="/safari-pinned-tab.svg?v=2" color="#363636" />
-      <link rel="shortcut icon" href="/favicon.png?v=2" />
+      <link
+        rel="apple-touch-icon"
+        sizes="512x512"
+        href="%PUBLIC_URL%/android-chrome-512x512.png"
+      />
       <body>
         <Providers>
           <Header />
