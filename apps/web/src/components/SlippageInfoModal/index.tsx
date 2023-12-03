@@ -52,7 +52,6 @@ export default function SlippageInfoModal({
               style={{
                 width: "85%",
                 overflowX: "hidden",
-                wordBreak: "break-all",
               }}
             >
               In rare cases, a user can receive stablecoins or WETH tokens on
