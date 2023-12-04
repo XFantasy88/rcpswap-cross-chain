@@ -171,9 +171,37 @@ export const useClientTrade = (variables: UseTradeParams) => {
           [LiquidityProviders.ArbSwap]
         )
 
+        const uniRoute = Router.findBestRoute(
+          poolsCodeMap,
+          chainId,
+          fromToken,
+          amount.quotient,
+          toToken,
+          Number(feeData.gasPrice),
+          100,
+          [LiquidityProviders.UniSwapV3]
+        )
+
+        const quickRoute = Router.findBestRoute(
+          poolsCodeMap,
+          chainId,
+          fromToken,
+          amount.quotient,
+          toToken,
+          Number(feeData.gasPrice),
+          1,
+          [LiquidityProviders.QuickSwap]
+        )
+
         const bestSingleRoute = getBetterRouteExactIn(
-          getBetterRouteExactIn(sushiRoute, rcpRoute),
-          arbRoute
+          getBetterRouteExactIn(
+            getBetterRouteExactIn(
+              getBetterRouteExactIn(sushiRoute, rcpRoute),
+              arbRoute
+            ),
+            uniRoute
+          ),
+          quickRoute
         )
 
         bestSingleDex =
@@ -181,7 +209,11 @@ export const useClientTrade = (variables: UseTradeParams) => {
             ? "Sushi"
             : bestSingleRoute === rcpRoute
             ? "RCP"
-            : "Arb"
+            : bestSingleRoute === arbRoute
+            ? "Arb"
+            : bestSingleRoute === uniRoute
+            ? "Uni"
+            : "Quick"
 
         bestSingleAmountOut = Amount.fromRawAmount(
           toToken,

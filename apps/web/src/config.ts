@@ -16,6 +16,8 @@ export const SUPPORTED_DEX_INFO: { [key: string]: { image: string } } = {
   RCP: { image: "/dex/rcpswap.png" },
   Arb: { image: "/dex/arbswap.png" },
   Sushi: { image: "/dex/sushiswap.png" },
+  Uni: { image: "/dex/uniswap.png" },
+  Quick: { image: "/dex/quickswap.png" },
 } as const
 
 export const SYMBIOSIS_CONFIRMATION_BLOCK_COUNT = {
