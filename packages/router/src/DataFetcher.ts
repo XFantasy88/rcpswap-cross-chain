@@ -1,18 +1,19 @@
-import { config } from '@rcpswap/viem-config'
-import { ChainId } from 'rcpswap/chain'
-import { Type } from 'rcpswap/currency'
-import { PublicClient, createPublicClient } from 'viem'
+import { config } from "@rcpswap/viem-config"
+import { ChainId } from "rcpswap/chain"
+import { Type } from "rcpswap/currency"
+import { PublicClient, createPublicClient } from "viem"
 
-import { ArbSwapProvider } from './liquidity-providers/ArbSwap'
+import { ArbSwapProvider } from "./liquidity-providers/ArbSwap"
 import {
   LiquidityProvider,
   LiquidityProviders,
-} from './liquidity-providers/LiquidityProvider'
-import { NativeWrapProvider } from './liquidity-providers/NativeWrapProvider'
-import { RCPSwapProvider } from './liquidity-providers/RCPSwap'
-import { SushiSwapV2Provider } from './liquidity-providers/SushiSwapV2'
-import { SushiSwapV3Provider } from './liquidity-providers/SushiSwapV3'
-import type { PoolCode } from './pools/PoolCode'
+} from "./liquidity-providers/LiquidityProvider"
+import { NativeWrapProvider } from "./liquidity-providers/NativeWrapProvider"
+import { RCPSwapProvider } from "./liquidity-providers/RCPSwap"
+import { SushiSwapV2Provider } from "./liquidity-providers/SushiSwapV2"
+import { SushiSwapV3Provider } from "./liquidity-providers/SushiSwapV3"
+import type { PoolCode } from "./pools/PoolCode"
+import { QuickSwapProvider, UniswapV3Provider } from "."
 
 // Gathers pools info, creates routing in 'incremental' mode
 // This means that new routing recalculates each time new pool fetching data comes
@@ -43,7 +44,7 @@ export class DataFetcher {
     this.chainId = chainId
     if (!publicClient && !config[this.chainId]) {
       throw new Error(
-        `No public client given and no viem config found for chainId ${chainId}`,
+        `No public client given and no viem config found for chainId ${chainId}`
       )
     }
 
@@ -56,7 +57,7 @@ export class DataFetcher {
 
   _providerIsIncluded(
     lp: LiquidityProviders,
-    liquidity?: LiquidityProviders[],
+    liquidity?: LiquidityProviders[]
   ) {
     if (!liquidity) return true
     if (lp === LiquidityProviders.NativeWrap) return true
@@ -65,7 +66,7 @@ export class DataFetcher {
 
   // Starts pool data fetching
   startDataFetching(
-    providers?: LiquidityProviders[], // all providers if undefined
+    providers?: LiquidityProviders[] // all providers if undefined
   ) {
     this.stopDataFetching()
     this.poolCodes = new Map()
@@ -108,6 +109,24 @@ export class DataFetcher {
       }
     }
 
+    if (this._providerIsIncluded(LiquidityProviders.UniSwapV3, providers)) {
+      try {
+        const provider = new UniswapV3Provider(this.chainId, this.web3Client)
+        this.providers.push(provider)
+      } catch (e: unknown) {
+        console.warn(e)
+      }
+    }
+
+    if (this._providerIsIncluded(LiquidityProviders.QuickSwap, providers)) {
+      try {
+        const provider = new QuickSwapProvider(this.chainId, this.web3Client)
+        this.providers.push(provider)
+      } catch (e: unknown) {
+        console.warn(e)
+      }
+    }
+
     this.providers.forEach((p) => p.startFetchPoolsData())
   }
 
@@ -119,43 +138,43 @@ export class DataFetcher {
   async fetchPoolsForToken(
     currency0: Type,
     currency1: Type,
-    excludePools?: Set<string>,
+    excludePools?: Set<string>
   ): Promise<void> {
     // ensure that we only fetch the native wrap pools if the token is the native currency and wrapped native currency
     if (currency0.wrapped.equals(currency1.wrapped)) {
       const provider = this.providers.find(
-        (p) => p.getType() === LiquidityProviders.NativeWrap,
+        (p) => p.getType() === LiquidityProviders.NativeWrap
       )
       if (provider) {
         await provider.fetchPoolsForToken(
           currency0.wrapped,
           currency1.wrapped,
-          excludePools,
+          excludePools
         )
       }
     } else {
       const [token0, token1] =
         currency0.wrapped.equals(currency1.wrapped) ||
-          currency0.wrapped.sortsBefore(currency1.wrapped)
+        currency0.wrapped.sortsBefore(currency1.wrapped)
           ? [currency0.wrapped, currency1.wrapped]
           : [currency1.wrapped, currency0.wrapped]
       await Promise.all(
         this.providers.map((p) =>
-          p.fetchPoolsForToken(token0, token1, excludePools),
-        ),
+          p.fetchPoolsForToken(token0, token1, excludePools)
+        )
       )
     }
   }
 
   getCurrentPoolCodeMap(
     currency0: Type,
-    currency1: Type,
+    currency1: Type
   ): Map<string, PoolCode> {
     const result: Map<string, PoolCode> = new Map()
     this.providers.forEach((p) => {
       const poolCodes = p.getCurrentPoolList(
         currency0.wrapped,
-        currency1.wrapped,
+        currency1.wrapped
       )
       poolCodes.forEach((pc) => result.set(pc.pool.address, pc))
     })
@@ -166,7 +185,7 @@ export class DataFetcher {
   getCurrentPoolCodeList(currency0: Type, currency1: Type): PoolCode[] {
     const pcMap = this.getCurrentPoolCodeMap(
       currency0.wrapped,
-      currency1.wrapped,
+      currency1.wrapped
     )
     return Array.from(pcMap.values())
   }

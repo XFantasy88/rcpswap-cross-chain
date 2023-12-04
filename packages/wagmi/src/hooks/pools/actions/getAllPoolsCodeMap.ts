@@ -13,17 +13,15 @@ export const getAllPoolsCodeMap = async ({
     return new Map<string, PoolCode>()
   }
 
-  const sushiLiquidityProviders = [LiquidityProviders.SushiSwapV2]
-  if (isRouteProcessor3ChainId(chainId)) {
-    sushiLiquidityProviders.push(LiquidityProviders.SushiSwapV3)
-  }
-
   const liquidityProviders = providers
     ? providers
     : [
-        ...sushiLiquidityProviders,
+        LiquidityProviders.SushiSwapV2,
+        LiquidityProviders.SushiSwapV3,
         LiquidityProviders.ArbSwap,
         LiquidityProviders.RCPSwap,
+        LiquidityProviders.UniSwapV3,
+        LiquidityProviders.QuickSwap,
       ]
 
   const dataFetcher = DataFetcher.onChain(chainId)

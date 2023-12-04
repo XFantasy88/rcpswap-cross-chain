@@ -48,6 +48,7 @@ import { ethers } from "ethers"
 import { getEthersTransactionReceipt } from "@/utils/getEthersTransactionReceipt"
 import { SYMBIOSIS_CONFIRMATION_BLOCK_COUNT } from "@/config"
 import { StepType } from "@/components/TransactionConfirmationModal"
+import { ChainId } from "rcpswap/chain"
 
 export default function SwapTradeButton() {
   const {
@@ -74,9 +75,10 @@ export default function SwapTradeButton() {
     },
   } = useDerivedSwapTradeState()
 
-  const { data, isInitialLoading: isLoading } = useSwapTrade()
+  const { data, isLoading, isFetching } = useSwapTrade()
 
   const trade = data as UseTradeReturn
+
   const {
     data: symbiosis,
     error: symbiosisError,
@@ -89,6 +91,12 @@ export default function SwapTradeButton() {
     () => tryParseAmount(swapAmount, token0),
     [token0, swapAmount]
   )
+
+  const fetching =
+    (chainId0 === chainId1 ? isLoading || isFetching : isSymbiosisLoading) &&
+    token0 &&
+    token1 &&
+    swapAmount
 
   const [approvalState] = useTokenApproval({
     amount: parsedAmount,
@@ -171,6 +179,7 @@ export default function SwapTradeButton() {
               hash: data.hash,
               success: receipt.status === "success",
               summary: baseText,
+              chainId: chainId0,
             },
           },
           data.hash
@@ -460,7 +469,9 @@ export default function SwapTradeButton() {
           chainId0 === chainId1
             ? [
                 {
-                  title: "Sending the transaction to Arbitrum Nova",
+                  title: `Sending the transaction to ${
+                    chainId0 === ChainId.POLYGON ? "Polygon" : "Arbitrum Nova"
+                  }`,
                   desc: "Explore the Sent Transaction",
                   status: "pending",
                 },
@@ -468,7 +479,7 @@ export default function SwapTradeButton() {
             : [
                 {
                   title: `Sending the transaction to ${
-                    chainId0 === 137 ? "Polygon" : "Arbitrum Nova"
+                    chainId0 === ChainId.POLYGON ? "Polygon" : "Arbitrum Nova"
                   }`,
                   desc: "Explore the Sent Transaction",
                   status: "pending",
@@ -481,7 +492,7 @@ export default function SwapTradeButton() {
                 },
                 {
                   title: `Getting ${token1?.symbol} on ${
-                    chainId1 === 137 ? "Polygon" : "Arbitrum Nova"
+                    chainId1 === ChainId.POLYGON ? "Polygon" : "Arbitrum Nova"
                   }`,
                   desc: "Check in the Explorer",
                 },
@@ -536,7 +547,7 @@ export default function SwapTradeButton() {
             <Checker.Tokens tokens={[token0, token1]}>
               <Checker.Error
                 error={
-                  isLoading || isSymbiosisLoading
+                  fetching
                     ? "Fetching the best price"
                     : trade?.route?.status === RouteStatus.NoWay
                     ? "Insufficient liquidity for this trade."

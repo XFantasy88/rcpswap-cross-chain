@@ -52,7 +52,7 @@ export const ROUTE_PROCESSOR_3_ADDRESS: Record<
   `0x${string}`
 > = {
   [ChainId.ARBITRUM_NOVA]: "0x9186bf4f5f4b3192fbae5467758156ec479b2b50",
-  [ChainId.POLYGON]: "0x0a6e511Fe663827b9cA7e2D2542b20B37fC217A6",
+  [ChainId.POLYGON]: "0x2a9ed810a4229ec9e3d7f5c9f8385687be1f3eaf",
 } as const
 export const isRouteProcessor3ChainId = (
   chainId: ChainId

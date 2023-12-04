@@ -34,6 +34,7 @@ import { SYMBIOSIS_CONFIRMATION_BLOCK_COUNT } from "@/config"
 import { StepType } from "@/components/TransactionConfirmationModal"
 import { convertAmountFromSymbiosis } from "@/utils"
 import { Address, TransactionExecutionError, zeroAddress } from "viem"
+import { ChainId } from "rcpswap/chain"
 
 export default function SwapTradeConfirmModal() {
   const {
@@ -160,6 +161,7 @@ export default function SwapTradeConfirmModal() {
               hash: data.hash,
               success: receipt.status === "success",
               summary: baseText,
+              chainId: chainId0,
             },
           },
           data.hash
@@ -448,7 +450,9 @@ export default function SwapTradeConfirmModal() {
         chainId0 === chainId1
           ? [
               {
-                title: "Sending the transaction to Arbitrum Nova",
+                title: `Sending the transaction to ${
+                  chainId0 === ChainId.POLYGON ? "Polygon" : "Arbitrum Nova"
+                }`,
                 desc: "Explore the Sent Transaction",
                 status: "pending",
               },
@@ -456,7 +460,7 @@ export default function SwapTradeConfirmModal() {
           : [
               {
                 title: `Sending the transaction to ${
-                  chainId0 === 137 ? "Polygon" : "Arbitrum Nova"
+                  chainId0 === ChainId.POLYGON ? "Polygon" : "Arbitrum Nova"
                 }`,
                 desc: "Explore the Sent Transaction",
                 status: "pending",
@@ -469,7 +473,7 @@ export default function SwapTradeConfirmModal() {
               },
               {
                 title: `Getting ${token1?.symbol} on ${
-                  chainId1 === 137 ? "Polygon" : "Arbitrum Nova"
+                  chainId1 === ChainId.POLYGON ? "Polygon" : "Arbitrum Nova"
                 }`,
                 desc: "Check in the Explorer",
               },

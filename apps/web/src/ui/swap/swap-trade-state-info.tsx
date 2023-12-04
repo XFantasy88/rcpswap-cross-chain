@@ -41,6 +41,7 @@ export default function SwapTradeStateInfo() {
       recipient,
       chainId0,
       chainId1,
+      swapAmount,
     },
     mutate: { setUltraMode, setRecipient },
   } = useDerivedSwapState()
@@ -48,7 +49,7 @@ export default function SwapTradeStateInfo() {
 
   const toggleSettings = useToggleSettingsMenu()
 
-  const { data: trade, isInitialLoading: isLoading } = useSwapTrade()
+  const { data: trade, isLoading, isFetching } = useSwapTrade()
   const { data: symbiosisTrade, isInitialLoading: isSymbiosisLoading } =
     useSymbiosisTrade()
 
@@ -59,6 +60,12 @@ export default function SwapTradeStateInfo() {
 
   const isWrap = token0?.isNative && token1?.equals(token0.wrapped)
   const isUnwrap = token1?.isNative && token0?.equals(token1.wrapped)
+
+  const fetching =
+    (chainId0 === chainId1 ? isLoading || isFetching : isSymbiosisLoading) &&
+    token0 &&
+    token1 &&
+    swapAmount
 
   return (
     <>
@@ -214,7 +221,7 @@ export default function SwapTradeStateInfo() {
               </Text>
             </RowBetween>
           )}
-          {(isLoading || isSymbiosisLoading) && swapMode === 1 ? (
+          {fetching && swapMode === 1 ? (
             <Row
               align="center"
               color={theme?.text3}

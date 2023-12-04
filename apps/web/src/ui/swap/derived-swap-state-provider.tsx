@@ -85,32 +85,18 @@ const DerivedSwapStateProvider: FC<DerivedSwapStateProviderProps> = ({
 
   const _setChainId0 = useCallback<{ (_chainId: ChainId): void }>(
     (chainId) => {
-      if (
-        chainId !== ChainId.ARBITRUM_NOVA &&
-        chainId1 !== ChainId.ARBITRUM_NOVA
-      ) {
-        setChainId1(ChainId.ARBITRUM_NOVA)
-        setToken1(undefined)
-      }
       setChainId0(chainId)
       setToken0(undefined)
     },
-    [setChainId0, setToken0, setChainId1, chainId1]
+    [setChainId0, setToken0]
   )
 
   const _setChainId1 = useCallback<{ (_chainId: ChainId): void }>(
     (chainId) => {
-      if (
-        chainId !== ChainId.ARBITRUM_NOVA &&
-        chainId0 !== ChainId.ARBITRUM_NOVA
-      ) {
-        setChainId0(ChainId.ARBITRUM_NOVA)
-        setToken1(undefined)
-      }
       setChainId1(chainId)
       setToken1(undefined)
     },
-    [setChainId1, setToken1, setChainId0, chainId0]
+    [setChainId1, setToken1]
   )
 
   const _switchToken = useCallback(
