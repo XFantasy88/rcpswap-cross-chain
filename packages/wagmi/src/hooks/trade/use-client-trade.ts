@@ -224,7 +224,7 @@ export const useClientTrade = (variables: UseTradeParams) => {
           route.amountOutBI > bestSingleRoute.amountOutBI
             ? ((route.amountOutBI - bestSingleRoute.amountOutBI) * 3000n) /
                 10000n +
-              (bestSingleRoute.amountOutBI * 30n) / 10000n
+              (bestSingleRoute.amountOutBI * 100n) / 10000n
             : (bestSingleRoute.amountOutBI * 100n) / 10000n
 
         feeAmount = Amount.fromRawAmount(toToken, feeAmountBI)
