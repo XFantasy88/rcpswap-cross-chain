@@ -133,6 +133,7 @@ export default function SwapModalHeader({
                         Amount.fromRawAmount(trade.minAmountOut.currency, 0)
                     )
                     .toSignificant(6)}
+                  &nbsp;
                   {trade?.amountOut?.currency?.symbol}
                 </b>
                 {" or the transaction will revert."}
