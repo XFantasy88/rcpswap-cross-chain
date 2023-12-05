@@ -330,9 +330,6 @@ const useSymbiosisTrade = () => {
         maxDepth: ultraMode ? 1000 : 100,
       })
 
-      console.log(
-        (res?.tokenAmountOutMin as SymbiosisTokenAmount)?.raw?.toString()
-      )
       const amountOut = Amount.fromRawAmount(
         token1,
         (res?.tokenAmountOut as SymbiosisTokenAmount)?.raw?.toString() ?? "0"

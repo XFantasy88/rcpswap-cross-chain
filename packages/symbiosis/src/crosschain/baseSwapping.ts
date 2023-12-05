@@ -177,13 +177,15 @@ export abstract class BaseSwapping {
     }
 
     const tokenAmountOut = this.tokenAmountOut(feeV2)
-    const tokenAmountOutMin = new TokenAmount(
-      tokenAmountOut.token,
-      JSBI.divide(
-        JSBI.multiply(this.transit.amountOutMin.raw, tokenAmountOut.raw),
-        this.transit.amountOut.raw
-      )
-    )
+    // const tokenAmountOutMin = new TokenAmount(
+    //   tokenAmountOut.token,
+    //   JSBI.divide(
+    //     JSBI.multiply(this.transit.amountOutMin.raw, tokenAmountOut.raw),
+    //     this.transit.amountOut.raw
+    //   )
+    // )
+
+    const tokenAmountOutMin = this.tokenAmountOutMin(feeV2)
 
     const swapInfo: SwapInfo = {
       fee: crossChainFee,
@@ -364,6 +366,24 @@ export abstract class BaseSwapping {
           )
         }
         amount = JSBI.subtract(amount, feeV2.raw)
+      }
+      return new TokenAmount(this.tokenOut, amount)
+    }
+
+    return this.transit.amountOut
+  }
+
+  protected tokenAmountOutMin(feeV2?: TokenAmount | undefined): TokenAmount {
+    if (this.tradeC) {
+      return this.tradeC.amountOutMin
+    }
+    if (this.transit.isV2()) {
+      let amount = this.transit.amountOutMin.raw
+      if (feeV2) {
+        amount = JSBI.subtract(amount, feeV2.raw)
+        amount = JSBI.lessThan(amount, JSBI.BigInt("0"))
+          ? JSBI.BigInt("0")
+          : amount
       }
       return new TokenAmount(this.tokenOut, amount)
     }
