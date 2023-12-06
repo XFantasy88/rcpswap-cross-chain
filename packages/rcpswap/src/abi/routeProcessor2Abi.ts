@@ -70,6 +70,17 @@ export const routeProcessor2Abi = [
     type: "event",
   },
   {
+    inputs: [
+      { internalType: "int256", name: "amount0Delta", type: "int256" },
+      { internalType: "int256", name: "amount1Delta", type: "int256" },
+      { internalType: "bytes", name: "data", type: "bytes" },
+    ],
+    name: "algebraSwapCallback",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "feeWallet",
     outputs: [{ internalType: "address", name: "", type: "address" }],
@@ -120,7 +131,7 @@ export const routeProcessor2Abi = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "wallet", type: "address" }],
+    inputs: [{ internalType: "address", name: "_feeWallet", type: "address" }],
     name: "setFeeWallet",
     outputs: [],
     stateMutability: "nonpayable",

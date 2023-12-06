@@ -189,8 +189,8 @@ export const useClientTrade = (variables: UseTradeParams) => {
           amount.quotient,
           toToken,
           Number(feeData.gasPrice),
-          1,
-          [LiquidityProviders.QuickSwap]
+          100,
+          [LiquidityProviders.QuickSwapV2, LiquidityProviders.QuickSwapV3]
         )
 
         const bestSingleRoute = getBetterRouteExactIn(

@@ -20,7 +20,9 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
+    "@ethersproject/abi": "5.7.0",
     "@ethersproject/address": "5.7.0",
+    "@ethersproject/solidity": "5.7.0",
     "@rcpswap/router-config": "workspace:*",
     "@rcpswap/tines": "workspace:*",
     "@rcpswap/v2-sdk": "workspace:*",

@@ -11,7 +11,8 @@ export enum LiquidityProviders {
   RCPSwap = "RCPSwap",
   NativeWrap = "NativeWrap",
   UniSwapV3 = "UniSwapV3",
-  QuickSwap = "QuickSwap",
+  QuickSwapV2 = "QuickSwapV2",
+  QuickSwapV3 = "QuickSwapV3",
 }
 
 export abstract class LiquidityProvider {

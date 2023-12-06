@@ -1,13 +1,13 @@
-import { MultiRoute, RToken, RouteLeg, RouteStatus } from '@rcpswap/tines'
-import { ChainId } from 'rcpswap/chain'
-import { Hex } from 'viem'
+import { MultiRoute, RToken, RouteLeg, RouteStatus } from "@rcpswap/tines"
+import { ChainId } from "rcpswap/chain"
+import { Hex } from "viem"
 
-import { HEXer } from './HEXer'
-import { PoolCode } from './pools/PoolCode'
+import { HEXer } from "./HEXer"
+import { PoolCode } from "./pools/PoolCode"
 
 export enum TokenType {
-  NATIVE = 'NATIVE',
-  ERC20 = 'ERC20',
+  NATIVE = "NATIVE",
+  ERC20 = "ERC20",
 }
 
 export interface PermitData {
@@ -19,7 +19,7 @@ export interface PermitData {
 }
 
 export function getTokenType(token: RToken): TokenType {
-  return token.address === '' ? TokenType.NATIVE : TokenType.ERC20
+  return token.address === "" ? TokenType.NATIVE : TokenType.ERC20
 }
 
 export class TinesToRouteProcessor2 {
@@ -32,7 +32,7 @@ export class TinesToRouteProcessor2 {
   constructor(
     routeProcessorAddress: string,
     chainId: ChainId,
-    pools: Map<string, PoolCode>,
+    pools: Map<string, PoolCode>
   ) {
     this.routeProcessorAddress = routeProcessorAddress
     this.chainId = chainId
@@ -43,13 +43,13 @@ export class TinesToRouteProcessor2 {
     route: MultiRoute,
     toAddress: string,
     permits: PermitData[] = []
-  ): Hex | '' {
+  ): Hex | "" {
     // 0. Check for no route
-    if (route.status === RouteStatus.NoWay || route.legs.length === 0) return ''
+    if (route.status === RouteStatus.NoWay || route.legs.length === 0) return ""
 
     //this.presendedLegs = new Set()
     this.calcTokenOutputLegs(route)
-    let res = '0x'
+    let res = "0x"
 
     res += this.processPermits(permits)
 
@@ -60,7 +60,7 @@ export class TinesToRouteProcessor2 {
       processedTokens.add(token.tokenId)
 
       if (i > 0) {
-        if (token.address === '')
+        if (token.address === "")
           throw new Error(`unexpected native inside the route: ${token.symbol}`)
         if (this.isOnePoolOptimization(token, route))
           res += this.processOnePoolCode(token, route, toAddress)
@@ -68,15 +68,9 @@ export class TinesToRouteProcessor2 {
           res += this.processERC20Code(true, token, route, toAddress)
         else res += this.processBentoCode(token, route, toAddress)
       } else {
-        if (token.address === '')
+        if (token.address === "")
           res += this.processNativeCode(token, route, toAddress)
-        else
-          res += this.processERC20Code(
-            false,
-            token,
-            route,
-            toAddress,
-          )
+        else res += this.processERC20Code(false, token, route, toAddress)
       }
     })
 
@@ -100,12 +94,12 @@ export class TinesToRouteProcessor2 {
   processNativeCode(
     token: RToken,
     route: MultiRoute,
-    toAddress: string,
+    toAddress: string
   ): string {
     const outputLegs = this.tokenOutputLegs.get(token.tokenId as string)
     if (!outputLegs || outputLegs.length !== 1) {
       throw new Error(
-        `Not 1 output pool for native token: ${outputLegs?.length}`,
+        `Not 1 output pool for native token: ${outputLegs?.length}`
       )
     }
 
@@ -123,7 +117,7 @@ export class TinesToRouteProcessor2 {
     fromMe: boolean,
     token: RToken,
     route: MultiRoute,
-    toAddress: string,
+    toAddress: string
   ): string {
     const outputLegs = this.tokenOutputLegs.get(token.tokenId as string)
     if (!outputLegs || outputLegs.length === 0) {
@@ -144,7 +138,7 @@ export class TinesToRouteProcessor2 {
   processOnePoolCode(
     token: RToken,
     route: MultiRoute,
-    toAddress: string,
+    toAddress: string
   ): string {
     const outputLegs = this.tokenOutputLegs.get(token.tokenId as string)
     if (!outputLegs || outputLegs.length !== 1) {
@@ -161,7 +155,7 @@ export class TinesToRouteProcessor2 {
   processBentoCode(
     token: RToken,
     route: MultiRoute,
-    toAddress: string,
+    toAddress: string
   ): string {
     const outputLegs = this.tokenOutputLegs.get(token.tokenId as string)
     if (!outputLegs || outputLegs.length === 0) {
@@ -188,7 +182,7 @@ export class TinesToRouteProcessor2 {
   getPoolOutputAddress(
     l: RouteLeg,
     route: MultiRoute,
-    toAddress: string,
+    toAddress: string
   ): string {
     let outAddress
     const outputDistribution =
@@ -198,7 +192,7 @@ export class TinesToRouteProcessor2 {
     } else if (outputDistribution.length === 1) {
       outAddress = this.getPoolCode(outputDistribution[0]).getStartPoint(
         l,
-        route,
+        route
       )
       if (outAddress === PoolCode.RouteProcessorAddress)
         outAddress = this.routeProcessorAddress
@@ -216,7 +210,7 @@ export class TinesToRouteProcessor2 {
 
     const startPoint = this.getPoolCode(outputDistribution[0]).getStartPoint(
       outputDistribution[0],
-      route,
+      route
     )
     return startPoint === outputDistribution[0].poolAddress
   }
@@ -235,7 +229,7 @@ export class TinesToRouteProcessor2 {
     route.legs.forEach((l) => {
       const tokenId = l.tokenFrom.tokenId?.toString()
       if (tokenId === undefined) {
-        console.assert(0, 'Unseted tokenId')
+        console.assert(0, "Unseted tokenId")
       } else {
         const legsOutput = res.get(tokenId) || []
         legsOutput.push(l)
@@ -252,12 +246,12 @@ export function getRouteProcessor2Code(
   routeProcessorAddress: string,
   toAddress: string,
   pools: Map<string, PoolCode>,
-  permits: PermitData[] = [],
-): Hex | '' {
+  permits: PermitData[] = []
+): Hex | "" {
   const rpc = new TinesToRouteProcessor2(
     routeProcessorAddress,
     route.fromToken.chainId as ChainId,
-    pools,
+    pools
   )
   return rpc.getRouteProcessorCode(route, toAddress, permits)
 }

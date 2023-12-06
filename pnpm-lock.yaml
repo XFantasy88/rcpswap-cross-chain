@@ -507,7 +507,13 @@ importers:
 
   packages/router:
     dependencies:
+      '@ethersproject/abi':
+        specifier: 5.7.0
+        version: 5.7.0
       '@ethersproject/address':
+        specifier: 5.7.0
+        version: 5.7.0
+      '@ethersproject/solidity':
         specifier: 5.7.0
         version: 5.7.0
       '@rcpswap/router-config':

@@ -13,7 +13,7 @@ import { RCPSwapProvider } from "./liquidity-providers/RCPSwap"
 import { SushiSwapV2Provider } from "./liquidity-providers/SushiSwapV2"
 import { SushiSwapV3Provider } from "./liquidity-providers/SushiSwapV3"
 import type { PoolCode } from "./pools/PoolCode"
-import { QuickSwapProvider, UniswapV3Provider } from "."
+import { QuickSwapV2Provider, UniswapV3Provider, QuickSwapV3Provider } from "."
 
 // Gathers pools info, creates routing in 'incremental' mode
 // This means that new routing recalculates each time new pool fetching data comes
@@ -118,9 +118,18 @@ export class DataFetcher {
       }
     }
 
-    if (this._providerIsIncluded(LiquidityProviders.QuickSwap, providers)) {
+    if (this._providerIsIncluded(LiquidityProviders.QuickSwapV2, providers)) {
       try {
-        const provider = new QuickSwapProvider(this.chainId, this.web3Client)
+        const provider = new QuickSwapV2Provider(this.chainId, this.web3Client)
+        this.providers.push(provider)
+      } catch (e: unknown) {
+        console.warn(e)
+      }
+    }
+
+    if (this._providerIsIncluded(LiquidityProviders.QuickSwapV3, providers)) {
+      try {
+        const provider = new QuickSwapV3Provider(this.chainId, this.web3Client)
         this.providers.push(provider)
       } catch (e: unknown) {
         console.warn(e)
