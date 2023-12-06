@@ -2,7 +2,7 @@ import { RToken, UniV3Pool } from "@rcpswap/tines"
 import { FeeAmount, TICK_SPACINGS } from "@rcpswap/v3-sdk"
 import { erc20Abi, tickLensAbi } from "rcpswap/abi"
 import { ChainId } from "rcpswap/chain"
-import { Currency, Token, Type } from "rcpswap/currency"
+import { Token } from "rcpswap/currency"
 import { Address, PublicClient } from "viem"
 
 import { getCurrencyCombinations } from "../getCurrencyCombinations"
