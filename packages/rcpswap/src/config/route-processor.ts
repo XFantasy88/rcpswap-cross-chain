@@ -51,7 +51,7 @@ export const ROUTE_PROCESSOR_3_ADDRESS: Record<
   RouteProcessor3ChainId,
   `0x${string}`
 > = {
-  [ChainId.ARBITRUM_NOVA]: "0xd49Bf311Dec7946EF3169F12793e0bd1469cd12F",
+  [ChainId.ARBITRUM_NOVA]: "0x9186bf4f5f4b3192fbae5467758156ec479b2b50",
   [ChainId.POLYGON]: "0x7d2e410b5f0fd1620bac7ec62f10bbcfa2fd3d70",
 } as const
 export const isRouteProcessor3ChainId = (
