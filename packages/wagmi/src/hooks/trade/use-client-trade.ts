@@ -284,6 +284,8 @@ export const useClientTrade = (variables: UseTradeParams) => {
         let value =
           fromToken.isNative && writeArgs?.[1] ? writeArgs[1] : undefined
 
+        console.log(route)
+
         return new Promise((res) =>
           setTimeout(
             () =>

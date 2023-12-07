@@ -96,7 +96,8 @@ export default function SwapTradeButton() {
     (chainId0 === chainId1 ? isLoading || isFetching : isSymbiosisLoading) &&
     token0 &&
     token1 &&
-    swapAmount
+    swapAmount &&
+    +swapAmount > 0
 
   const [approvalState] = useTokenApproval({
     amount: parsedAmount,

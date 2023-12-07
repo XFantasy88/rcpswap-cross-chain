@@ -31,7 +31,7 @@ const ApproveERC20: FC<CheckerProps> = ({
     amount: rounded,
     spender: contract,
     enabled,
-    // approveMax: true,
+    approveMax: true,
   })
 
   useEffect(() => {

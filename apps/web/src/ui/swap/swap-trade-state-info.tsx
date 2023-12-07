@@ -65,7 +65,8 @@ export default function SwapTradeStateInfo() {
     (chainId0 === chainId1 ? isLoading || isFetching : isSymbiosisLoading) &&
     token0 &&
     token1 &&
-    swapAmount
+    swapAmount &&
+    +swapAmount > 0
 
   return (
     <>
