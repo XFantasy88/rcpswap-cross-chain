@@ -152,21 +152,26 @@ export default function SwapTradeConfirmModal() {
 
       addTransaction(address ?? "", chainId0, data.hash, baseText)
 
-      waitForTransaction({ hash: data.hash }).then((receipt) => {
-        finalizeTransaction(data.hash, "success", receipt)
+      waitForTransaction({ hash: data.hash })
+        .then((receipt) => {
+          finalizeTransaction(data.hash, "success", receipt)
 
-        addPopup(
-          {
-            txn: {
-              hash: data.hash,
-              success: receipt.status === "success",
-              summary: baseText,
-              chainId: chainId0,
+          addPopup(
+            {
+              txn: {
+                hash: data.hash,
+                success: receipt.status === "success",
+                summary: baseText,
+                chainId: chainId0,
+              },
             },
-          },
-          data.hash
-        )
-      })
+            data.hash
+          )
+        })
+        .catch((err) => {
+          console.log(err)
+          finalizeTransaction(data.hash, "failed")
+        })
     },
     onError: (error) => {
       setSwapErrorMessage(

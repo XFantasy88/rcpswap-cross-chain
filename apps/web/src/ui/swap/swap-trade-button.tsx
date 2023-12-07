@@ -171,21 +171,26 @@ export default function SwapTradeButton() {
 
       // symbiosisRef.current?.symbiosis?.waitForComplete()
 
-      waitForTransaction({ hash: data.hash }).then((receipt) => {
-        finalizeTransaction(data.hash, "success", receipt)
+      waitForTransaction({ hash: data.hash })
+        .then((receipt) => {
+          finalizeTransaction(data.hash, "success", receipt)
 
-        addPopup(
-          {
-            txn: {
-              hash: data.hash,
-              success: receipt.status === "success",
-              summary: baseText,
-              chainId: chainId0,
+          addPopup(
+            {
+              txn: {
+                hash: data.hash,
+                success: receipt.status === "success",
+                summary: baseText,
+                chainId: chainId0,
+              },
             },
-          },
-          data.hash
-        )
-      })
+            data.hash
+          )
+        })
+        .catch((err) => {
+          console.log(err)
+          finalizeTransaction(data.hash, "failed")
+        })
     },
     onError: (error) => {
       setSwapErrorMessage(
