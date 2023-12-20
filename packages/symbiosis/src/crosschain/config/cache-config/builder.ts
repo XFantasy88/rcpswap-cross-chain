@@ -29,7 +29,7 @@ import { Contract } from "@ethersproject/contracts"
 import ERC20 from "../../../abis/ERC20.json"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const fs = require("fs")
+// const fs = require("fs")
 
 export type Id = number
 
@@ -97,15 +97,15 @@ export class Builder {
       tokens,
       thresholds,
     } as ConfigCacheData)
-    fs.writeFile(
-      `./src/crosschain/config/cache/${this.configName}.json`,
-      jsonData,
-      function (err: any) {
-        if (err) {
-          console.log(err)
-        }
-      }
-    )
+    // fs.writeFile(
+    //   `./src/crosschain/config/cache/${this.configName}.json`,
+    //   jsonData,
+    //   function (err: any) {
+    //     if (err) {
+    //       console.log(err)
+    //     }
+    //   }
+    // )
   }
 
   // === private ===
