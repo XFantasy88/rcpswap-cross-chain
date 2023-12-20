@@ -86,3 +86,17 @@ export const SOLIDITY_TYPE_MAXIMA = {
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   ),
 }
+
+export const NATIVE_TOKEN_ADDRESS =
+  "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" as const
+export const NATIVE_TOKEN_ADDRESS_MAP: Partial<Record<ChainId, string>> =
+  {} as const
+
+export function getNativeTokenAddress(chainId: ChainId) {
+  const specificTokenAddress = NATIVE_TOKEN_ADDRESS_MAP[chainId]
+  if (specificTokenAddress) {
+    return specificTokenAddress
+  }
+
+  return NATIVE_TOKEN_ADDRESS
+}

@@ -1,4 +1,4 @@
-import { BaseSwapping, SwapExactIn } from "./baseSwapping"
+import { BaseSwapping, CrosschainSwapExactInResult } from "./baseSwapping"
 import { Token, TokenAmount, wrappedToken } from "../entities"
 import {
   MulticallRouter,
@@ -54,7 +54,7 @@ export class ZappingSyncSwapLaunchPool extends BaseSwapping {
     to,
     slippage,
     deadline,
-  }: ZappingSyncSwapLaunchPoolExactInParams): Promise<SwapExactIn> {
+  }: ZappingSyncSwapLaunchPoolExactInParams): Promise<CrosschainSwapExactInResult> {
     this.multicallRouter = this.symbiosis.multicallRouter(this.chainId)
     this.userAddress = to
 

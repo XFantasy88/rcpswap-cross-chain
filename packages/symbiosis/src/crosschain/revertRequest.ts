@@ -152,7 +152,7 @@ export const isSynthesizeV2 = async (
   txHash: string
 ): Promise<boolean> => {
   const id = utils.id(
-    "metaBurnSyntheticToken((uint256,uint256,address,address,address,bytes,uint256,address,address,address,address,uint256,bytes32))"
+    "metaBurnSyntheticToken((uint256,uint256,bytes32,address,address,address,bytes,uint256,address,address,address,address,uint256,bytes32))"
   )
   const hash = id.slice(2, 10)
   const tx = await symbiosis.getProvider(chainId).getTransaction(txHash)

@@ -212,7 +212,7 @@ export async function statelessWaitForComplete(
   chainId: ChainId,
   txId: string
 ): Promise<string> {
-  const txIdWithPrefix = txId
+  const txIdWithPrefix = txId.startsWith("0x") ? txId : `0x${txId}`
 
   console.log("tx", txIdWithPrefix)
   const aBridgeInfo = await getTxBridgeInfo(symbiosis, chainId, txIdWithPrefix)

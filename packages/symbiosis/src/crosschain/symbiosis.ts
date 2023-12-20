@@ -1,4 +1,4 @@
-import { StaticJsonRpcProvider } from "@ethersproject/providers"
+import { StaticJsonRpcProvider, Log } from "@ethersproject/providers"
 import { BigNumber, Signer, utils } from "ethers"
 import { fetch } from "@whatwg-node/fetch"
 import JSBI from "jsbi"
@@ -60,16 +60,22 @@ import { ZappingCream } from "./zappingCream"
 import { config as mainnet } from "./config/mainnet"
 import { config as testnet } from "./config/testnet"
 import { config as dev } from "./config/dev"
-import { config as bridge } from "./config/bridge"
+import { config as teleport } from "./config/teleport"
 import { BestPoolSwapping } from "./bestPoolSwapping"
-import { ConfigCache, OmniPoolInfo } from "./config/cache-config"
+import { ConfigCache } from "./config/cache/cache"
+import { OmniPoolInfo } from "./config/cache/builder"
 import { PendingRequest } from "./revertRequest"
 import {
   MakeOneInchRequestFn,
   makeOneInchRequestFactory,
 } from "./oneInchRequest"
+import {
+  SwapExactInParams,
+  swapExactIn,
+  SwapExactInResult,
+} from "./swapExactIn"
 
-export type ConfigName = "dev" | "testnet" | "mainnet" | "bridge"
+export type ConfigName = "dev" | "testnet" | "mainnet" | "teleport"
 
 const defaultFetch: typeof fetch = (url, init) => {
   return fetch(url, init)
@@ -98,8 +104,8 @@ export class Symbiosis {
       this.config = testnet
     } else if (config === "dev") {
       this.config = dev
-    } else if (config === "bridge") {
-      this.config = bridge
+    } else if (config === "teleport") {
+      this.config = teleport
     } else {
       throw new Error("Unknown config name")
     }
@@ -151,6 +157,12 @@ export class Symbiosis {
   public chains(): Chain[] {
     const ids = this.config.chains.map((i) => i.id)
     return chains.filter((i) => ids.includes(i.id))
+  }
+
+  public swapExactIn(
+    params: Omit<SwapExactInParams, "symbiosis">
+  ): Promise<SwapExactInResult> {
+    return swapExactIn({ symbiosis: this, ...params })
   }
 
   public newBridging() {
@@ -396,10 +408,11 @@ export class Symbiosis {
 
     if (!response.ok) {
       const text = await response.text()
-      throw new Error(text)
+      const json = JSON.parse(text)
+      throw new Error(json.message ?? text)
     }
 
-    const { price }: any = await response.json()
+    const { price } = await response.json()
 
     return JSBI.BigInt(price)
   }
@@ -502,6 +515,44 @@ export class Symbiosis {
     txId: string
   ): Promise<string> {
     return statelessWaitForComplete(this, chainId, txId)
+  }
+
+  public async findTransitTokenSent(
+    chainId: ChainId,
+    transactionHash: string
+  ): Promise<TokenAmount | undefined> {
+    const metarouter = this.metaRouter(chainId)
+    const providerTo = this.getProvider(chainId)
+
+    const receipt = await providerTo.getTransactionReceipt(transactionHash)
+
+    if (!receipt) {
+      return undefined
+    }
+
+    const eventId = utils.id("TransitTokenSent(address,uint256,address)")
+    const log = receipt.logs.find((log: Log) => {
+      return log.topics[0] === eventId
+    })
+
+    if (!log) {
+      return undefined
+    }
+
+    const parsedLog = metarouter.interface.parseLog(log)
+
+    const token = this.tokens().find((token: Token) => {
+      return (
+        token.chainId === chainId &&
+        token.address.toLowerCase() === parsedLog.args["token"].toLowerCase()
+      )
+    })
+
+    if (!token) {
+      return undefined
+    }
+
+    return new TokenAmount(token, parsedLog.args["amount"].toString())
   }
 
   getRevertableAddress(chainId: ChainId): string {

@@ -168,7 +168,7 @@ export class AggregatorTrade implements SymbiosisTrade {
       const inToken = tokenAmountIn.token
 
       console.log(
-        `No aggregetor trade found for ${inToken.chainId}/${inToken.address} -> ${tokenOut.chainId}/${tokenOut.address}. Fallback to unilike.`
+        `No aggregator trade found for ${inToken.chainId}/${inToken.address} -> ${tokenOut.chainId}/${tokenOut.address}. Fallback to unilike.`
       )
 
       this.trade = await this.buildUniLikeTrade()
@@ -181,7 +181,7 @@ export class AggregatorTrade implements SymbiosisTrade {
   }
 
   private assertTradeInitialized(): asserts this is {
-    trade: OneInchTrade | OpenOceanTrade
+    trade: OneInchTrade | OpenOceanTrade | UniLikeTrade | IzumiTrade
   } {
     if (!this.trade) {
       throw new TradeNotInitializedError()
@@ -277,5 +277,15 @@ export class AggregatorTrade implements SymbiosisTrade {
   get tradeType(): SymbiosisTradeType {
     this.assertTradeInitialized()
     return this.trade.tradeType
+  }
+
+  get functionSelector(): string | undefined {
+    this.assertTradeInitialized()
+
+    if ("functionSelector" in this.trade) {
+      return this.trade.functionSelector
+    }
+
+    return undefined
   }
 }

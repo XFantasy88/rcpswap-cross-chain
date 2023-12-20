@@ -1,4 +1,4 @@
-import { ChainId } from "../../constants"
+import { ChainId, getNativeTokenAddress } from "../../constants"
 import { Percent, Token, TokenAmount } from "../../entities"
 import { SymbiosisTrade } from "./symbiosisTrade"
 import { getMinAmount } from "../utils"
@@ -26,8 +26,6 @@ const OPEN_OCEAN_NETWORKS: Partial<Record<ChainId, string>> = {
   [ChainId.MATIC_MAINNET]: "polygon",
 }
 
-const NATIVE_TOKEN_ADDRESS =
-  "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" as const
 const BASE_URL = "https://open-api.openocean.finance/v3"
 
 export class OpenOceanTrade implements SymbiosisTrade {
@@ -80,12 +78,12 @@ export class OpenOceanTrade implements SymbiosisTrade {
 
     let fromTokenAddress = this.tokenAmountIn.token.address
     if (this.tokenAmountIn.token.isNative) {
-      fromTokenAddress = NATIVE_TOKEN_ADDRESS
+      fromTokenAddress = getNativeTokenAddress(this.tokenAmountIn.token.chainId)
     }
 
     let toTokenAddress = this.tokenOut.address
     if (this.tokenOut.isNative) {
-      toTokenAddress = NATIVE_TOKEN_ADDRESS
+      toTokenAddress = getNativeTokenAddress(this.tokenOut.chainId)
     }
 
     const url = new URL(`${this.endpoint}/swap_quote`)
@@ -106,7 +104,7 @@ export class OpenOceanTrade implements SymbiosisTrade {
       const text = await response.text()
       throw new Error(`Cannot build OpenOcean trade: ${text}`)
     }
-    const json: any = await response.json()
+    const json = await response.json()
 
     if (json.code !== 200) {
       throw new Error(`Cannot build OpenOcean trade: ${JSON.stringify(json)}}`)

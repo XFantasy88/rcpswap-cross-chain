@@ -6,6 +6,8 @@ export type SymbiosisTradeType =
   | "open-ocean"
   | "wrap"
   | "izumi"
+  | "okx"
+  | "thor-chain"
 
 export interface SymbiosisTrade {
   init(): Promise<this>
@@ -18,4 +20,5 @@ export interface SymbiosisTrade {
   priceImpact: Percent
   routerAddress: string
   callDataOffset?: number
+  functionSelector?: string
 }

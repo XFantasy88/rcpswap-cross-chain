@@ -1,4 +1,4 @@
-import { ChainId } from "../../constants"
+import { ChainId, getNativeTokenAddress } from "../../constants"
 import { Percent, Token, TokenAmount } from "../../entities"
 import { OneInchOracle } from "../contracts"
 import { DataProvider } from "../dataProvider"
@@ -15,9 +15,6 @@ interface Protocol {
   img: string
   img_color: string
 }
-
-const NATIVE_TOKEN_ADDRESS =
-  "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" as const
 
 export class OneInchTrade implements SymbiosisTrade {
   tradeType = "1inch" as const
@@ -69,12 +66,12 @@ export class OneInchTrade implements SymbiosisTrade {
   public async init() {
     let fromTokenAddress = this.tokenAmountIn.token.address
     if (this.tokenAmountIn.token.isNative) {
-      fromTokenAddress = NATIVE_TOKEN_ADDRESS
+      fromTokenAddress = getNativeTokenAddress(this.tokenAmountIn.token.chainId)
     }
 
     let toTokenAddress = this.tokenOut.address
     if (this.tokenOut.isNative) {
-      toTokenAddress = NATIVE_TOKEN_ADDRESS
+      toTokenAddress = getNativeTokenAddress(this.tokenOut.chainId)
     }
 
     const protocolsOrigin = await this.dataProvider.getOneInchProtocols(
@@ -91,7 +88,7 @@ export class OneInchTrade implements SymbiosisTrade {
     searchParams.set("dst", toTokenAddress)
     searchParams.set("amount", this.tokenAmountIn.raw.toString())
     searchParams.set("from", this.from)
-    searchParams.set("slippage", (this.slippage / 100).toFixed(2))
+    searchParams.set("slippage", (this.slippage / 100).toString())
     searchParams.set("receiver", this.to)
     searchParams.set("disableEstimate", "true")
     searchParams.set("allowPartialFill", "false")

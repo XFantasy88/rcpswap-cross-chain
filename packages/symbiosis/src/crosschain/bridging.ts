@@ -17,8 +17,9 @@ import {
 import { WaitForComplete } from "./waitForComplete"
 import { Error, ErrorCode } from "./error"
 import { Portal__factory, Synthesis__factory } from "./contracts"
+import { CROSS_CHAIN_ID } from "./constants"
 
-export type RequestNetworkType = "evm" | "tron"
+export type RequestNetworkType = "evm"
 
 export type WaitForMined = Promise<{
   receipt: TransactionReceipt
@@ -30,16 +31,14 @@ export type Execute = Promise<{
   waitForMined: () => WaitForMined
 }>
 
-export type BridgeExactIn = Promise<
-  {
-    fee: TokenAmount
-    tokenAmountOut: TokenAmount
-  } & {
-    type: "evm"
-    execute: (signer: Signer) => Execute
-    transactionRequest: TransactionRequest
-  }
->
+export type BridgeExactInResult = {
+  fee: TokenAmount
+  tokenAmountOut: TokenAmount
+} & {
+  type: "evm"
+  execute: (signer: Signer) => Execute
+  transactionRequest: TransactionRequest
+}
 
 export type BridgeExactInParams = {
   tokenAmountIn: TokenAmount
@@ -68,7 +67,7 @@ export class Bridging {
     tokenAmountIn,
     tokenOut,
     to,
-  }: BridgeExactInParams): BridgeExactIn {
+  }: BridgeExactInParams): Promise<BridgeExactInResult> {
     this.symbiosis.validateSwapAmounts(tokenAmountIn)
 
     this.tokenAmountIn = tokenAmountIn
@@ -253,6 +252,7 @@ export class Bridging {
       [
         "1", // _stableBridgingFee,
         externalId, // externalID,
+        CROSS_CHAIN_ID, // crossChainID
         token.address, // _token,
         chainIdIn, // block.chainid,
         this.tokenAmountIn.raw.toString(), // _amount,
@@ -298,6 +298,7 @@ export class Bridging {
     const calldata = portalInterface.encodeFunctionData("unsynthesize", [
       "1", // _stableBridgingFee,
       externalId, // externalID,
+      CROSS_CHAIN_ID, // crossChainID
       this.tokenOut.address, // rtoken,
       this.tokenAmountIn.raw.toString(), // _amount,
       this.to, // _chain2address

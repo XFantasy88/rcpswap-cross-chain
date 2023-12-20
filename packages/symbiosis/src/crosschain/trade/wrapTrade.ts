@@ -1,6 +1,7 @@
 import { ChainId } from "../../constants"
 import { Percent, Token, TokenAmount, wrappedToken } from "../../entities"
 import { Unwrapper__factory, Weth__factory } from "../contracts"
+import { getFunctionSelector } from "../tron"
 import type { SymbiosisTrade } from "./symbiosisTrade"
 
 const UNWRAP_ADDRESSES: Partial<Record<ChainId, string>> = {
@@ -18,6 +19,7 @@ export class WrapTrade implements SymbiosisTrade {
   public callData!: string
   public routerAddress!: string
   public callDataOffset?: number
+  public functionSelector!: string
 
   public constructor(
     public tokenAmountIn: TokenAmount,
@@ -58,6 +60,9 @@ export class WrapTrade implements SymbiosisTrade {
       this.routerAddress = wethToken.address
 
       this.callData = wethInterface.encodeFunctionData("deposit")
+      this.functionSelector = getFunctionSelector(
+        wethInterface.getFunction("deposit")
+      )
       return this
     }
 
@@ -77,6 +82,9 @@ export class WrapTrade implements SymbiosisTrade {
       this.tokenAmountIn.raw.toString(),
       this.to,
     ])
+    this.functionSelector = getFunctionSelector(
+      unwrapperInterface.getFunction("unwrap")
+    )
     this.callDataOffset = 4 + 32
 
     return this

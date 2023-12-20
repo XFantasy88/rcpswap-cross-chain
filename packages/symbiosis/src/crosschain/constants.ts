@@ -2,6 +2,9 @@ import JSBI from "jsbi"
 import { ChainId } from "../constants"
 import { Percent, Token, WETH } from "../entities"
 
+export const CROSS_CHAIN_ID =
+  "0x0000000000000000000000000000000000000000000000000000000000000000"
+
 export const CHAINS_PRIORITY = [ChainId.MATIC_MAINNET, ChainId.ARBITRUM_NOVA]
 
 // a list of tokens by chain
@@ -10,7 +13,6 @@ type ChainTokensList = {
 }
 
 export const XFUSION_CHAINS: ChainId[] = [ChainId.ARBITRUM_NOVA]
-
 export const ONE_INCH_CHAINS: ChainId[] = [ChainId.MATIC_MAINNET]
 
 export const ONE_INCH_ORACLE_MAP: { [chainId in ChainId]?: string } = {

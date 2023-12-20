@@ -18,7 +18,7 @@ export default function Logo({ srcs, ...rest }: LogoProps) {
 
   if (src) {
     return (
-      <Image
+      <img
         {...rest}
         src={src}
         onError={() => {

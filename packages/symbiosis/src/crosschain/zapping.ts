@@ -10,7 +10,7 @@ import { Signer, BigNumber } from "ethers"
 import JSBI from "jsbi"
 import { Percent, Token, TokenAmount, wrappedToken } from "../entities"
 import { Execute, WaitForMined } from "./bridging"
-import { BIPS_BASE } from "./constants"
+import { BIPS_BASE, CROSS_CHAIN_ID } from "./constants"
 import { Error, ErrorCode } from "./error"
 import type { Symbiosis } from "./symbiosis"
 import { AggregatorTrade, SymbiosisTradeType } from "./trade"
@@ -382,6 +382,7 @@ export class Zapping {
         {
           stableBridgingFee: "1",
           amount: amount.raw.toString(),
+          crossChainID: CROSS_CHAIN_ID,
           externalID: externalId,
           tokenReal: amount.token.address,
           chainID: chainIdIn,

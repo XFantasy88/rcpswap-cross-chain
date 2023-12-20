@@ -35,6 +35,7 @@ import { StepType } from "@/components/TransactionConfirmationModal"
 import { convertAmountFromSymbiosis } from "@/utils"
 import { Address, TransactionExecutionError, zeroAddress } from "viem"
 import { ChainId } from "rcpswap/chain"
+import { Symbiosis } from "@rcpswap/symbiosis"
 
 export default function SwapTradeConfirmModal() {
   const {
@@ -293,6 +294,7 @@ export default function SwapTradeConfirmModal() {
             const symbiosisData = await symbiosisRef.current?.symbiosis
               ?.waitForComplete(getEthersTransactionReceipt(receipt))
               .then(async (log: any) => {
+                console.log(log)
                 unwatch?.()
                 newSteps[1] = {
                   ...newSteps[1],
@@ -305,8 +307,14 @@ export default function SwapTradeConfirmModal() {
                 if (!log || !swapData) return
                 const expectedTokenOut = swapData.amountOut?.currency
 
+                const symbiosisObj = new Symbiosis(
+                  "mainnet",
+                  "rcpswap-cross-chain"
+                )
+
                 const transitTokenSent =
-                  await symbiosisRef.current?.symbiosis?.findTransitTokenSent(
+                  await symbiosisObj.findTransitTokenSent(
+                    chainId1,
                     log.transactionHash
                   )
 

@@ -1,4 +1,4 @@
-const defaultNextConfig = require("@rcpswap/nextjs-config");
+const defaultNextConfig = require("@rcpswap/nextjs-config")
 
 module.exports = {
   ...defaultNextConfig,
@@ -11,4 +11,4 @@ module.exports = {
       },
     ],
   },
-};
+}

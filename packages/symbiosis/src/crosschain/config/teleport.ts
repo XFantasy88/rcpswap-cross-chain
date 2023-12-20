@@ -2,7 +2,7 @@ import { Config } from "../types"
 
 export const config: Config = {
   advisor: {
-    url: "https://api.bridge.symbiosis.finance/calculations",
+    url: "https://api.teleport.symbiosis.finance/calculations",
   },
   omniPools: [
     {
@@ -24,7 +24,7 @@ export const config: Config = {
       id: 137,
       rpc: "https://rpc.ankr.com/polygon",
       filterBlockOffset: 2000,
-      waitForBlocksCount: 60,
+      waitForBlocksCount: 17,
       stables: [
         {
           name: "XDAO",

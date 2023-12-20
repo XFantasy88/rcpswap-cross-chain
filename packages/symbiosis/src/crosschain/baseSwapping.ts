@@ -4,10 +4,10 @@ import {
   TransactionReceipt,
   TransactionRequest,
 } from "@ethersproject/providers"
-import { BigNumber, utils } from "ethers"
+import { BigNumber } from "ethers"
 import JSBI from "jsbi"
 import { Percent, Token, TokenAmount, wrappedToken } from "../entities"
-import { BIPS_BASE } from "./constants"
+import { BIPS_BASE, CROSS_CHAIN_ID } from "./constants"
 import { Portal__factory, Synthesis, Synthesis__factory } from "./contracts"
 import { DataProvider } from "./dataProvider"
 import type { Symbiosis } from "./symbiosis"
@@ -23,7 +23,6 @@ import { WaitForComplete } from "./waitForComplete"
 import { Error, ErrorCode } from "./error"
 import { SymbiosisTrade } from "./trade/symbiosisTrade"
 import { OneInchProtocols } from "./trade/oneInchTrade"
-
 import { OmniPoolConfig } from "./types"
 
 export interface SwapExactInParams {
@@ -37,7 +36,7 @@ export interface SwapExactInParams {
   maxDepth?: number
 }
 
-interface SwapInfo {
+export interface CrossChainSwapInfo {
   fee: TokenAmount
   tokenAmountOut: TokenAmount
   tokenAmountOutMin: TokenAmount
@@ -49,12 +48,12 @@ interface SwapInfo {
   outTradeType?: SymbiosisTradeType
 }
 
-export type EthSwapExactIn = SwapInfo & {
+export type EthSwapExactIn = CrossChainSwapInfo & {
   type: "evm"
   transactionRequest: TransactionRequest
 }
 
-export type SwapExactIn = EthSwapExactIn
+export type CrosschainSwapExactInResult = EthSwapExactIn
 
 export abstract class BaseSwapping {
   public amountInUsd: TokenAmount | undefined
@@ -104,7 +103,7 @@ export abstract class BaseSwapping {
     deadline,
     oneInchProtocols,
     maxDepth,
-  }: SwapExactInParams): Promise<SwapExactIn> {
+  }: SwapExactInParams): Promise<CrosschainSwapExactInResult> {
     this.oneInchProtocols = oneInchProtocols
     this.tokenAmountIn = tokenAmountIn
     this.tokenOut = tokenOut
@@ -136,6 +135,8 @@ export abstract class BaseSwapping {
     this.transit = this.buildTransit()
     await this.transit.init()
 
+    await this.doPostTransitAction()
+
     this.amountInUsd = this.transit.getBridgeAmountIn()
 
     if (!this.transitTokenOut.equals(tokenOut)) {
@@ -156,8 +157,9 @@ export abstract class BaseSwapping {
     this.transit = this.buildTransit(fee)
     await this.transit.init()
 
+    await this.doPostTransitAction()
     if (!this.transitTokenOut.equals(tokenOut)) {
-      this.tradeC = this.buildTradeC(feeV2)
+      this.tradeC = this.buildTradeC()
       await this.tradeC.init()
     }
     // <<< NOTE create trades with calculated fee
@@ -177,17 +179,15 @@ export abstract class BaseSwapping {
     }
 
     const tokenAmountOut = this.tokenAmountOut(feeV2)
-    // const tokenAmountOutMin = new TokenAmount(
-    //   tokenAmountOut.token,
-    //   JSBI.divide(
-    //     JSBI.multiply(this.transit.amountOutMin.raw, tokenAmountOut.raw),
-    //     this.transit.amountOut.raw
-    //   )
-    // )
+    const tokenAmountOutMin = new TokenAmount(
+      tokenAmountOut.token,
+      JSBI.divide(
+        JSBI.multiply(this.transit.amountOutMin.raw, tokenAmountOut.raw),
+        this.transit.amountOut.raw
+      )
+    )
 
-    const tokenAmountOutMin = this.tokenAmountOutMin(feeV2)
-
-    const swapInfo: SwapInfo = {
+    const swapInfo: CrossChainSwapInfo = {
       fee: crossChainFee,
       tokenAmountOut,
       tokenAmountOutMin,
@@ -211,6 +211,9 @@ export abstract class BaseSwapping {
   private getRevertableAddress(side: "AB" | "BC"): string {
     return this.revertableAddresses[side]
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected async doPostTransitAction() {}
 
   protected buildDetailedSlippage(totalSlippage: number): DetailedSlippage {
     const hasTradeA = !this.transitTokenIn.equals(this.tokenAmountIn.token)
@@ -259,41 +262,6 @@ export abstract class BaseSwapping {
       revertableAddress: this.getRevertableAddress("AB"),
       chainIdIn: this.tokenAmountIn.token.chainId,
     }).waitForComplete(receipt)
-  }
-
-  public async findTransitTokenSent(
-    transactionHash: string
-  ): Promise<TokenAmount | undefined> {
-    const chainId = this.tokenOut.chainId
-    const metarouter = this.symbiosis.metaRouter(chainId)
-    const providerTo = this.symbiosis.getProvider(chainId)
-    const receipt = await providerTo.getTransactionReceipt(transactionHash)
-    if (!receipt) {
-      return undefined
-    }
-    const eventId = utils.id("TransitTokenSent(address,uint256,address)")
-    const log = receipt.logs.find((i: Log) => {
-      return i.topics[0] === eventId
-    })
-
-    if (!log) {
-      return undefined
-    }
-
-    const parsedLog = metarouter.interface.parseLog(log)
-
-    const token = this.symbiosis.tokens().find((i: Token) => {
-      return (
-        i.chainId === chainId &&
-        i.address.toLowerCase() === parsedLog.args["token"].toLowerCase()
-      )
-    })
-
-    if (!token) {
-      return undefined
-    }
-
-    return new TokenAmount(token, parsedLog.args["amount"].toString())
   }
 
   protected getEvmTransactionRequest(
@@ -373,24 +341,6 @@ export abstract class BaseSwapping {
     return this.transit.amountOut
   }
 
-  protected tokenAmountOutMin(feeV2?: TokenAmount | undefined): TokenAmount {
-    if (this.tradeC) {
-      return this.tradeC.amountOutMin
-    }
-    if (this.transit.isV2()) {
-      let amount = this.transit.amountOutMin.raw
-      if (feeV2) {
-        amount = JSBI.subtract(amount, feeV2.raw)
-        amount = JSBI.lessThan(amount, JSBI.BigInt("0"))
-          ? JSBI.BigInt("0")
-          : amount
-      }
-      return new TokenAmount(this.tokenOut, amount)
-    }
-
-    return this.transit.amountOut
-  }
-
   protected buildTradeA(): SymbiosisTrade {
     const tokenOut = this.transitTokenIn
 
@@ -439,26 +389,37 @@ export abstract class BaseSwapping {
     return this.to
   }
 
-  protected buildTradeC(feeV2?: TokenAmount) {
+  protected getTradeCAmountIn(): TokenAmount {
     let amountIn = this.transit.amountOut
 
     if (this.transit.isV2()) {
       let amountRaw = amountIn.raw
-      if (feeV2) {
-        if (amountIn.lessThan(feeV2)) {
+      if (this.feeV2) {
+        if (amountIn.lessThan(this.feeV2)) {
           throw new Error(
             `Amount ${amountIn.toSignificant()} ${
               amountIn.token.symbol
-            } less than fee ${feeV2.toSignificant()} ${feeV2.token.symbol}`,
+            } less than fee ${this.feeV2.toSignificant()} ${
+              this.feeV2.token.symbol
+            }`,
             ErrorCode.AMOUNT_LESS_THAN_FEE
           )
         }
-        amountRaw = JSBI.subtract(amountRaw, feeV2.raw)
+        amountRaw = JSBI.subtract(amountRaw, this.feeV2.raw)
       }
       amountIn = new TokenAmount(this.transitTokenOut, amountRaw)
     }
+    return amountIn
+  }
+
+  protected buildTradeC() {
+    const amountIn = this.getTradeCAmountIn()
 
     const chainId = this.tokenOut.chainId
+
+    if (WrapTrade.isSupported(amountIn, this.tokenOut)) {
+      return new WrapTrade(amountIn, this.tokenOut, this.to)
+    }
 
     const from = this.symbiosis.metaRouter(chainId).address
     return new AggregatorTrade({
@@ -509,6 +470,7 @@ export abstract class BaseSwapping {
           stableBridgingFee: fee.raw.toString(),
           amount: amount.raw.toString(),
           syntCaller: this.from,
+          crossChainID: CROSS_CHAIN_ID,
           finalReceiveSide: this.finalReceiveSide(),
           sToken: amount.token.address,
           finalCallData: this.finalCalldata(),
@@ -612,6 +574,7 @@ export abstract class BaseSwapping {
         {
           stableBridgingFee: "0",
           amount: amount.raw.toString(),
+          crossChainID: CROSS_CHAIN_ID,
           externalID: externalId,
           tokenReal: amount.token.address,
           chainID: chainIdIn,
@@ -661,6 +624,7 @@ export abstract class BaseSwapping {
 
     const calldata = portalInterface.encodeFunctionData("metaUnsynthesize", [
       "0", // _stableBridgingFee
+      CROSS_CHAIN_ID, // crossChainID
       externalId, // _externalID,
       this.to, // _to
       amount.raw.toString(), // _amount
@@ -697,6 +661,7 @@ export abstract class BaseSwapping {
 
     const calldata = portalInterface.encodeFunctionData("metaUnsynthesize", [
       "0", // _stableBridgingFee
+      CROSS_CHAIN_ID, // crossChainID
       externalId, // _externalID,
       this.to, // _to
       this.transit.amountOut.raw.toString(), // _amount
@@ -801,6 +766,7 @@ export abstract class BaseSwapping {
           amount: this.transit.amountOut.raw.toString(), // uint256 amount;
           syntCaller: this.symbiosis.metaRouter(this.omniPoolConfig.chainId)
             .address, // address syntCaller;
+          crossChainID: CROSS_CHAIN_ID,
           finalReceiveSide: this.finalReceiveSide(), // address finalReceiveSide;
           sToken: this.transit.amountOut.token.address, // address sToken;
           finalCallData: this.finalCalldata(), // bytes finalCallData;

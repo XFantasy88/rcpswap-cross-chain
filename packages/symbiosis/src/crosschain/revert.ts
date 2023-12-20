@@ -18,9 +18,10 @@ import { WaitForComplete } from "./waitForComplete"
 import { OmniTrade } from "./trade"
 import { OmniPoolConfig } from "./types"
 import { PendingRequest } from "./revertRequest"
+import { CROSS_CHAIN_ID } from "./constants"
 
 type RevertBase = {
-  type: "evm"
+  type: "tron" | "evm"
   fee: TokenAmount
 }
 export type EvmRevertResponse = RevertBase & {
@@ -212,6 +213,7 @@ export class RevertPending {
 
     const calldata = portal.interface.encodeFunctionData("metaUnsynthesize", [
       "0", // _stableBridgingFee
+      CROSS_CHAIN_ID, // crossChainID
       externalId, // _externalID,
       revertableAddress, // _to
       fromTokenAmount.raw.toString(), // _amount
@@ -244,6 +246,7 @@ export class RevertPending {
         {
           stableBridgingFee: feeV2 ? feeV2.raw.toString() : "0",
           amount: "0",
+          crossChainID: CROSS_CHAIN_ID,
           syntCaller: metarouter.address,
           finalReceiveSide: AddressZero,
           sToken: synth.address,

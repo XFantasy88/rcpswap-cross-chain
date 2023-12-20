@@ -159,7 +159,7 @@ export function calculatePriceImpact(
   const amountIn = tokenAmountIn.raw
   const amountOut = JSBI.BigInt(typedValueParsed)
 
-  const diff = JSBI.subtract(amountIn, amountOut)
+  const diff = JSBI.subtract(amountOut, amountIn)
   const value = JSBI.divide(JSBI.multiply(diff, BIPS_BASE), amountIn)
   return new Percent(value, BIPS_BASE)
 }
