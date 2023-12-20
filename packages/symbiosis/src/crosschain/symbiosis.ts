@@ -62,7 +62,7 @@ import { config as testnet } from "./config/testnet"
 import { config as dev } from "./config/dev"
 import { config as teleport } from "./config/teleport"
 import { BestPoolSwapping } from "./bestPoolSwapping"
-import { ConfigCache, OmniPoolInfo } from "./config/cache/index"
+import { ConfigCache, OmniPoolInfo } from "./config/cache-config"
 import { PendingRequest } from "./revertRequest"
 import {
   MakeOneInchRequestFn,
