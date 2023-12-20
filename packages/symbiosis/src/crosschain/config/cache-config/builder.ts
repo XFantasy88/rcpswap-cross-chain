@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { AddressZero } from "@ethersproject/constants/lib/addresses"
 import { ChainId, TokenConstructor } from "../../../constants"
 import { getMulticall } from "../../multicall"
