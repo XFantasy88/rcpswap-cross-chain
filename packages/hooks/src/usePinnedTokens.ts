@@ -1,6 +1,6 @@
-import { getAddress as _getAddress, isAddress } from '@ethersproject/address'
-import { Children, useCallback, useEffect, useMemo } from 'react'
-import { ChainId } from 'rcpswap/chain'
+import { getAddress as _getAddress, isAddress } from "@ethersproject/address"
+import { Children, useCallback, useEffect, useMemo } from "react"
+import { ChainId } from "rcpswap/chain"
 import {
   ARB,
   BRICK,
@@ -14,9 +14,9 @@ import {
   WBTC,
   WETH9,
   WNATIVE,
-} from 'rcpswap/currency'
+} from "rcpswap/currency"
 
-import { useLocalStorage } from './useLocalStorage'
+import { useLocalStorage } from "./useLocalStorage"
 
 export const COMMON_BASES = {
   [ChainId.POLYGON]: [
@@ -27,6 +27,14 @@ export const COMMON_BASES = {
     USDC[ChainId.POLYGON],
     USDT[ChainId.POLYGON],
     DAI[ChainId.POLYGON],
+  ],
+  [ChainId.ARBITRUM_ONE]: [
+    Native.onChain(ChainId.ARBITRUM_ONE),
+    WNATIVE[ChainId.ARBITRUM_ONE],
+    WBTC[ChainId.ARBITRUM_ONE],
+    USDC[ChainId.ARBITRUM_ONE],
+    USDT[ChainId.ARBITRUM_ONE],
+    DAI[ChainId.ARBITRUM_ONE],
   ],
   [ChainId.ARBITRUM_NOVA]: [
     Native.onChain(ChainId.ARBITRUM_NOVA),
@@ -50,14 +58,14 @@ const COMMON_BASES_IDS = Object.entries(COMMON_BASES).reduce<
 }, {} as Record<ChainId, string[]>)
 
 function getAddress(address: string) {
-  if (address === 'NATIVE') return 'NATIVE'
+  if (address === "NATIVE") return "NATIVE"
   return _getAddress(address)
 }
 
 export const usePinnedTokens = () => {
   const [value, setValue] = useLocalStorage(
-    'sushi.pinnedTokens',
-    COMMON_BASES_IDS,
+    "sushi.pinnedTokens",
+    COMMON_BASES_IDS
   )
 
   // useEffect(() => {
@@ -83,44 +91,44 @@ export const usePinnedTokens = () => {
 
   const addPinnedToken = useCallback(
     (currencyId: string) => {
-      const [chainId, address] = currencyId.split(':')
+      const [chainId, address] = currencyId.split(":")
       setValue((value) => {
         value[chainId] = Array.from(
-          new Set([...value[chainId], `${chainId}:${getAddress(address)}`]),
+          new Set([...value[chainId], `${chainId}:${getAddress(address)}`])
         )
         return value
       })
     },
-    [setValue],
+    [setValue]
   )
 
   const removePinnedToken = useCallback(
     (currencyId: string) => {
-      const [chainId, address] = currencyId.split(':')
+      const [chainId, address] = currencyId.split(":")
       setValue((value) => {
         value[chainId] = Array.from(
           new Set(
             value[chainId].filter(
-              (token) => token !== `${chainId}:${getAddress(address)}`,
-            ),
-          ),
+              (token) => token !== `${chainId}:${getAddress(address)}`
+            )
+          )
         )
         return value
       })
     },
-    [setValue],
+    [setValue]
   )
 
   const hasToken = useCallback(
     (currency: Currency | string) => {
-      if (typeof currency === 'string') {
-        if (!currency.includes(':')) {
-          throw new Error('Address provided instead of id')
+      if (typeof currency === "string") {
+        if (!currency.includes(":")) {
+          throw new Error("Address provided instead of id")
         }
 
-        const [chainId, address] = currency.split(':')
-        if (address !== 'NATIVE' && !isAddress(address)) {
-          throw new Error('Address provided not a valid ERC20 address')
+        const [chainId, address] = currency.split(":")
+        if (address !== "NATIVE" && !isAddress(address)) {
+          throw new Error("Address provided not a valid ERC20 address")
         }
 
         return value?.[chainId]?.includes(`${chainId}:${getAddress(address)}`)
@@ -128,15 +136,15 @@ export const usePinnedTokens = () => {
 
       return !!value?.[currency.chainId]?.includes(currency.id)
     },
-    [value],
+    [value]
   )
 
   const mutate = useCallback(
-    (type: 'add' | 'remove', currencyId: string) => {
-      if (type === 'add') addPinnedToken(currencyId)
-      if (type === 'remove') removePinnedToken(currencyId)
+    (type: "add" | "remove", currencyId: string) => {
+      if (type === "add") addPinnedToken(currencyId)
+      if (type === "remove") removePinnedToken(currencyId)
     },
-    [addPinnedToken, removePinnedToken],
+    [addPinnedToken, removePinnedToken]
   )
 
   return useMemo(() => {

@@ -5,7 +5,11 @@ import { Percent, Token, WETH } from "../entities"
 export const CROSS_CHAIN_ID =
   "0x0000000000000000000000000000000000000000000000000000000000000000"
 
-export const CHAINS_PRIORITY = [ChainId.MATIC_MAINNET, ChainId.ARBITRUM_NOVA]
+export const CHAINS_PRIORITY = [
+  ChainId.MATIC_MAINNET,
+  ChainId.ARBITRUM_ONE,
+  ChainId.ARBITRUM_NOVA,
+]
 
 // a list of tokens by chain
 type ChainTokensList = {
@@ -13,16 +17,21 @@ type ChainTokensList = {
 }
 
 export const XFUSION_CHAINS: ChainId[] = [ChainId.ARBITRUM_NOVA]
-export const ONE_INCH_CHAINS: ChainId[] = [ChainId.MATIC_MAINNET]
+export const ONE_INCH_CHAINS: ChainId[] = [
+  ChainId.MATIC_MAINNET,
+  ChainId.ARBITRUM_ONE,
+]
 
 export const ONE_INCH_ORACLE_MAP: { [chainId in ChainId]?: string } = {
   [ChainId.MATIC_MAINNET]: "0x52cbE0f49CcdD4Dc6E9C13BAb024EABD2842045B",
+  [ChainId.ARBITRUM_ONE]: "0x52cbE0f49CcdD4Dc6E9C13BAb024EABD2842045B",
 }
 
 export const WETH_ONLY: ChainTokensList = {
   [ChainId.MATIC_MAINNET]: [WETH[ChainId.MATIC_MAINNET]],
   [ChainId.BOBA_BNB]: [WETH[ChainId.BOBA_BNB]],
   [ChainId.ARBITRUM_NOVA]: [WETH[ChainId.ARBITRUM_NOVA]],
+  [ChainId.ARBITRUM_ONE]: [WETH[ChainId.ARBITRUM_ONE]],
 }
 
 export const DEX_TOKENS_TO_CHECK_TRADES_AGAINST = {
@@ -80,6 +89,15 @@ export const DEX_TOKENS_TO_CHECK_TRADES_AGAINST = {
       name: "USD Coin",
     }),
   ],
+  [ChainId.ARBITRUM_ONE]: [
+    new Token({
+      chainId: ChainId.ARBITRUM_ONE,
+      address: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+      decimals: 6,
+      symbol: "USDC",
+      name: "USD Coin",
+    }),
+  ],
 }
 
 // used to construct intermediary pairs for trading
@@ -96,6 +114,10 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokensList = {
   [ChainId.ARBITRUM_NOVA]: [
     WETH[ChainId.ARBITRUM_NOVA],
     ...DEX_TOKENS_TO_CHECK_TRADES_AGAINST[ChainId.ARBITRUM_NOVA],
+  ],
+  [ChainId.ARBITRUM_ONE]: [
+    WETH[ChainId.ARBITRUM_ONE],
+    ...DEX_TOKENS_TO_CHECK_TRADES_AGAINST[ChainId.ARBITRUM_ONE],
   ],
 }
 
@@ -116,4 +138,5 @@ export const MULTICALL_ADDRESSES: { [chainId in ChainId]?: string } = {
   [ChainId.MATIC_MAINNET]: "0x275617327c958bD06b5D6b871E7f491D76113dd8",
   [ChainId.BOBA_BNB]: "0x31cCe73DA4365342bd081F6a748AAdb7c7a49b7E",
   [ChainId.ARBITRUM_NOVA]: "0xcA11bde05977b3631167028862bE2a173976CA11",
+  [ChainId.ARBITRUM_ONE]: "0x80c7dd17b01855a6d2347444a0fcc36136a314de",
 }

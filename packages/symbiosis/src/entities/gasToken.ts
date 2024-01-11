@@ -19,4 +19,5 @@ export const GAS_TOKEN: Record<ChainId, Token> = {
   [ChainId.MATIC_MAINNET]: GAS(ChainId.MATIC_MAINNET, "MATIC", 3890),
   [ChainId.BOBA_BNB]: GAS(ChainId.BOBA_BNB, "BOBA", 14556),
   [ChainId.ARBITRUM_NOVA]: GAS(ChainId.ARBITRUM_NOVA, "ETH", 1027),
+  [ChainId.ARBITRUM_ONE]: GAS(ChainId.ARBITRUM_ONE, "ETH", 1027),
 }

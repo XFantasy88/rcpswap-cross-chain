@@ -6,6 +6,7 @@ import { parseEther } from "viem"
 const feeAmount = {
   [ChainId.ARBITRUM_NOVA]: parseEther("0.0005"),
   [ChainId.POLYGON]: parseEther("0.25"),
+  [ChainId.ARBITRUM_ONE]: parseEther("0.0005"),
 }
 
 const useMaxAmountInput = ({

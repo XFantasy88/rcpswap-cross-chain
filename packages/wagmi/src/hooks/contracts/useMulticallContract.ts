@@ -1,20 +1,21 @@
-'use client'
+"use client"
 
-import { ChainId } from 'rcpswap/chain'
-import { getContract } from 'viem'
-import { Address, usePublicClient } from 'wagmi'
+import { ChainId } from "rcpswap/chain"
+import { getContract } from "viem"
+import { Address, usePublicClient } from "wagmi"
 
-import { multicallAbi } from 'rcpswap/abi'
+import { multicallAbi } from "rcpswap/abi"
 
 export const MULTICALL_ADDRESS: Record<number, string> = {
-  [ChainId.POLYGON]: '0x1F98415757620B543A52E61c46B32eB19261F984',
-  [ChainId.ARBITRUM_NOVA]: '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
+  [ChainId.POLYGON]: "0x1F98415757620B543A52E61c46B32eB19261F984",
+  [ChainId.ARBITRUM_NOVA]: "0x0769fd68dFb93167989C6f7254cd0D766Fb2841F",
+  [ChainId.ARBITRUM_ONE]: "0xadF885960B47eA2CD9B55E6DAc6B42b7Cb2806dB",
 }
 
 export const getMulticallContractConfig = (chainId: number | undefined) => ({
   address: (chainId && chainId in MULTICALL_ADDRESS
     ? MULTICALL_ADDRESS[chainId]
-    : '') as Address,
+    : "") as Address,
   abi: multicallAbi,
 })
 

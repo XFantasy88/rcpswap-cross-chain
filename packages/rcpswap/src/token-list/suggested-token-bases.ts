@@ -20,6 +20,13 @@ export const SUGGESTED_TOKEN_BASES = {
     USDT[ChainId.POLYGON],
     DAI[ChainId.POLYGON],
   ],
+  [ChainId.ARBITRUM_ONE]: [
+    WNATIVE[ChainId.ARBITRUM_ONE],
+    WBTC[ChainId.ARBITRUM_ONE],
+    USDC[ChainId.ARBITRUM_ONE],
+    USDT[ChainId.ARBITRUM_ONE],
+    DAI[ChainId.ARBITRUM_ONE],
+  ],
   [ChainId.ARBITRUM_NOVA]: [
     WNATIVE[ChainId.ARBITRUM_NOVA],
     USDC[ChainId.ARBITRUM_NOVA],

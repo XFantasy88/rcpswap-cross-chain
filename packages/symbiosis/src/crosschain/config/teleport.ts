@@ -78,5 +78,54 @@ export const config: Config = {
       renGatewayRegistry: "0x0000000000000000000000000000000000000000",
       blocksPerYear: 0,
     },
+    {
+      id: 42161,
+      rpc: "https://arb1.arbitrum.io/rpc",
+      filterBlockOffset: 2000,
+      waitForBlocksCount: 240,
+      stables: [
+        {
+          name: "Symbiosis",
+          address: "0x9E758B8a98a42d612b3D38B66a22074DC03D7370",
+          symbol: "SIS",
+          chainId: 42161,
+          decimals: 18,
+          icons: {
+            large:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/15084.png",
+            small:
+              "https://s2.coinmarketcap.com/static/img/coins/128x128/15084.png",
+          },
+        },
+        {
+          name: "XDAO",
+          address: "0x71eebA415A523F5C952Cc2f06361D5443545Ad28",
+          symbol: "XDAO",
+          decimals: 18,
+          chainId: 42161,
+          icons: {
+            large:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/21760.png",
+            small:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/21760.png",
+          },
+        },
+      ],
+      router: "0xD01319f4b65b79124549dE409D36F25e04B3e551",
+      dexFee: 30,
+      metaRouter: "0x4F82CAA8F34564Ab22371f3c5d22868ab8eDD5E3",
+      metaRouterGateway: "0x2A223EB19085E0AB286205403951F3863A9d45DE",
+      bridge: "0x844e4a0ade23b1BA5642A8d0010E42aE4434Df30",
+      synthesis: "0x0000000000000000000000000000000000000000",
+      portal: "0x0425841529882628880fBD228AC90606e0c2e09A",
+      fabric: "0x0000000000000000000000000000000000000000",
+      multicallRouter: "0xF951789c6A356BfbC3033648AA10b5Dd3e9d88C0",
+      aavePool: "0x0000000000000000000000000000000000000000",
+      aavePoolDataProvider: "0x0000000000000000000000000000000000000000",
+      creamComptroller: "0x0000000000000000000000000000000000000000",
+      creamCompoundLens: "0x0000000000000000000000000000000000000000",
+      renGatewayRegistry: "0x0000000000000000000000000000000000000000",
+      blocksPerYear: 0,
+    },
   ],
 }

@@ -220,6 +220,12 @@ export const useClientTrade = (variables: UseTradeParams) => {
           bestSingleRoute.amountOutBI
         )
 
+        console.log(
+          bestSingleDex,
+          bestSingleRoute.amountOutBI,
+          route.amountOutBI
+        )
+
         feeAmountBI =
           route.amountOutBI > bestSingleRoute.amountOutBI
             ? ((route.amountOutBI - bestSingleRoute.amountOutBI) * 3000n) /
@@ -283,8 +289,6 @@ export const useClientTrade = (variables: UseTradeParams) => {
         // const overrides = fromToken.isNative && writeArgs?.[1] ? { value: BigNumber.from(writeArgs?.[1]) } : undefined
         let value =
           fromToken.isNative && writeArgs?.[1] ? writeArgs[1] : undefined
-
-        console.log(route)
 
         return new Promise((res) =>
           setTimeout(

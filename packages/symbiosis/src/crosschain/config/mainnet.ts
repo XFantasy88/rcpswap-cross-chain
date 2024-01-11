@@ -154,5 +154,68 @@ export const config: Config = {
       renGatewayRegistry: "0x0000000000000000000000000000000000000000",
       blocksPerYear: 0,
     },
+    {
+      id: 42161,
+      rpc: "https://arb1.arbitrum.io/rpc",
+      filterBlockOffset: 2000,
+      waitForBlocksCount: 240,
+      stables: [
+        {
+          name: "USD Coin",
+          symbol: "USDC",
+          address: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          chainId: 42161,
+          decimals: 6,
+          icons: {
+            large:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+            small:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+          },
+        },
+        {
+          deprecated: true,
+          name: "USD Coin (Arb1)",
+          symbol: "USDC.e",
+          address: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+          chainId: 42161,
+          decimals: 6,
+          icons: {
+            large:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+            small:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+          },
+        },
+        {
+          name: "Wrapped Ether",
+          symbol: "WETH",
+          address: "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
+          chainId: 42161,
+          decimals: 18,
+          icons: {
+            large:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
+            small:
+              "https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png",
+          },
+        },
+      ],
+      router: "0xD01319f4b65b79124549dE409D36F25e04B3e551",
+      dexFee: 30,
+      metaRouter: "0xf7e96217347667064DEE8f20DB747B1C7df45DDe",
+      metaRouterGateway: "0x80ddDDa846e779cceE463bDC0BCc2Ae296feDaF9",
+      bridge: "0x5523985926Aa12BA58DC5Ad00DDca99678D7227E",
+      synthesis: "0x0000000000000000000000000000000000000000",
+      portal: "0x01A3c8E513B758EBB011F7AFaf6C37616c9C24d9",
+      fabric: "0x0000000000000000000000000000000000000000",
+      multicallRouter: "0xda8057acB94905eb6025120cB2c38415Fd81BfEB",
+      aavePool: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+      aavePoolDataProvider: "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654",
+      creamComptroller: "0x0000000000000000000000000000000000000000",
+      creamCompoundLens: "0x0000000000000000000000000000000000000000",
+      renGatewayRegistry: "0x0000000000000000000000000000000000000000",
+      blocksPerYear: 0,
+    },
   ],
 }

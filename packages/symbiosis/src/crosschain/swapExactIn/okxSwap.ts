@@ -6,7 +6,7 @@ import { DataProvider } from "../dataProvider"
 import { OneInchTrade, getTradePriceImpact } from "../trade"
 import { SwapExactInParams, SwapExactInResult } from "./types"
 
-const OKX_CHAINS = new Set([ChainId.MATIC_MAINNET])
+const OKX_CHAINS = new Set([ChainId.MATIC_MAINNET, ChainId.ARBITRUM_ONE])
 
 export function isOKXSwapSupported(params: SwapExactInParams): boolean {
   const inChainId = params.inTokenAmount.token.chainId

@@ -55,6 +55,16 @@ export const chains: Chain[] = [
       large: "https://l2beat.com/icons/nova.png",
     },
   }),
+  new Chain({
+    id: ChainId.ARBITRUM_ONE,
+    name: "Arbitrum One",
+    disabled: false,
+    explorer: "https://arbiscan.io",
+    icons: {
+      small: "https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png",
+      large: "https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png",
+    },
+  }),
 ]
 
 export const getChainById = (

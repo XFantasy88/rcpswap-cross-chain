@@ -1,7 +1,7 @@
-import { ChainId } from '../../chain/index.js'
+import { ChainId } from "../../chain/index.js"
 
-import { Native } from '../Native.js'
-import { type Type } from '../Type.js'
+import { Native } from "../Native.js"
+import { type Type } from "../Type.js"
 import {
   ARB,
   BRICK,
@@ -12,7 +12,7 @@ import {
   WBTC,
   WETH9,
   WNATIVE,
-} from './tokens.js'
+} from "./tokens.js"
 
 const CHAIN_ID_SHORT_CURRENCY_NAME_TO_CURRENCY = {
   [ChainId.ARBITRUM_NOVA]: {
@@ -34,23 +34,31 @@ const CHAIN_ID_SHORT_CURRENCY_NAME_TO_CURRENCY = {
     USDC: USDC[ChainId.POLYGON],
     USDT: USDT[ChainId.POLYGON],
     DAI: DAI[ChainId.POLYGON],
-  }
+  },
+  [ChainId.ARBITRUM_ONE]: {
+    ETH: Native.onChain(ChainId.ARBITRUM_ONE),
+    WETH: WNATIVE[ChainId.ARBITRUM_ONE],
+    WBTC: WBTC[ChainId.ARBITRUM_ONE],
+    USDC: USDC[ChainId.ARBITRUM_ONE],
+    USDT: USDT[ChainId.ARBITRUM_ONE],
+    DAI: DAI[ChainId.ARBITRUM_ONE],
+  },
 } as const
 
 export type ShortCurrencyNameChainId =
   keyof typeof CHAIN_ID_SHORT_CURRENCY_NAME_TO_CURRENCY
 
 export type ShortCurrencyName =
-  keyof typeof CHAIN_ID_SHORT_CURRENCY_NAME_TO_CURRENCY[ShortCurrencyNameChainId]
+  keyof (typeof CHAIN_ID_SHORT_CURRENCY_NAME_TO_CURRENCY)[ShortCurrencyNameChainId]
 
 export const isShortCurrencyNameSupported = (
-  chainId: ChainId,
+  chainId: ChainId
 ): chainId is ShortCurrencyNameChainId =>
   chainId in CHAIN_ID_SHORT_CURRENCY_NAME_TO_CURRENCY
 
 export const isShortCurrencyName = (
   chainId: ChainId,
-  shortCurrencyName: string,
+  shortCurrencyName: string
 ): shortCurrencyName is ShortCurrencyName => {
   return (
     isShortCurrencyNameSupported(chainId) &&
@@ -60,15 +68,15 @@ export const isShortCurrencyName = (
 
 export const currencyFromShortCurrencyName = (
   chainId: ChainId,
-  shortCurrencyName: ShortCurrencyName,
+  shortCurrencyName: ShortCurrencyName
 ): Type => {
   if (!isShortCurrencyNameSupported(chainId))
     throw new Error(
-      `Unsupported chain id ${chainId} for short currency name ${shortCurrencyName}`,
+      `Unsupported chain id ${chainId} for short currency name ${shortCurrencyName}`
     )
   if (!(shortCurrencyName in CHAIN_ID_SHORT_CURRENCY_NAME_TO_CURRENCY[chainId]))
     throw new Error(
-      `Unsupported short currency name ${shortCurrencyName} on chain ${chainId}`,
+      `Unsupported short currency name ${shortCurrencyName} on chain ${chainId}`
     )
   return CHAIN_ID_SHORT_CURRENCY_NAME_TO_CURRENCY[chainId][shortCurrencyName]
 }

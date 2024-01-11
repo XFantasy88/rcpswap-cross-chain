@@ -25,7 +25,14 @@ const ApproveERC20: FC<CheckerProps> = ({
 }) => {
   const [approvalSubmitted, setApprovalSubmitted] = useState(false)
 
-  const [state, { write }] = useTokenApproval({
+  const [state] = useTokenApproval({
+    amount: amount,
+    spender: contract,
+    enabled,
+    // approveMax: true,
+  })
+
+  const [_, { write }] = useTokenApproval({
     amount: amount?.multiply(new Fraction(101, 100)),
     spender: contract,
     enabled,

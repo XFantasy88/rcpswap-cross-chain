@@ -10,6 +10,10 @@ export const rpcUrls = {
     "https://polygon-bor.publicnode.com",
     `https://lb.drpc.org/ogrpc?network=polygon&dkey=${drpcId}`,
   ],
+  [ChainId.ARBITRUM_ONE]: [
+    `https://arbitrum.llamarpc.com`,
+    `https://lb.drpc.org/ogrpc?network=arbitrum&dkey=${drpcId}`,
+  ],
 } as const
 
 export type RpcEnabledChainId = keyof typeof rpcUrls

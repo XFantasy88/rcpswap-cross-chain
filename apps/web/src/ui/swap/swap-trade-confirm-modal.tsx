@@ -30,7 +30,10 @@ import { gasMargin } from "rcpswap"
 import confirmPriceImpactWithoutFee from "@/components/swap/confirmPriceImpactWithoutFee"
 import { getEthersTransactionReceipt } from "@/utils/getEthersTransactionReceipt"
 import { fetchBlockNumber } from "wagmi/actions"
-import { SYMBIOSIS_CONFIRMATION_BLOCK_COUNT } from "@/config"
+import {
+  SUPPORTED_NETWORK_INFO,
+  SYMBIOSIS_CONFIRMATION_BLOCK_COUNT,
+} from "@/config"
 import { StepType } from "@/components/TransactionConfirmationModal"
 import { convertAmountFromSymbiosis } from "@/utils"
 import { Address, TransactionExecutionError, zeroAddress } from "viem"
@@ -463,18 +466,14 @@ export default function SwapTradeConfirmModal() {
         chainId0 === chainId1
           ? [
               {
-                title: `Sending the transaction to ${
-                  chainId0 === ChainId.POLYGON ? "Polygon" : "Arbitrum Nova"
-                }`,
+                title: `Sending the transaction to ${SUPPORTED_NETWORK_INFO[chainId0].name}`,
                 desc: "Explore the Sent Transaction",
                 status: "pending",
               },
             ]
           : [
               {
-                title: `Sending the transaction to ${
-                  chainId0 === ChainId.POLYGON ? "Polygon" : "Arbitrum Nova"
-                }`,
+                title: `Sending the transaction to ${SUPPORTED_NETWORK_INFO[chainId0].name}`,
                 desc: "Explore the Sent Transaction",
                 status: "pending",
               },
@@ -485,9 +484,7 @@ export default function SwapTradeConfirmModal() {
                 currentRounds: 0,
               },
               {
-                title: `Getting ${token1?.symbol} on ${
-                  chainId1 === ChainId.POLYGON ? "Polygon" : "Arbitrum Nova"
-                }`,
+                title: `Getting ${token1?.symbol} on ${SUPPORTED_NETWORK_INFO[chainId1].name}`,
                 desc: "Check in the Explorer",
               },
             ]

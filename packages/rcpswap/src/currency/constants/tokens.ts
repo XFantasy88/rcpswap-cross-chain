@@ -51,6 +51,7 @@ export const WNATIVE = {
     symbol: "WMATIC",
     name: "Wrapped Matic",
   }),
+  [ChainId.ARBITRUM_ONE]: WETH9[ChainId.ARBITRUM_ONE],
   [ChainId.ARBITRUM_NOVA]: WETH9[ChainId.ARBITRUM_NOVA],
 } as const
 

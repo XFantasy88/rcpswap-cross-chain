@@ -16,6 +16,7 @@ const StyledLogo = styled(Logo)<{ size: string }>`
 const LOGO = {
   [ChainId.ARBITRUM_NOVA]: "ethereum.svg",
   [ChainId.POLYGON]: "matic.svg",
+  [ChainId.ARBITRUM_ONE]: "ethereum.svg",
 }
 
 export default function CurrencyLogo({

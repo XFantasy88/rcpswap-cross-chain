@@ -6,6 +6,7 @@ import type { SymbiosisTrade } from "./symbiosisTrade"
 
 const UNWRAP_ADDRESSES: Partial<Record<ChainId, string>> = {
   [ChainId.ARBITRUM_NOVA]: "0xf02bBC9de6e443eFDf3FC41851529C2c3B9E5e0C",
+  [ChainId.ARBITRUM_ONE]: "0x5Eb4ED9F745531221FAE41906e11d37642B15da6",
 }
 
 export class WrapTrade implements SymbiosisTrade {

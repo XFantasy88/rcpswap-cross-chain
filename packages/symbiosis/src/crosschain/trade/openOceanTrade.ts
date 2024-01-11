@@ -24,6 +24,7 @@ interface OpenOceanQuote {
 
 const OPEN_OCEAN_NETWORKS: Partial<Record<ChainId, string>> = {
   [ChainId.MATIC_MAINNET]: "polygon",
+  [ChainId.ARBITRUM_ONE]: "arbitrum",
 }
 
 const BASE_URL = "https://open-api.openocean.finance/v3"
