@@ -113,7 +113,7 @@ export const useClientTrade = (variables: UseTradeParams) => {
         toToken,
         Number(feeData.gasPrice),
         maxFlowNumber,
-        providers
+        [LiquidityProviders.CamelotSwapV3]
       )
 
       let feeAmount: Amount<Type>
@@ -193,15 +193,29 @@ export const useClientTrade = (variables: UseTradeParams) => {
           [LiquidityProviders.QuickSwapV2, LiquidityProviders.QuickSwapV3]
         )
 
+        const camletRoute = Router.findBestRoute(
+          poolsCodeMap,
+          chainId,
+          fromToken,
+          amount.quotient,
+          toToken,
+          Number(feeData.gasPrice),
+          100,
+          [LiquidityProviders.CamelotSwapV2, LiquidityProviders.CamelotSwapV3]
+        )
+
         const bestSingleRoute = getBetterRouteExactIn(
           getBetterRouteExactIn(
             getBetterRouteExactIn(
-              getBetterRouteExactIn(sushiRoute, rcpRoute),
-              arbRoute
+              getBetterRouteExactIn(
+                getBetterRouteExactIn(sushiRoute, rcpRoute),
+                arbRoute
+              ),
+              uniRoute
             ),
-            uniRoute
+            quickRoute
           ),
-          quickRoute
+          camletRoute
         )
 
         bestSingleDex =
@@ -213,17 +227,13 @@ export const useClientTrade = (variables: UseTradeParams) => {
             ? "Arb"
             : bestSingleRoute === uniRoute
             ? "Uni"
-            : "Quick"
+            : bestSingleRoute === quickRoute
+            ? "Quick"
+            : "Camelot"
 
         bestSingleAmountOut = Amount.fromRawAmount(
           toToken,
           bestSingleRoute.amountOutBI
-        )
-
-        console.log(
-          bestSingleDex,
-          bestSingleRoute.amountOutBI,
-          route.amountOutBI
         )
 
         feeAmountBI =
@@ -235,6 +245,8 @@ export const useClientTrade = (variables: UseTradeParams) => {
 
         feeAmount = Amount.fromRawAmount(toToken, feeAmountBI)
       }
+
+      console.log(route)
 
       let args = undefined
 

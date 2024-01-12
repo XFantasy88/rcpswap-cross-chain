@@ -13,6 +13,8 @@ export enum LiquidityProviders {
   UniSwapV3 = "UniSwapV3",
   QuickSwapV2 = "QuickSwapV2",
   QuickSwapV3 = "QuickSwapV3",
+  CamelotSwapV2 = "CamelotSwapV2",
+  CamelotSwapV3 = "CamelotSwapV3",
 }
 
 export abstract class LiquidityProvider {

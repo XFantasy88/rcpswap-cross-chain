@@ -57,6 +57,7 @@ export abstract class AlgebraBaseProvider extends LiquidityProvider {
   initCodeHash: Record<number, string> = {}
   tickLens: Record<number, string> = {}
   fee = FeeAmount.LOWEST
+  abi: any = []
 
   constructor(
     chainId: ChainId,
@@ -65,13 +66,15 @@ export abstract class AlgebraBaseProvider extends LiquidityProvider {
     deployer: Record<number, Address>,
     initCodeHash: Record<number, string>,
     tickLens: Record<number, string>,
-    fee: FeeAmount
+    fee: FeeAmount,
+    abi: any
   ) {
     super(chainId, web3Client)
     this.factory = factory
     this.deployer = deployer
     this.initCodeHash = initCodeHash
     this.fee = fee
+    this.abi = abi
     if (
       !(chainId in this.factory) ||
       !(chainId in this.initCodeHash) ||
@@ -104,51 +107,7 @@ export abstract class AlgebraBaseProvider extends LiquidityProvider {
             ({
               address: pool.address as Address,
               chainId: this.chainId,
-              abi: [
-                {
-                  inputs: [],
-                  name: "globalState",
-                  outputs: [
-                    {
-                      internalType: "uint160",
-                      name: "price",
-                      type: "uint160",
-                    },
-                    {
-                      internalType: "int24",
-                      name: "tick",
-                      type: "int24",
-                    },
-                    {
-                      internalType: "uint16",
-                      name: "fee",
-                      type: "uint16",
-                    },
-                    {
-                      internalType: "uint16",
-                      name: "timepointIndex",
-                      type: "uint16",
-                    },
-                    {
-                      internalType: "uint8",
-                      name: "communityFeeToken0",
-                      type: "uint8",
-                    },
-                    {
-                      internalType: "uint8",
-                      name: "communityFeeToken1",
-                      type: "uint8",
-                    },
-                    {
-                      internalType: "bool",
-                      name: "unlocked",
-                      type: "bool",
-                    },
-                  ],
-                  stateMutability: "view",
-                  type: "function",
-                },
-              ],
+              abi: this.abi,
               functionName: "globalState",
             } as const)
         ),

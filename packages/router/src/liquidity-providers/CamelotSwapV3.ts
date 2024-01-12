@@ -4,25 +4,25 @@ import { PublicClient } from "viem"
 import { LiquidityProviders } from "./LiquidityProvider"
 import { AlgebraBaseProvider } from "./AlgebraBase"
 import { FeeAmount } from "@rcpswap/v3-sdk"
-import ABI from "../abis/QuickSwapV3Pair"
+import ABI from "../abis/CamelotV3Pair"
 
-export class QuickSwapV3Provider extends AlgebraBaseProvider {
+export class CamelotSwapV3Provider extends AlgebraBaseProvider {
   constructor(chainId: ChainId, web3Client: PublicClient) {
     const factory = {
-      [ChainId.POLYGON]: "0x411b0fAcC3489691f28ad58c47006AF5E3Ab3A28",
+      [ChainId.ARBITRUM_ONE]: "0x1a3c9B1d2F0529D97f2afC5136Cc23e58f1FD35B",
     } as const
 
     const deployer = {
-      [ChainId.POLYGON]: "0x2D98E2FA9da15aa6dC9581AB097Ced7af697CB92",
+      [ChainId.ARBITRUM_ONE]: "0x6Dd3FB9653B10e806650F107C3B5A0a6fF974F65",
     } as const
 
     const initCodeHash = {
-      [ChainId.POLYGON]:
-        "0x6ec6c9c8091d160c0aa74b2b14ba9c1717e95093bd3ac085cee99a49aab294a4",
+      [ChainId.ARBITRUM_ONE]:
+        "0x6c1bebd370ba84753516bc1393c0d0a6c645856da55f5393ac8ab3d6dbc861d3",
     } as const
 
     const tickLens = {
-      [ChainId.POLYGON]: "0x464f33efe5b8dc1834fc268d650075621fac164a",
+      [ChainId.ARBITRUM_ONE]: "0x3e8e3ec2a797d12b96da4ad0b86cc1e7b75a6bb1",
     } as const
     super(
       chainId,
@@ -36,9 +36,9 @@ export class QuickSwapV3Provider extends AlgebraBaseProvider {
     )
   }
   getType(): LiquidityProviders {
-    return LiquidityProviders.QuickSwapV3
+    return LiquidityProviders.CamelotSwapV3
   }
   getPoolProviderName(): string {
-    return "QuickSwapV3"
+    return "CamelotSwapV3"
   }
 }

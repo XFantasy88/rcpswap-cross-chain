@@ -25,6 +25,7 @@ export const SUPPORTED_DEX_INFO: { [key: string]: { image: string } } = {
   Sushi: { image: "/dex/sushiswap.png" },
   Uni: { image: "/dex/uniswap.png" },
   Quick: { image: "/dex/quickswap.png" },
+  Camelot: { image: "/dex/camelotswap.svg" },
 } as const
 
 export const SYMBIOSIS_CONFIRMATION_BLOCK_COUNT = {
