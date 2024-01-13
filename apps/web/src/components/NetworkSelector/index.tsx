@@ -52,7 +52,7 @@ const StyledNetworkDropdownWrapper = styled.div<{ open: boolean }>`
 `
 
 const StyledNetworkDropdown = styled.div`
-  background: ${({ theme }) => transparentize(0.1, theme.bg2)};
+  background: ${({ theme }) => transparentize(0, theme.bg2)};
   border: 1px solid ${({ theme }) => theme.bg3}
   backdrop-filter: blur(4px);
   display: flex;

@@ -4,11 +4,11 @@ const ProgressBar = styled.div<{ percent: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 12px;
+  font-size: 11px;
 
-  width: 48px;
-  min-width: 48px;
-  height: 48px;
+  width: 50px;
+  min-width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: ${({ theme, percent }) => `radial-gradient(closest-side, ${
     theme.bg1
