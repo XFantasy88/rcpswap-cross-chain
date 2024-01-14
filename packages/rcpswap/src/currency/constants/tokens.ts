@@ -6,6 +6,7 @@ import { addressMapToTokenMap } from "../functions/address-map-to-token-map.js"
 import {
   ARB_ADDRESS,
   BRICK_ADDRESS,
+  BUSD_ADDRESS,
   DAI_ADDRESS,
   MOOND_ADDRESS,
   MOON_ADDRESS,
@@ -44,6 +45,13 @@ export const WETH9 = addressMapToTokenMap(
 ) as Record<keyof typeof WETH9_ADDRESS, Token>
 
 export const WNATIVE = {
+  [ChainId.BSC]: new Token({
+    chainId: ChainId.BSC,
+    address: WNATIVE_ADDRESS[ChainId.BSC],
+    decimals: 18,
+    symbol: "WBNB",
+    name: "Wrapped BNB",
+  }),
   [ChainId.POLYGON]: new Token({
     chainId: ChainId.POLYGON,
     address: WNATIVE_ADDRESS[ChainId.POLYGON],
@@ -54,6 +62,15 @@ export const WNATIVE = {
   [ChainId.ARBITRUM_ONE]: WETH9[ChainId.ARBITRUM_ONE],
   [ChainId.ARBITRUM_NOVA]: WETH9[ChainId.ARBITRUM_NOVA],
 } as const
+
+export const BUSD = addressMapToTokenMap(
+  {
+    decimals: 18,
+    symbol: "BUSD",
+    name: "BUSD Token",
+  },
+  BUSD_ADDRESS
+) as Record<keyof typeof BUSD_ADDRESS, Token>
 
 export const USDC: Record<keyof typeof USDC_ADDRESS, Token> = {
   ...(addressMapToTokenMap(

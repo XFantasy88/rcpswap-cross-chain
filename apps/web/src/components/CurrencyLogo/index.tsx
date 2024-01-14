@@ -17,6 +17,7 @@ const LOGO = {
   [ChainId.ARBITRUM_NOVA]: "ethereum.svg",
   [ChainId.POLYGON]: "matic.svg",
   [ChainId.ARBITRUM_ONE]: "ethereum.svg",
+  [ChainId.BSC]: "bnb.svg",
 }
 
 export default function CurrencyLogo({

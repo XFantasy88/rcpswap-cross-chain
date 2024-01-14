@@ -17,6 +17,7 @@ export type TokenAddressMap = Readonly<{
  * An empty result, useful as a default.
  */
 const EMPTY_LIST: TokenAddressMap = {
+  [ChainId.BSC]: {},
   [ChainId.POLYGON]: {},
   [ChainId.ARBITRUM_ONE]: {},
   [ChainId.ARBITRUM_NOVA]: {},
@@ -71,6 +72,7 @@ function combineMaps(
   map2?: TokenAddressMap
 ): TokenAddressMap {
   return {
+    [ChainId.BSC]: { ...map1[ChainId.BSC], ...map2?.[ChainId.BSC] },
     [ChainId.POLYGON]: { ...map1[ChainId.POLYGON], ...map2?.[ChainId.POLYGON] },
     [ChainId.ARBITRUM_NOVA]: {
       ...map1[ChainId.ARBITRUM_NOVA],

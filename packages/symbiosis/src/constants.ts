@@ -32,6 +32,7 @@ export type ChainConstructor = {
 }
 
 export enum ChainId {
+  BSC = 56,
   MATIC_MAINNET = 137,
   BOBA_BNB = 56288,
   ARBITRUM_NOVA = 42170,
@@ -49,6 +50,7 @@ export enum Rounding {
   ROUND_UP,
 }
 export const FACTORY_ADDRESS = {
+  [ChainId.BSC]: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73",
   [ChainId.MATIC_MAINNET]: "0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32",
   [ChainId.BOBA_BNB]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
   [ChainId.ARBITRUM_NOVA]: "0xf6239423fcf1c19ed2791d9648a90836074242fd", // arbSwap
@@ -56,6 +58,8 @@ export const FACTORY_ADDRESS = {
 }
 
 export const INIT_CODE_HASH = {
+  [ChainId.BSC]:
+    "0x00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5",
   [ChainId.MATIC_MAINNET]:
     "0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f",
   [ChainId.BOBA_BNB]:

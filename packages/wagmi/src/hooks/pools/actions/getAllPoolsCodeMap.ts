@@ -25,6 +25,7 @@ export const getAllPoolsCodeMap = async ({
         LiquidityProviders.QuickSwapV3,
         LiquidityProviders.CamelotSwapV2,
         LiquidityProviders.CamelotSwapV3,
+        LiquidityProviders.BiSwap,
       ]
 
   const dataFetcher = DataFetcher.onChain(chainId)

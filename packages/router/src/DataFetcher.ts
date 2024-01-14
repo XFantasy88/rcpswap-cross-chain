@@ -19,6 +19,7 @@ import {
   QuickSwapV3Provider,
   CamelotSwapV2Provider,
   CamelotSwapV3Provider,
+  BiSwapProvider,
 } from "."
 
 // Gathers pools info, creates routing in 'incremental' mode
@@ -160,6 +161,15 @@ export class DataFetcher {
           this.chainId,
           this.web3Client
         )
+        this.providers.push(provider)
+      } catch (e: unknown) {
+        console.warn(e)
+      }
+    }
+
+    if (this._providerIsIncluded(LiquidityProviders.BiSwap, providers)) {
+      try {
+        const provider = new BiSwapProvider(this.chainId, this.web3Client)
         this.providers.push(provider)
       } catch (e: unknown) {
         console.warn(e)

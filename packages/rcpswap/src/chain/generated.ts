@@ -1,5 +1,22 @@
 export default [
   {
+    chainId: 56,
+    explorers: [
+      {
+        name: "bscscan",
+        url: "https://bscscan.com",
+        standard: "EIP3091",
+      },
+    ],
+    nativeCurrency: {
+      name: "BNB Chain Native Token",
+      symbol: "BNB",
+      decimals: 18,
+    },
+    name: "BNB Smart Chain Mainnet",
+    shortName: "bnb",
+  },
+  {
     chainId: 137,
     explorers: [
       {

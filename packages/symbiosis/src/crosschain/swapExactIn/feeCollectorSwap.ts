@@ -9,6 +9,7 @@ import { preparePayload } from "./preparePayload"
 import { getFunctionSelector } from "../tron"
 
 const FEE_COLLECTOR_ADDRESES: Partial<Record<ChainId, string>> = {
+  [ChainId.BSC]: "0x0425841529882628880fBD228AC90606e0c2e09A",
   [ChainId.MATIC_MAINNET]: "0x9d74807B8fA79d49bb95CF988Af3c25Fb1437B4f",
   [ChainId.ARBITRUM_NOVA]: "0x7B4E28E7273aA8CB64C56fF191ebF43b64f409F9",
   [ChainId.BOBA_BNB]: "0x7e0B73141c8a1AC26B8693e9F34cf42BE17Fea2C",

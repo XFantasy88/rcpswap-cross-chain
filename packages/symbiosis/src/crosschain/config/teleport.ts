@@ -21,6 +21,55 @@ export const config: Config = {
   },
   chains: [
     {
+      id: 56,
+      rpc: "https://rpc.ankr.com/bsc",
+      filterBlockOffset: 2000,
+      waitForBlocksCount: 10,
+      stables: [
+        {
+          name: "XDAO",
+          address: "0x71eebA415A523F5C952Cc2f06361D5443545Ad28",
+          symbol: "XDAO",
+          decimals: 18,
+          chainId: 56,
+          icons: {
+            large:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/21760.png",
+            small:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/21760.png",
+          },
+        },
+        {
+          name: "Symbiosis",
+          address: "0xF98b660AdF2ed7d9d9D9dAACC2fb0CAce4F21835",
+          symbol: "SIS",
+          chainId: 56,
+          decimals: 18,
+          icons: {
+            large:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/15084.png",
+            small:
+              "https://s2.coinmarketcap.com/static/img/coins/128x128/15084.png",
+          },
+        },
+      ],
+      router: "0x10ED43C718714eb63d5aA57B78B54704E256024E",
+      dexFee: 25,
+      metaRouter: "0xbbA322c98601b707cFfb98092010e0b95d538bB7",
+      metaRouterGateway: "0x346163578c731C0849F98f34fa61545Dd10eEbd5",
+      bridge: "0xEE981B2459331AD268cc63CE6167b446AF4161f8",
+      synthesis: "0x0000000000000000000000000000000000000000",
+      portal: "0xb91d3060C90aac7c4c706aef2B37997b3b2a1DcF",
+      fabric: "0x0000000000000000000000000000000000000000",
+      multicallRouter: "0x44b5d0F16Ad55c4e7113310614745e8771b963bB",
+      aavePool: "0x0000000000000000000000000000000000000000",
+      aavePoolDataProvider: "0x0000000000000000000000000000000000000000",
+      creamComptroller: "0x0000000000000000000000000000000000000000",
+      creamCompoundLens: "0x0000000000000000000000000000000000000000",
+      renGatewayRegistry: "0x0000000000000000000000000000000000000000",
+      blocksPerYear: 0,
+    },
+    {
       id: 137,
       rpc: "https://rpc.ankr.com/polygon",
       filterBlockOffset: 2000,

@@ -2,6 +2,7 @@ import { ChainId } from "rcpswap/chain"
 import {
   ARB,
   BRICK,
+  BUSD,
   DAI,
   MOON,
   Token,
@@ -15,6 +16,14 @@ import {
 export const BASES_TO_CHECK_TRADES_AGAINST: {
   readonly [chainId: number]: Token[]
 } = {
+  [ChainId.BSC]: [
+    WNATIVE[ChainId.BSC],
+    WETH9[ChainId.BSC],
+    BUSD[ChainId.BSC],
+    USDC[ChainId.BSC],
+    USDT[ChainId.BSC],
+    DAI[ChainId.BSC],
+  ],
   [ChainId.POLYGON]: [
     WNATIVE[ChainId.POLYGON],
     WETH9[ChainId.POLYGON],

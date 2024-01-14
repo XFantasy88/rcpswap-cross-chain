@@ -22,6 +22,18 @@ export class Chain {
 
 export const chains: Chain[] = [
   new Chain({
+    id: ChainId.BSC,
+    name: "BNB",
+    disabled: false,
+    explorer: "https://bscscan.com",
+    icons: {
+      small:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/info/logo.png",
+      large:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/info/logo.png",
+    },
+  }),
+  new Chain({
     id: ChainId.MATIC_MAINNET,
     name: "Polygon",
     disabled: false,

@@ -2,6 +2,7 @@ import { ChainId } from "../chain"
 import {
   ARB,
   BRICK,
+  BUSD,
   DAI,
   MOON,
   USDC,
@@ -12,6 +13,13 @@ import {
 } from "../currency"
 
 export const SUGGESTED_TOKEN_BASES = {
+  [ChainId.BSC]: [
+    WNATIVE[ChainId.BSC],
+    BUSD[ChainId.BSC],
+    USDC[ChainId.BSC],
+    USDT[ChainId.BSC],
+    DAI[ChainId.BSC],
+  ],
   [ChainId.POLYGON]: [
     WNATIVE[ChainId.POLYGON],
     WETH9[ChainId.POLYGON],

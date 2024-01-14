@@ -23,6 +23,7 @@ interface OpenOceanQuote {
 }
 
 const OPEN_OCEAN_NETWORKS: Partial<Record<ChainId, string>> = {
+  [ChainId.BSC]: "bsc",
   [ChainId.MATIC_MAINNET]: "polygon",
   [ChainId.ARBITRUM_ONE]: "arbitrum",
 }

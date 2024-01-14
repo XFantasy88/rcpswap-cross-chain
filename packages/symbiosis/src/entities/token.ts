@@ -86,6 +86,20 @@ export function tokenEquals(tokenA: Token, tokenB: Token): boolean {
 }
 
 export const WETH = {
+  [ChainId.BSC]: new Token({
+    chainId: ChainId.BSC,
+    address: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+    decimals: 18,
+    symbol: "WBNB",
+    isNative: false,
+    name: "Wrapped BNB",
+    icons: {
+      large:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png",
+      small:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png",
+    },
+  }),
   [ChainId.MATIC_MAINNET]: new Token({
     chainId: ChainId.MATIC_MAINNET,
     address: "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",

@@ -113,7 +113,7 @@ export const useClientTrade = (variables: UseTradeParams) => {
         toToken,
         Number(feeData.gasPrice),
         maxFlowNumber,
-        [LiquidityProviders.CamelotSwapV3]
+        providers
       )
 
       let feeAmount: Amount<Type>
@@ -171,6 +171,17 @@ export const useClientTrade = (variables: UseTradeParams) => {
           [LiquidityProviders.ArbSwap]
         )
 
+        const biRoute = Router.findBestRoute(
+          poolsCodeMap,
+          chainId,
+          fromToken,
+          amount.quotient,
+          toToken,
+          Number(feeData.gasPrice),
+          1,
+          [LiquidityProviders.BiSwap]
+        )
+
         const uniRoute = Router.findBestRoute(
           poolsCodeMap,
           chainId,
@@ -208,14 +219,17 @@ export const useClientTrade = (variables: UseTradeParams) => {
           getBetterRouteExactIn(
             getBetterRouteExactIn(
               getBetterRouteExactIn(
-                getBetterRouteExactIn(sushiRoute, rcpRoute),
-                arbRoute
+                getBetterRouteExactIn(
+                  getBetterRouteExactIn(sushiRoute, rcpRoute),
+                  arbRoute
+                ),
+                uniRoute
               ),
-              uniRoute
+              quickRoute
             ),
-            quickRoute
+            camletRoute
           ),
-          camletRoute
+          biRoute
         )
 
         bestSingleDex =
@@ -229,6 +243,8 @@ export const useClientTrade = (variables: UseTradeParams) => {
             ? "Uni"
             : bestSingleRoute === quickRoute
             ? "Quick"
+            : bestSingleRoute === biRoute
+            ? "Bi"
             : "Camelot"
 
         bestSingleAmountOut = Amount.fromRawAmount(

@@ -15,15 +15,14 @@ import {
 } from "./tokens.js"
 
 const CHAIN_ID_SHORT_CURRENCY_NAME_TO_CURRENCY = {
-  [ChainId.ARBITRUM_NOVA]: {
-    ETH: Native.onChain(ChainId.ARBITRUM_NOVA),
-    WETH: WNATIVE[ChainId.ARBITRUM_NOVA],
-    USDC: USDC[ChainId.ARBITRUM_NOVA],
-    USDT: USDT[ChainId.ARBITRUM_NOVA],
-    DAI: DAI[ChainId.ARBITRUM_NOVA],
-    ARB: ARB[ChainId.ARBITRUM_NOVA],
-    BRICK: BRICK[ChainId.ARBITRUM_NOVA],
-    MOON: MOON[ChainId.ARBITRUM_NOVA],
+  [ChainId.BSC]: {
+    BNB: Native.onChain(ChainId.BSC),
+    WBNB: WNATIVE[ChainId.BSC],
+    ETH: WETH9[ChainId.BSC],
+    WETH: WETH9[ChainId.BSC],
+    USDC: USDC[ChainId.BSC],
+    USDT: USDT[ChainId.BSC],
+    DAI: DAI[ChainId.BSC],
   },
   [ChainId.POLYGON]: {
     MATIC: Native.onChain(ChainId.POLYGON),
@@ -42,6 +41,16 @@ const CHAIN_ID_SHORT_CURRENCY_NAME_TO_CURRENCY = {
     USDC: USDC[ChainId.ARBITRUM_ONE],
     USDT: USDT[ChainId.ARBITRUM_ONE],
     DAI: DAI[ChainId.ARBITRUM_ONE],
+  },
+  [ChainId.ARBITRUM_NOVA]: {
+    ETH: Native.onChain(ChainId.ARBITRUM_NOVA),
+    WETH: WNATIVE[ChainId.ARBITRUM_NOVA],
+    USDC: USDC[ChainId.ARBITRUM_NOVA],
+    USDT: USDT[ChainId.ARBITRUM_NOVA],
+    DAI: DAI[ChainId.ARBITRUM_NOVA],
+    ARB: ARB[ChainId.ARBITRUM_NOVA],
+    BRICK: BRICK[ChainId.ARBITRUM_NOVA],
+    MOON: MOON[ChainId.ARBITRUM_NOVA],
   },
 } as const
 

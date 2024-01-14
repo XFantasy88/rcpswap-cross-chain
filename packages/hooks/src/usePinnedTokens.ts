@@ -14,11 +14,21 @@ import {
   WBTC,
   WETH9,
   WNATIVE,
+  BUSD,
 } from "rcpswap/currency"
 
 import { useLocalStorage } from "./useLocalStorage"
 
 export const COMMON_BASES = {
+  [ChainId.BSC]: [
+    Native.onChain(ChainId.BSC),
+    WNATIVE[ChainId.BSC],
+    WETH9[ChainId.BSC],
+    BUSD[ChainId.BSC],
+    USDC[ChainId.BSC],
+    USDT[ChainId.BSC],
+    DAI[ChainId.BSC],
+  ],
   [ChainId.POLYGON]: [
     Native.onChain(ChainId.POLYGON),
     WNATIVE[ChainId.POLYGON],
