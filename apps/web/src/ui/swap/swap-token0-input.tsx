@@ -18,6 +18,7 @@ export default function SwapToken0Input() {
       onUserInput={setSwapAmount}
       onCurrencySelect={setToken0}
       otherCurrency={token1}
+      top
       id="swap-currency-input"
     />
   )

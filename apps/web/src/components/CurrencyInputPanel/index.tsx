@@ -96,12 +96,12 @@ const StyledDropDown = styled(FiChevronDown)<{ selected: boolean }>`
   }
 `
 
-const InputPanel = styled.div<{ hideInput?: boolean }>`
+const InputPanel = styled.div<{ hideInput?: boolean; top?: boolean }>`
   ${({ theme }) => theme.flexColumnNoWrap}
   position: relative;
   border-radius: ${({ hideInput }) => (hideInput ? "8px" : "20px")};
   background-color: ${({ theme }) => theme.bg2};
-  z-index: 2;
+  z-index: ${({ top }) => (top ? 3 : 2)};
 `
 
 const Container = styled.div<{ hideInput: boolean; inactive?: boolean }>`
@@ -172,6 +172,7 @@ interface CurrencyInputPanelProps {
   showPriceImpact?: boolean
   loading?: boolean
   fee?: Amount<Type>
+  top?: boolean
 }
 
 export default function CurrencyInputPanel({
@@ -198,6 +199,7 @@ export default function CurrencyInputPanel({
   showPriceImpact = false,
   loading = false,
   fee,
+  top = false,
 }: CurrencyInputPanelProps) {
   const [modalOpen, setModalOpen] = useState(false)
   const { address } = useAccount()
@@ -274,7 +276,7 @@ export default function CurrencyInputPanel({
       : undefined
 
   return (
-    <InputPanel id={id}>
+    <InputPanel id={id} top={top}>
       <Container hideInput={hideInput} inactive={inactive}>
         {!hideInput && (
           <LabelRow>
