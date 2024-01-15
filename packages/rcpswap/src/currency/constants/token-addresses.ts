@@ -6,6 +6,7 @@ export const ARB_ADDRESS = {
 } as const
 
 export const WBTC_ADDRESS = {
+  [ChainId.BSC]: "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
   [ChainId.POLYGON]: "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
   [ChainId.ARBITRUM_ONE]: "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
   [ChainId.ARBITRUM_NOVA]: "0x1d05e4e72cD994cdF976181CfB0707345763564d",
@@ -60,4 +61,8 @@ export const MOON_ADDRESS = {
 
 export const MOOND_ADDRESS = {
   [ChainId.ARBITRUM_NOVA]: "0x4b2576BC44310D6dfb4cfCf2630f25190fc60803",
+} as const
+
+export const CAKE_ADDRESS = {
+  [ChainId.BSC]: "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
 } as const

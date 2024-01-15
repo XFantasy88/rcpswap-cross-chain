@@ -121,7 +121,7 @@ export const useClientTrade = (variables: UseTradeParams) => {
       let bestSingleAmountOut: Amount<Type>
       let bestSingleDex: string
 
-      if (feeEnabled && route.amountOutBI > 0n) {
+      if (feeEnabled && route.amountOutBI > 0n && route.legs.length > 1) {
         const sushiTokens = [
           WNATIVE[ChainId.ARBITRUM_NOVA],
           USDC[ChainId.ARBITRUM_NOVA],

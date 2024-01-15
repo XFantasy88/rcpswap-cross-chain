@@ -7,6 +7,7 @@ import {
   ARB_ADDRESS,
   BRICK_ADDRESS,
   BUSD_ADDRESS,
+  CAKE_ADDRESS,
   DAI_ADDRESS,
   MOOND_ADDRESS,
   MOON_ADDRESS,
@@ -129,3 +130,12 @@ export const MOOND = addressMapToTokenMap(
   },
   MOOND_ADDRESS
 ) as Record<keyof typeof MOOND_ADDRESS, Token>
+
+export const CAKE = addressMapToTokenMap(
+  {
+    decimals: 18,
+    symbol: "CAKE",
+    name: "PancakeSwap Token",
+  },
+  CAKE_ADDRESS
+) as Record<keyof typeof CAKE_ADDRESS, Token>

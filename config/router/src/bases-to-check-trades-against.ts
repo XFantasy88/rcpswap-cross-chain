@@ -3,6 +3,7 @@ import {
   ARB,
   BRICK,
   BUSD,
+  CAKE,
   DAI,
   MOON,
   Token,
@@ -23,6 +24,8 @@ export const BASES_TO_CHECK_TRADES_AGAINST: {
     USDC[ChainId.BSC],
     USDT[ChainId.BSC],
     DAI[ChainId.BSC],
+    WBTC[ChainId.BSC],
+    CAKE[ChainId.BSC],
   ],
   [ChainId.POLYGON]: [
     WNATIVE[ChainId.POLYGON],
