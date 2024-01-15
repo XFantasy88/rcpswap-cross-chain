@@ -12,6 +12,7 @@ import {
   MOOND_ADDRESS,
   MOON_ADDRESS,
   USDC_ADDRESS,
+  USDCe_ADDRESS,
   USDT_ADDRESS,
   WBTC_ADDRESS,
   WETH9_ADDRESS,
@@ -82,6 +83,17 @@ export const USDC: Record<keyof typeof USDC_ADDRESS, Token> = {
     },
     USDC_ADDRESS
   ) as Record<keyof typeof USDC_ADDRESS, Token>),
+} as const
+
+export const USDCe: Record<keyof typeof USDCe_ADDRESS, Token> = {
+  ...(addressMapToTokenMap(
+    {
+      decimals: 6,
+      symbol: "USDC.e",
+      name: "Bridged USDC",
+    },
+    USDCe_ADDRESS
+  ) as Record<keyof typeof USDCe_ADDRESS, Token>),
 } as const
 
 export const USDT: Record<keyof typeof USDT_ADDRESS, Token> = {

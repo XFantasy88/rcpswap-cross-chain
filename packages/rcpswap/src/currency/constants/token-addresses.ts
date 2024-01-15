@@ -37,6 +37,10 @@ export const USDC_ADDRESS = {
   [ChainId.ARBITRUM_NOVA]: "0x750ba8b76187092B0D1E87E28daaf484d1b5273b",
 } as const
 
+export const USDCe_ADDRESS = {
+  [ChainId.ARBITRUM_ONE]: "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8",
+} as const
+
 export const USDT_ADDRESS = {
   [ChainId.BSC]: "0x55d398326f99059fF775485246999027B3197955",
   [ChainId.POLYGON]: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",

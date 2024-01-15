@@ -1,5 +1,5 @@
 import { ChainId } from "../../chain/index.js"
-import { BUSD, DAI, USDC, USDT } from "./tokens.js"
+import { BUSD, DAI, USDC, USDCe, USDT } from "./tokens.js"
 
 export const STABLES = {
   [ChainId.BSC]: [
@@ -15,6 +15,7 @@ export const STABLES = {
   ],
   [ChainId.ARBITRUM_ONE]: [
     USDC[ChainId.ARBITRUM_ONE],
+    USDCe[ChainId.ARBITRUM_ONE],
     USDT[ChainId.ARBITRUM_ONE],
     DAI[ChainId.ARBITRUM_ONE],
   ],
