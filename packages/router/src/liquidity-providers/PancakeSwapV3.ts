@@ -2,9 +2,9 @@ import { ChainId } from "rcpswap/chain"
 import { PublicClient } from "viem"
 
 import { LiquidityProviders } from "./LiquidityProvider"
-import { UniswapV3BaseProvider } from "./UniswapV3Base"
+import { PancakeSwapV3BaseProvider } from "./PancakeSwapV3Base"
 
-export class PancakeSwapV3Provider extends UniswapV3BaseProvider {
+export class PancakeSwapV3Provider extends PancakeSwapV3BaseProvider {
   constructor(chainId: ChainId, web3Client: PublicClient) {
     const factory = {
       [ChainId.BSC]: "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865",
