@@ -32,6 +32,7 @@ export const SUPPORTED_DEX_INFO: { [key: string]: { image: string } } = {
   Quick: { image: "/dex/quickswap.png" },
   Camelot: { image: "/dex/camelotswap.svg" },
   Bi: { image: "/dex/biswap.png" },
+  Pancake: { image: "/dex/pancakeswap.png" },
 } as const
 
 export const SYMBIOSIS_CONFIRMATION_BLOCK_COUNT = {

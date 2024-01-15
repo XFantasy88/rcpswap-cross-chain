@@ -20,6 +20,8 @@ import {
   CamelotSwapV2Provider,
   CamelotSwapV3Provider,
   BiSwapProvider,
+  PancakeSwapV2Provider,
+  PancakeSwapV3Provider,
 } from "."
 
 // Gathers pools info, creates routing in 'incremental' mode
@@ -158,6 +160,30 @@ export class DataFetcher {
     if (this._providerIsIncluded(LiquidityProviders.CamelotSwapV3, providers)) {
       try {
         const provider = new CamelotSwapV3Provider(
+          this.chainId,
+          this.web3Client
+        )
+        this.providers.push(provider)
+      } catch (e: unknown) {
+        console.warn(e)
+      }
+    }
+
+    if (this._providerIsIncluded(LiquidityProviders.PancakeSwapV2, providers)) {
+      try {
+        const provider = new PancakeSwapV2Provider(
+          this.chainId,
+          this.web3Client
+        )
+        this.providers.push(provider)
+      } catch (e: unknown) {
+        console.warn(e)
+      }
+    }
+
+    if (this._providerIsIncluded(LiquidityProviders.PancakeSwapV3, providers)) {
+      try {
+        const provider = new PancakeSwapV3Provider(
           this.chainId,
           this.web3Client
         )

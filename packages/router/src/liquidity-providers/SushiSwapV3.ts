@@ -24,7 +24,7 @@ export class SushiSwapV3Provider extends UniswapV3BaseProvider {
     } as const
 
     const tickLens = {
-      [ChainId.BSC]: "0xF70c086618dcf2b1A461311275e00D6B722ef914",
+      [ChainId.BSC]: "0x10c19390E1Ac2Fd6D0c3643a2320b0abA38E5bAA",
       [ChainId.ARBITRUM_NOVA]: "0xF60e5f4A44a510742457D8064ffd360B12d8D9AF",
       [ChainId.POLYGON]: "0x9fdeA1412e50D78B25aCE4f96d35801647Fdf7dA",
       [ChainId.ARBITRUM_ONE]: "0x8516944E89f296eb6473d79aED1Ba12088016c9e",

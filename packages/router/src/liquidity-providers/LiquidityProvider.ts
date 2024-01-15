@@ -15,6 +15,8 @@ export enum LiquidityProviders {
   QuickSwapV3 = "QuickSwapV3",
   CamelotSwapV2 = "CamelotSwapV2",
   CamelotSwapV3 = "CamelotSwapV3",
+  PancakeSwapV2 = "PancakeSwapV2",
+  PancakeSwapV3 = "PancakeSwapV3",
   BiSwap = "BiSwap",
 }
 

@@ -215,21 +215,35 @@ export const useClientTrade = (variables: UseTradeParams) => {
           [LiquidityProviders.CamelotSwapV2, LiquidityProviders.CamelotSwapV3]
         )
 
+        const pancakeRoute = Router.findBestRoute(
+          poolsCodeMap,
+          chainId,
+          fromToken,
+          amount.quotient,
+          toToken,
+          Number(feeData.gasPrice),
+          100,
+          [LiquidityProviders.PancakeSwapV2, LiquidityProviders.PancakeSwapV3]
+        )
+
         const bestSingleRoute = getBetterRouteExactIn(
           getBetterRouteExactIn(
             getBetterRouteExactIn(
               getBetterRouteExactIn(
                 getBetterRouteExactIn(
-                  getBetterRouteExactIn(sushiRoute, rcpRoute),
-                  arbRoute
+                  getBetterRouteExactIn(
+                    getBetterRouteExactIn(sushiRoute, rcpRoute),
+                    arbRoute
+                  ),
+                  uniRoute
                 ),
-                uniRoute
+                quickRoute
               ),
-              quickRoute
+              camletRoute
             ),
-            camletRoute
+            biRoute
           ),
-          biRoute
+          pancakeRoute
         )
 
         bestSingleDex =
@@ -245,7 +259,9 @@ export const useClientTrade = (variables: UseTradeParams) => {
             ? "Quick"
             : bestSingleRoute === biRoute
             ? "Bi"
-            : "Camelot"
+            : bestSingleRoute === camletRoute
+            ? "Camelot"
+            : "Pancake"
 
         bestSingleAmountOut = Amount.fromRawAmount(
           toToken,
@@ -325,7 +341,9 @@ export const useClientTrade = (variables: UseTradeParams) => {
                 swapPrice: amountOut.greaterThan(0n)
                   ? new Price({
                       baseAmount: amount,
-                      quoteAmount: amountOut,
+                      quoteAmount: amountOut.subtract(
+                        feeAmount ?? Amount.fromRawAmount(toToken, 0)
+                      ),
                     })
                   : undefined,
                 priceImpact: route.priceImpact

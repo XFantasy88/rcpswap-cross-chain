@@ -25,6 +25,8 @@ export const getAllPoolsCodeMap = async ({
         LiquidityProviders.QuickSwapV3,
         LiquidityProviders.CamelotSwapV2,
         LiquidityProviders.CamelotSwapV3,
+        LiquidityProviders.PancakeSwapV2,
+        LiquidityProviders.PancakeSwapV3,
         LiquidityProviders.BiSwap,
       ]
 
