@@ -26,6 +26,7 @@ const OPEN_OCEAN_NETWORKS: Partial<Record<ChainId, string>> = {
   [ChainId.BSC]: "bsc",
   [ChainId.MATIC_MAINNET]: "polygon",
   [ChainId.ARBITRUM_ONE]: "arbitrum",
+  [ChainId.AVALANCHE]: "avax",
 }
 
 const BASE_URL = "https://open-api.openocean.finance/v3"

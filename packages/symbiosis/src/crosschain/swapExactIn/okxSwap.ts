@@ -10,6 +10,7 @@ const OKX_CHAINS = new Set([
   ChainId.BSC,
   ChainId.MATIC_MAINNET,
   ChainId.ARBITRUM_ONE,
+  ChainId.AVALANCHE,
 ])
 
 export function isOKXSwapSupported(params: SwapExactInParams): boolean {

@@ -7,6 +7,7 @@ export const CROSS_CHAIN_ID =
 
 export const CHAINS_PRIORITY = [
   ChainId.BSC,
+  ChainId.AVALANCHE,
   ChainId.MATIC_MAINNET,
   ChainId.ARBITRUM_ONE,
   ChainId.ARBITRUM_NOVA,
@@ -22,12 +23,14 @@ export const ONE_INCH_CHAINS: ChainId[] = [
   ChainId.BSC,
   ChainId.MATIC_MAINNET,
   ChainId.ARBITRUM_ONE,
+  ChainId.AVALANCHE,
 ]
 
 export const ONE_INCH_ORACLE_MAP: { [chainId in ChainId]?: string } = {
   [ChainId.BSC]: "0x52cbE0f49CcdD4Dc6E9C13BAb024EABD2842045B",
   [ChainId.MATIC_MAINNET]: "0x52cbE0f49CcdD4Dc6E9C13BAb024EABD2842045B",
   [ChainId.ARBITRUM_ONE]: "0x52cbE0f49CcdD4Dc6E9C13BAb024EABD2842045B",
+  [ChainId.AVALANCHE]: "0x52cbE0f49CcdD4Dc6E9C13BAb024EABD2842045B",
 }
 
 export const WETH_ONLY: ChainTokensList = {
@@ -36,6 +39,7 @@ export const WETH_ONLY: ChainTokensList = {
   [ChainId.BOBA_BNB]: [WETH[ChainId.BOBA_BNB]],
   [ChainId.ARBITRUM_NOVA]: [WETH[ChainId.ARBITRUM_NOVA]],
   [ChainId.ARBITRUM_ONE]: [WETH[ChainId.ARBITRUM_ONE]],
+  [ChainId.AVALANCHE]: [WETH[ChainId.AVALANCHE]],
 }
 
 export const DEX_TOKENS_TO_CHECK_TRADES_AGAINST = {
@@ -111,6 +115,36 @@ export const DEX_TOKENS_TO_CHECK_TRADES_AGAINST = {
       name: "USD Coin",
     }),
   ],
+  [ChainId.AVALANCHE]: [
+    new Token({
+      chainId: ChainId.AVALANCHE,
+      address: "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+      decimals: 6,
+      symbol: "USDT.e",
+      name: "Tether USD",
+    }),
+    new Token({
+      chainId: ChainId.AVALANCHE,
+      address: "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70",
+      decimals: 18,
+      symbol: "DAI.e",
+      name: "Dai Stablecoin",
+    }),
+    new Token({
+      chainId: ChainId.AVALANCHE,
+      address: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+      decimals: 6,
+      symbol: "USDC.e",
+      name: "USD Coin",
+    }),
+    new Token({
+      chainId: ChainId.AVALANCHE,
+      address: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+      decimals: 6,
+      symbol: "USDC",
+      name: "USD Coin",
+    }),
+  ],
 }
 
 // used to construct intermediary pairs for trading
@@ -136,6 +170,10 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokensList = {
     WETH[ChainId.ARBITRUM_ONE],
     ...DEX_TOKENS_TO_CHECK_TRADES_AGAINST[ChainId.ARBITRUM_ONE],
   ],
+  [ChainId.AVALANCHE]: [
+    WETH[ChainId.AVALANCHE],
+    ...DEX_TOKENS_TO_CHECK_TRADES_AGAINST[ChainId.AVALANCHE],
+  ],
 }
 
 /**
@@ -159,4 +197,5 @@ export const MULTICALL_ADDRESSES: { [chainId in ChainId]?: string } = {
   [ChainId.BOBA_BNB]: "0x31cCe73DA4365342bd081F6a748AAdb7c7a49b7E",
   [ChainId.ARBITRUM_NOVA]: "0xcA11bde05977b3631167028862bE2a173976CA11",
   [ChainId.ARBITRUM_ONE]: "0x80c7dd17b01855a6d2347444a0fcc36136a314de",
+  [ChainId.AVALANCHE]: "0x29b6603d17b9d8f021ecb8845b6fd06e1adf89de",
 }

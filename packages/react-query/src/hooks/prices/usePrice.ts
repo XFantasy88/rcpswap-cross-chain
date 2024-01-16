@@ -8,6 +8,7 @@ const COINGECKO_TERMINAL_CHAIN_ID: { [chainId in ChainId]: string } = {
   [ChainId.POLYGON]: "polygon_pos",
   [ChainId.ARBITRUM_ONE]: "arbitrum",
   [ChainId.ARBITRUM_NOVA]: "arbitrum_nova",
+  [ChainId.AVALANCHE]: 'avax'
 }
 
 interface UsePrice {

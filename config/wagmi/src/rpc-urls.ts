@@ -15,6 +15,9 @@ export const rpcUrls = {
     `https://lb.drpc.org/ogrpc?network=arbitrum&dkey=${drpcId}`,
   ],
   [ChainId.BSC]: [`https://lb.drpc.org/ogrpc?network=bsc&dkey=${drpcId}`],
+  [ChainId.AVALANCHE]: [
+    `https://lb.drpc.org/ogrpc?network=avalanche&dkey=${drpcId}`,
+  ],
 } as const
 
 export type RpcEnabledChainId = keyof typeof rpcUrls

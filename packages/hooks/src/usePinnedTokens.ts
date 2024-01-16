@@ -57,6 +57,15 @@ export const COMMON_BASES = {
     DAI[ChainId.ARBITRUM_NOVA],
     MOON[ChainId.ARBITRUM_NOVA],
   ],
+  [ChainId.AVALANCHE]: [
+    Native.onChain(ChainId.AVALANCHE),
+    WNATIVE[ChainId.AVALANCHE],
+    WETH9[ChainId.AVALANCHE],
+    WBTC[ChainId.AVALANCHE],
+    USDC[ChainId.AVALANCHE],
+    USDT[ChainId.AVALANCHE],
+    DAI[ChainId.AVALANCHE],
+  ],
 } as const
 
 const COMMON_BASES_IDS = Object.entries(COMMON_BASES).reduce<

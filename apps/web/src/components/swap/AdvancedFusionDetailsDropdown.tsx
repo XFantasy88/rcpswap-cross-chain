@@ -102,7 +102,7 @@ export default function AdvancedFusionDetailsDropdown({
               ></DexLogo>
               <Text fontSize={14} color={theme?.text2}>
                 {trade?.bestSingleDex ?? "RCP"}
-                Swap.
+                {trade?.bestSingleDex !== "TraderJoe" && "Swap"}.
               </Text>
             </RowFixed>
           </AutoColumn>

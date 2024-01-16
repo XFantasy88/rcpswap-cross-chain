@@ -52,6 +52,15 @@ const CHAIN_ID_SHORT_CURRENCY_NAME_TO_CURRENCY = {
     BRICK: BRICK[ChainId.ARBITRUM_NOVA],
     MOON: MOON[ChainId.ARBITRUM_NOVA],
   },
+  [ChainId.AVALANCHE]: {
+    WAVAX: WNATIVE[ChainId.AVALANCHE],
+    ETH: WETH9[ChainId.AVALANCHE],
+    WETH: WETH9[ChainId.AVALANCHE],
+    WBTC: WBTC[ChainId.AVALANCHE],
+    USDC: USDC[ChainId.AVALANCHE],
+    USDT: USDT[ChainId.AVALANCHE],
+    DAI: DAI[ChainId.AVALANCHE],
+  },
 } as const
 
 export type ShortCurrencyNameChainId =

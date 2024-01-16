@@ -11,6 +11,7 @@ export class SushiSwapV2Provider extends UniswapV2BaseProvider {
       [ChainId.POLYGON]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
       [ChainId.ARBITRUM_ONE]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
       [ChainId.ARBITRUM_NOVA]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+      [ChainId.AVALANCHE]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
     } as const
 
     const initCodeHash = {
@@ -21,6 +22,8 @@ export class SushiSwapV2Provider extends UniswapV2BaseProvider {
       [ChainId.ARBITRUM_ONE]:
         "0xe18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303",
       [ChainId.ARBITRUM_NOVA]:
+        "0xe18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303",
+      [ChainId.AVALANCHE]:
         "0xe18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303",
     } as const
 

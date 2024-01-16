@@ -28,6 +28,8 @@ export const getAllPoolsCodeMap = async ({
         LiquidityProviders.PancakeSwapV2,
         LiquidityProviders.PancakeSwapV3,
         LiquidityProviders.BiSwap,
+        LiquidityProviders.TraderJoe,
+        LiquidityProviders.PangolinSwap
       ]
 
   const dataFetcher = DataFetcher.onChain(chainId)

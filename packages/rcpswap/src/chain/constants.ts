@@ -3,6 +3,7 @@ export const ChainId = {
   POLYGON: 137,
   ARBITRUM_ONE: 42161,
   ARBITRUM_NOVA: 42170,
+  AVALANCHE: 43114,
 } as const
 export type ChainId = (typeof ChainId)[keyof typeof ChainId]
 
@@ -13,5 +14,6 @@ export const ChainKey = {
   [ChainId.POLYGON]: "polygon",
   [ChainId.ARBITRUM_ONE]: "arbitrum-one",
   [ChainId.ARBITRUM_NOVA]: "arbitrum-nova",
+  [ChainId.AVALANCHE]: "avalanche",
 } as const
 export type ChainKey = (typeof ChainKey)[keyof typeof ChainKey]

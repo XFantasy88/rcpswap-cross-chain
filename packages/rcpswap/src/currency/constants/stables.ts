@@ -24,4 +24,9 @@ export const STABLES = {
     USDT[ChainId.ARBITRUM_NOVA],
     DAI[ChainId.ARBITRUM_NOVA],
   ],
+  [ChainId.AVALANCHE]: [
+    USDC[ChainId.AVALANCHE],
+    USDT[ChainId.AVALANCHE],
+    DAI[ChainId.AVALANCHE],
+  ],
 } as const

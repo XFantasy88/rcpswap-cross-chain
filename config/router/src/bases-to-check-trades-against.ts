@@ -52,4 +52,33 @@ export const BASES_TO_CHECK_TRADES_AGAINST: {
     DAI[ChainId.ARBITRUM_ONE],
     ARB[ChainId.ARBITRUM_ONE],
   ],
+  [ChainId.AVALANCHE]: [
+    WNATIVE[ChainId.AVALANCHE],
+    WETH9[ChainId.AVALANCHE],
+    WBTC[ChainId.AVALANCHE],
+    USDC[ChainId.AVALANCHE],
+    USDT[ChainId.AVALANCHE],
+    DAI[ChainId.AVALANCHE],
+    new Token({
+      chainId: ChainId.AVALANCHE,
+      address: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+      decimals: 6,
+      symbol: "USDC.e",
+      name: "USD Coin",
+    }),
+    new Token({
+      chainId: ChainId.AVALANCHE,
+      address: "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+      decimals: 6,
+      symbol: "USDT.e",
+      name: "Tether USD",
+    }),
+    new Token({
+      chainId: ChainId.AVALANCHE,
+      address: "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70",
+      decimals: 18,
+      symbol: "DAI.e",
+      name: "Dai Stablecoin",
+    }),
+  ],
 }

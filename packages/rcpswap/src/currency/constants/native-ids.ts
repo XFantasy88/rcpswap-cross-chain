@@ -5,4 +5,5 @@ export const nativeCurrencyIds = {
   [ChainId.POLYGON]: "MATIC",
   [ChainId.ARBITRUM_ONE]: "ETH",
   [ChainId.ARBITRUM_NOVA]: "ETH",
+  [ChainId.AVALANCHE]: "AVAX",
 } as const

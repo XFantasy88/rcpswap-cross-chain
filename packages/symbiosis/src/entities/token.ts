@@ -150,4 +150,16 @@ export const WETH = {
       large: "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
     },
   }),
+  [ChainId.AVALANCHE]: new Token({
+    chainId: ChainId.AVALANCHE,
+    address: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+    decimals: 18,
+    symbol: "WAVAX",
+    isNative: false,
+    name: "Wrapped AVAX",
+    icons: {
+      small: "https://s2.coinmarketcap.com/static/img/coins/64x64/9462.png",
+      large: "https://s2.coinmarketcap.com/static/img/coins/64x64/9462.png",
+    },
+  }),
 }

@@ -91,4 +91,21 @@ export default [
       ],
     },
   },
+  {
+    chainId: 43114,
+    explorers: [
+      {
+        name: "snowtrace",
+        url: "https://snowtrace.io",
+        standard: "EIP3091",
+      },
+    ],
+    nativeCurrency: {
+      name: "Avalanche",
+      symbol: "AVAX",
+      decimals: 18,
+    },
+    name: "Avalanche C-Chain",
+    shortName: "avax",
+  },
 ] as const

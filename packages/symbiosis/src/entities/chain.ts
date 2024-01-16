@@ -77,6 +77,18 @@ export const chains: Chain[] = [
       large: "https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png",
     },
   }),
+  new Chain({
+    id: ChainId.AVALANCHE,
+    name: "Avalanche",
+    disabled: false,
+    explorer: "https://snowtrace.io",
+    icons: {
+      small:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/avalanchex/info/logo.png",
+      large:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/avalanchex/info/logo.png",
+    },
+  }),
 ]
 
 export const getChainById = (

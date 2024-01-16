@@ -63,6 +63,13 @@ export const WNATIVE = {
   }),
   [ChainId.ARBITRUM_ONE]: WETH9[ChainId.ARBITRUM_ONE],
   [ChainId.ARBITRUM_NOVA]: WETH9[ChainId.ARBITRUM_NOVA],
+  [ChainId.AVALANCHE]: new Token({
+    chainId: ChainId.AVALANCHE,
+    address: WNATIVE_ADDRESS[ChainId.AVALANCHE],
+    decimals: 18,
+    symbol: "WAVAX",
+    name: "Wrapped AVAX",
+  }),
 } as const
 
 export const BUSD = addressMapToTokenMap(

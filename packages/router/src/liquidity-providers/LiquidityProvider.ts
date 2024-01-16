@@ -18,6 +18,8 @@ export enum LiquidityProviders {
   PancakeSwapV2 = "PancakeSwapV2",
   PancakeSwapV3 = "PancakeSwapV3",
   BiSwap = "BiSwap",
+  TraderJoe = "TraderJoe",
+  PangolinSwap = "PangolinSwap",
 }
 
 export abstract class LiquidityProvider {

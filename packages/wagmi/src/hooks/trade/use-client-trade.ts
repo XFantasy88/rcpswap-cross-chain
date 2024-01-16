@@ -116,6 +116,8 @@ export const useClientTrade = (variables: UseTradeParams) => {
         providers
       )
 
+      console.log(poolsCodeMap)
+
       let feeAmount: Amount<Type>
       let feeAmountBI: bigint = 0n
       let bestSingleAmountOut: Amount<Type>
@@ -226,24 +228,52 @@ export const useClientTrade = (variables: UseTradeParams) => {
           [LiquidityProviders.PancakeSwapV2, LiquidityProviders.PancakeSwapV3]
         )
 
+        const traderJoeRoute = Router.findBestRoute(
+          poolsCodeMap,
+          chainId,
+          fromToken,
+          amount.quotient,
+          toToken,
+          Number(feeData.gasPrice),
+          1,
+          [LiquidityProviders.TraderJoe]
+        )
+
+        const pangolinSwap = Router.findBestRoute(
+          poolsCodeMap,
+          chainId,
+          fromToken,
+          amount.quotient,
+          toToken,
+          Number(feeData.gasPrice),
+          1,
+          [LiquidityProviders.PangolinSwap]
+        )
+
         const bestSingleRoute = getBetterRouteExactIn(
           getBetterRouteExactIn(
             getBetterRouteExactIn(
               getBetterRouteExactIn(
                 getBetterRouteExactIn(
                   getBetterRouteExactIn(
-                    getBetterRouteExactIn(sushiRoute, rcpRoute),
-                    arbRoute
+                    getBetterRouteExactIn(
+                      getBetterRouteExactIn(
+                        getBetterRouteExactIn(sushiRoute, rcpRoute),
+                        arbRoute
+                      ),
+                      uniRoute
+                    ),
+                    quickRoute
                   ),
-                  uniRoute
+                  camletRoute
                 ),
-                quickRoute
+                biRoute
               ),
-              camletRoute
+              pancakeRoute
             ),
-            biRoute
+            traderJoeRoute
           ),
-          pancakeRoute
+          pangolinSwap
         )
 
         bestSingleDex =
@@ -261,7 +291,11 @@ export const useClientTrade = (variables: UseTradeParams) => {
             ? "Bi"
             : bestSingleRoute === camletRoute
             ? "Camelot"
-            : "Pancake"
+            : bestSingleRoute === pancakeRoute
+            ? "Pancake"
+            : bestSingleRoute === traderJoeRoute
+            ? "TraderJoe"
+            : "Pangolin"
 
         bestSingleAmountOut = Amount.fromRawAmount(
           toToken,

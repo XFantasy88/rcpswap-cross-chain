@@ -43,4 +43,12 @@ export const SUGGESTED_TOKEN_BASES = {
     MOON[ChainId.ARBITRUM_NOVA],
     BRICK[ChainId.ARBITRUM_NOVA],
   ],
+  [ChainId.AVALANCHE]: [
+    WNATIVE[ChainId.AVALANCHE],
+    WETH9[ChainId.AVALANCHE],
+    WBTC[ChainId.AVALANCHE],
+    USDC[ChainId.AVALANCHE],
+    USDT[ChainId.AVALANCHE],
+    DAI[ChainId.AVALANCHE],
+  ],
 }
