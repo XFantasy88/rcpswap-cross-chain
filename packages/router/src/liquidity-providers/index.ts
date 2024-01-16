@@ -13,5 +13,5 @@ export * from "./PancakeSwapV2"
 export * from "./PancakeSwapV3"
 export * from "./BiSwap"
 export * from "./TraderJoe"
-export * from './PangolinSwap'
+export * from "./PangolinSwap"
 export { NUMBER_OF_SURROUNDING_TICKS } from "./UniswapV3Base"

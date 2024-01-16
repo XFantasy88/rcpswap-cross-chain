@@ -70,7 +70,7 @@ export const ROUTE_PROCESSOR_3_ADDRESS: Record<
   [ChainId.POLYGON]: "0x7d2e410b5f0fd1620bac7ec62f10bbcfa2fd3d70",
   [ChainId.ARBITRUM_ONE]: "0x44Dd4e691F9E385a10b540E53E9215Fd6116A4BB",
   [ChainId.ARBITRUM_NOVA]: "0x9186bf4f5f4b3192fbae5467758156ec479b2b50",
-  [ChainId.AVALANCHE]: "",
+  [ChainId.AVALANCHE]: "0xa08ACc71e5c7a164f7ed3F0c996a78Fdf06aD8F5",
 } as const
 export const isRouteProcessor3ChainId = (
   chainId: ChainId
@@ -97,7 +97,7 @@ export const META_ROUTE_PROCESSOR_ADDRESS: Record<
   [ChainId.POLYGON]: "0x7df9c618fbb73fb46a356cfdc17dec9b4c87e261",
   [ChainId.ARBITRUM_ONE]: "0xe30590a4162859364B61d37e08620E4e53D88127",
   [ChainId.ARBITRUM_NOVA]: "0x98e3542200Bf5048Dab45B7b2915EeB4E6fD6954",
-  [ChainId.AVALANCHE]: "",
+  [ChainId.AVALANCHE]: "0x2f8A69b0F843E95eaE444681a5047d38620dD5c4",
 } as const
 export const isMetaRouteProcessorChainId = (
   chainId: ChainId
