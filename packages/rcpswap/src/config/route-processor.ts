@@ -66,7 +66,7 @@ export const ROUTE_PROCESSOR_3_ADDRESS: Record<
   RouteProcessor3ChainId,
   `0x${string}`
 > = {
-  [ChainId.BSC]: "0xc32234801baf9b7c0f270cc3c7877e1fe2bfd16e",
+  [ChainId.BSC]: "0x780f32439B3c7435AB11B4d48c4BA2035190A7bF",
   [ChainId.POLYGON]: "0x7d2e410b5f0fd1620bac7ec62f10bbcfa2fd3d70",
   [ChainId.ARBITRUM_ONE]: "0x44Dd4e691F9E385a10b540E53E9215Fd6116A4BB",
   [ChainId.ARBITRUM_NOVA]: "0x9186bf4f5f4b3192fbae5467758156ec479b2b50",

@@ -116,8 +116,6 @@ export const useClientTrade = (variables: UseTradeParams) => {
         providers
       )
 
-      console.log(poolsCodeMap)
-
       let feeAmount: Amount<Type>
       let feeAmountBI: bigint = 0n
       let bestSingleAmountOut: Amount<Type>
@@ -280,22 +278,22 @@ export const useClientTrade = (variables: UseTradeParams) => {
           bestSingleRoute === sushiRoute
             ? "Sushi"
             : bestSingleRoute === rcpRoute
-            ? "RCP"
-            : bestSingleRoute === arbRoute
-            ? "Arb"
-            : bestSingleRoute === uniRoute
-            ? "Uni"
-            : bestSingleRoute === quickRoute
-            ? "Quick"
-            : bestSingleRoute === biRoute
-            ? "Bi"
-            : bestSingleRoute === camletRoute
-            ? "Camelot"
-            : bestSingleRoute === pancakeRoute
-            ? "Pancake"
-            : bestSingleRoute === traderJoeRoute
-            ? "TraderJoe"
-            : "Pangolin"
+              ? "RCP"
+              : bestSingleRoute === arbRoute
+                ? "Arb"
+                : bestSingleRoute === uniRoute
+                  ? "Uni"
+                  : bestSingleRoute === quickRoute
+                    ? "Quick"
+                    : bestSingleRoute === biRoute
+                      ? "Bi"
+                      : bestSingleRoute === camletRoute
+                        ? "Camelot"
+                        : bestSingleRoute === pancakeRoute
+                          ? "Pancake"
+                          : bestSingleRoute === traderJoeRoute
+                            ? "TraderJoe"
+                            : "Pangolin"
 
         bestSingleAmountOut = Amount.fromRawAmount(
           toToken,
@@ -305,14 +303,12 @@ export const useClientTrade = (variables: UseTradeParams) => {
         feeAmountBI =
           route.amountOutBI > bestSingleRoute.amountOutBI
             ? ((route.amountOutBI - bestSingleRoute.amountOutBI) * 3000n) /
-                10000n +
-              (bestSingleRoute.amountOutBI * 100n) / 10000n
+            10000n +
+            (bestSingleRoute.amountOutBI * 100n) / 10000n
             : (bestSingleRoute.amountOutBI * 100n) / 10000n
 
         feeAmount = Amount.fromRawAmount(toToken, feeAmountBI)
       }
-
-      console.log(route)
 
       let args = undefined
 
@@ -354,14 +350,14 @@ export const useClientTrade = (variables: UseTradeParams) => {
         // let writeArgs: UseTradeReturnWriteArgs = args
         let writeArgs: UseTradeReturnWriteArgs = args
           ? [
-              args.tokenIn as Address,
-              args.amountIn,
-              args.tokenOut as Address,
-              args.amountOutMin,
-              feeAmountBI,
-              args.to as Address,
-              args.routeCode as Hex,
-            ]
+            args.tokenIn as Address,
+            args.amountIn,
+            args.tokenOut as Address,
+            args.amountOutMin,
+            feeAmountBI,
+            args.to as Address,
+            args.routeCode as Hex,
+          ]
           : undefined
 
         // const overrides = fromToken.isNative && writeArgs?.[1] ? { value: BigNumber.from(writeArgs?.[1]) } : undefined
@@ -374,17 +370,17 @@ export const useClientTrade = (variables: UseTradeParams) => {
               res({
                 swapPrice: amountOut.greaterThan(0n)
                   ? new Price({
-                      baseAmount: amount,
-                      quoteAmount: amountOut.subtract(
-                        feeAmount ?? Amount.fromRawAmount(toToken, 0)
-                      ),
-                    })
+                    baseAmount: amount,
+                    quoteAmount: amountOut.subtract(
+                      feeAmount ?? Amount.fromRawAmount(toToken, 0)
+                    ),
+                  })
                   : undefined,
                 priceImpact: route.priceImpact
                   ? new Percent(
-                      BigInt(Math.round(route.priceImpact * 10000)),
-                      10000n
-                    )
+                    BigInt(Math.round(route.priceImpact * 10000)),
+                    10000n
+                  )
                   : new Percent(0),
                 amountIn,
                 amountOut,
@@ -395,18 +391,18 @@ export const useClientTrade = (variables: UseTradeParams) => {
                   typeof writeArgs?.[3] === "bigint"
                     ? Amount.fromRawAmount(toToken, writeArgs[3])
                     : Amount.fromRawAmount(
-                        toToken,
-                        slippageAmount(
-                          amountOut,
-                          new Percent(Math.floor(0.5 * 100), 10_000)
-                        )[0]
-                      ),
+                      toToken,
+                      slippageAmount(
+                        amountOut,
+                        new Percent(Math.floor(0.5 * 100), 10_000)
+                      )[0]
+                    ),
                 gasSpent:
                   price && feeData.gasPrice
                     ? Amount.fromRawAmount(
-                        Native.onChain(chainId),
-                        feeData.gasPrice * BigInt(route.gasSpent * 1.2)
-                      ).toSignificant(4)
+                      Native.onChain(chainId),
+                      feeData.gasPrice * BigInt(route.gasSpent * 1.2)
+                    ).toSignificant(4)
                     : undefined,
                 route,
                 functionName: "processRoute",
