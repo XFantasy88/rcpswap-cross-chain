@@ -212,7 +212,7 @@ export const useClientTrade = (variables: UseTradeParams) => {
           toToken,
           Number(feeData.gasPrice),
           100,
-          [LiquidityProviders.CamelotSwapV2, LiquidityProviders.CamelotSwapV3]
+          [LiquidityProviders.CamelotSwapV3]
         )
 
         const pancakeRoute = Router.findBestRoute(

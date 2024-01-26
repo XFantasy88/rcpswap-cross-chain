@@ -57,6 +57,8 @@ export default function SwapTradeConfirmModal() {
   const { data: trade } = useSwapTrade()
   const { data: symbiosis } = useSymbiosisTrade()
 
+  console.log(trade)
+
   const addTransaction = useAddTransaction()
   const addPopup = useAddPopup()
   const { address } = useAccount()
