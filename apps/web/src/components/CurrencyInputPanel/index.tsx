@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import { ChainId } from "rcpswap/chain"
-import { Amount, Type, tryParseAmount } from "rcpswap/currency"
-import { Fraction, ZERO } from "rcpswap/math"
-import { Pool } from "@rcpswap/v2-sdk"
-import { useAccount, useBalanceWeb3 } from "@rcpswap/wagmi"
+import { ChainId } from "rcpswap/chain";
+import { Amount, Type, tryParseAmount } from "rcpswap/currency";
+import { Fraction, ZERO } from "rcpswap/math";
+import { Pool } from "@rcpswap/v2-sdk";
+import { useAccount, useBalanceWeb3 } from "@rcpswap/wagmi";
 
-import React, { useState, useCallback, useMemo } from "react"
-import styled from "styled-components"
-import { darken } from "polished"
-import { FiChevronDown } from "react-icons/fi"
+import React, { useState, useCallback, useMemo } from "react";
+import styled from "styled-components";
+import { darken } from "polished";
+import { FiChevronDown } from "react-icons/fi";
 
-import CurrencySearchModal from "@/components/SearchModal/CurrencySearchModal"
-import CurrencyLogo from "@/components/CurrencyLogo"
-import DoubleCurrencyLogo from "@/components/DoubleLogo"
-import { RowBetween } from "@/components/Row"
-import { TYPE } from "@/theme"
-import { Input as NumericalInput } from "@/components/NumericalInput"
-import NetworkSelector from "@/components/NetworkSelector"
+import CurrencySearchModal from "@/components/SearchModal/CurrencySearchModal";
+import CurrencyLogo from "@/components/CurrencyLogo";
+import DoubleCurrencyLogo from "@/components/DoubleLogo";
+import { RowBetween } from "@/components/Row";
+import { TYPE } from "@/theme";
+import { Input as NumericalInput } from "@/components/NumericalInput";
+import NetworkSelector from "@/components/NetworkSelector";
 
-import useTheme from "@/hooks/useTheme"
-import { usePrice } from "@rcpswap/react-query"
+import useTheme from "@/hooks/useTheme";
+import { usePrice } from "@rcpswap/react-query";
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   padding: ${({ selected }) =>
     selected ? "0.75rem 0.5rem 0.75rem 1rem" : "0.75rem 0.75rem 0.75rem 1rem"};
-`
+`;
 
 const CurrencySelect = styled.button<{ selected: boolean }>`
   align-items: center;
@@ -51,7 +51,7 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
     background-color: ${({ selected, theme }) =>
       selected ? theme.bg2 : darken(0.05, theme.primary1)};
   }
-`
+`;
 
 const LabelRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -64,26 +64,26 @@ const LabelRow = styled.div`
     cursor: pointer;
     color: ${({ theme }) => darken(0.2, theme.text2)};
   }
-`
+`;
 
 const NetworkRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   justify-content: end;
   padding: 0.75rem 1rem 0 1rem;
-`
+`;
 
 const PriceRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   color: ${({ theme }) => theme.text3};
   font-size: 0.75rem;
   padding: 0 0.75rem 0.75rem 1rem;
-`
+`;
 
 const Aligner = styled.span`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 const StyledDropDown = styled(FiChevronDown)<{ selected: boolean }>`
   margin: 0 0.25rem 0 0.5rem;
@@ -94,7 +94,7 @@ const StyledDropDown = styled(FiChevronDown)<{ selected: boolean }>`
     stroke: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)};
     stroke-width: 1.5px;
   }
-`
+`;
 
 const InputPanel = styled.div<{ hideInput?: boolean; top?: boolean }>`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -102,14 +102,14 @@ const InputPanel = styled.div<{ hideInput?: boolean; top?: boolean }>`
   border-radius: ${({ hideInput }) => (hideInput ? "8px" : "20px")};
   background-color: ${({ theme }) => theme.bg2};
   z-index: ${({ top }) => (top ? 3 : 2)};
-`
+`;
 
 const Container = styled.div<{ hideInput: boolean; inactive?: boolean }>`
   border-radius: ${({ hideInput }) => (hideInput ? "8px" : "20px")};
   border: 1px solid ${({ theme }) => theme.bg2};
   background-color: ${({ theme, inactive }) =>
     inactive ? theme.bg1 : theme.bg1};
-`
+`;
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
   ${({ active }) =>
@@ -117,12 +117,12 @@ const StyledTokenName = styled.span<{ active?: boolean }>`
       ? "  margin: 0 0.25rem 0 0.75rem;"
       : "  margin: 0 0.25rem 0 0.25rem;"}
   font-size:  ${({ active }) => (active ? "20px" : "16px")};
-`
+`;
 
 const PriceImpact = styled.span<{ impact: number }>`
   color: ${({ impact, theme }) =>
     impact <= -5 ? "#e61537" : impact <= -2 ? "#f7c40c" : theme.green1};
-`
+`;
 
 const StyledBalanceMax = styled.button`
   height: 28px;
@@ -146,33 +146,33 @@ const StyledBalanceMax = styled.button`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-right: 0.5rem;
   `};
-`
+`;
 
 interface CurrencyInputPanelProps {
-  value: string
-  onUserInput: (value: string) => void
-  onMax?: () => void
-  showMaxButton?: boolean
-  label?: string
-  onCurrencySelect?: (currency: Type) => void
-  currency?: Type | null
-  onChainSelect?: (chain: ChainId) => void
-  chainId?: ChainId | null
-  disableCurrencySelect?: boolean
-  hideBalance?: boolean
-  hideChain?: boolean
-  pair?: Pool | null
-  hideInput?: boolean
-  otherCurrency?: Type | null
-  otherAmount?: string
-  id: string
-  showCommonBases?: boolean
-  customBalanceText?: string
-  inactive?: boolean
-  showPriceImpact?: boolean
-  loading?: boolean
-  fee?: Amount<Type>
-  top?: boolean
+  value: string;
+  onUserInput: (value: string) => void;
+  onMax?: () => void;
+  showMaxButton?: boolean;
+  label?: string;
+  onCurrencySelect?: (currency: Type) => void;
+  currency?: Type | null;
+  onChainSelect?: (chain: ChainId) => void;
+  chainId?: ChainId | null;
+  disableCurrencySelect?: boolean;
+  hideBalance?: boolean;
+  hideChain?: boolean;
+  pair?: Pool | null;
+  hideInput?: boolean;
+  otherCurrency?: Type | null;
+  otherAmount?: string;
+  id: string;
+  showCommonBases?: boolean;
+  customBalanceText?: string;
+  inactive?: boolean;
+  showPriceImpact?: boolean;
+  loading?: boolean;
+  fee?: Amount<Type>;
+  top?: boolean;
 }
 
 export default function CurrencyInputPanel({
@@ -201,79 +201,83 @@ export default function CurrencyInputPanel({
   fee,
   top = false,
 }: CurrencyInputPanelProps) {
-  const [modalOpen, setModalOpen] = useState(false)
-  const { address } = useAccount()
+  const [modalOpen, setModalOpen] = useState(false);
+  const { address } = useAccount();
 
   const { data: selectedCurrencyBalance } = useBalanceWeb3({
     chainId: chainId ?? ChainId.ARBITRUM_NOVA,
     account: address,
     currency: currency ?? undefined,
-  })
+  });
 
-  const theme = useTheme()
+  const theme = useTheme();
 
   const handleDismissSearch = useCallback(() => {
-    setModalOpen(false)
-  }, [setModalOpen])
+    setModalOpen(false);
+  }, [setModalOpen]);
 
   const onChange = useCallback(
     (nextValue: string) => {
-      const [integer, decimals] = nextValue.split(".")
+      const [integer, decimals] = nextValue.split(".");
       if (decimals && decimals.length > (currency?.decimals ?? 18)) {
-        nextValue = `${integer}.${decimals.slice(0, currency?.decimals ?? 18)}`
+        nextValue = `${integer}.${decimals.slice(0, currency?.decimals ?? 18)}`;
       }
-      onUserInput(nextValue)
+      onUserInput(nextValue);
     },
     [onUserInput, value, currency]
-  )
+  );
 
   const { data: price, isInitialLoading: isPriceLoading } = usePrice({
     chainId: currency?.chainId,
     address: currency?.wrapped?.address,
-  })
+  });
 
   const parsedValue = useMemo(
     () => tryParseAmount(value, currency ?? undefined),
     [currency, value]
-  )
+  );
 
   const totalPrice =
-    parsedValue && price ? parsedValue.multiply(price) : undefined
+    parsedValue && price ? parsedValue.multiply(price) : undefined;
 
   const { data: otherPrice, isInitialLoading: isOtherPriceLoading } = usePrice({
     chainId: otherCurrency?.chainId,
     address: otherCurrency?.wrapped?.address,
-  })
+  });
 
   const { data: feePrice } = usePrice({
     chainId: fee?.currency?.chainId,
     address: fee?.currency?.wrapped?.address,
-  })
+  });
 
   const otherParsedValue = useMemo(
     () => tryParseAmount(otherAmount, otherCurrency ?? undefined),
     [otherCurrency, otherAmount]
-  )
+  );
 
   const otherTotalPrice =
     otherParsedValue && otherPrice
       ? otherParsedValue.multiply(otherPrice)
-      : undefined
+      : undefined;
 
-  const feeTotalPrice = fee && feePrice ? fee.multiply(feePrice) : undefined
+  const feeTotalPrice = fee && feePrice ? fee.multiply(feePrice) : undefined;
 
   const impact =
     totalPrice && otherTotalPrice && otherTotalPrice.greaterThan("0")
-      ? parseFloat(
-          (
-            ((parseFloat(totalPrice.toExact()) +
-              parseFloat(feeTotalPrice?.toExact() ?? "0")) /
-              parseFloat(otherTotalPrice.toExact()) -
-              1) *
-            100
-          ).toFixed(2)
+      ? Math.max(
+          0,
+          parseFloat(
+            (
+              ((parseFloat(totalPrice.toExact()) +
+                parseFloat(feeTotalPrice?.toExact() ?? "0")) /
+                parseFloat(otherTotalPrice.toExact()) -
+                1) *
+              100
+            ).toFixed(2)
+          ) - 1,
+          0
         )
-      : undefined
+      : undefined;
 
   return (
     <InputPanel id={id} top={top}>
@@ -328,7 +332,7 @@ export default function CurrencyInputPanel({
             className="open-currency-select-button"
             onClick={() => {
               if (!disableCurrencySelect) {
-                setModalOpen(true)
+                setModalOpen(true);
               }
             }}
           >
@@ -371,13 +375,13 @@ export default function CurrencyInputPanel({
         <PriceRow>
           {!isPriceLoading && price?.equalTo("0")
             ? "Price not available"
-            : `~$ ${parseFloat(totalPrice?.toExact() ?? "0").toLocaleString(
-                "en-US",
-                {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                }
-              )}`}
+            : `~$ ${(
+                parseFloat(totalPrice?.toExact() ?? "0") *
+                (showPriceImpact ? 1.01 : 1)
+              ).toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}`}
           &nbsp;
           {showPriceImpact && impact && impact < -1.5 && !loading ? (
             <PriceImpact impact={loading ? 0 : impact}>
@@ -399,5 +403,5 @@ export default function CurrencyInputPanel({
         />
       )}
     </InputPanel>
-  )
+  );
 }
