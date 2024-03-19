@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { Pair, PairInterface } from "../Pair"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { Pair, PairInterface } from "../Pair";
 
 const _abi = [
   {
@@ -712,14 +712,14 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-]
+];
 
 export class Pair__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): PairInterface {
-    return new utils.Interface(_abi) as PairInterface
+    return new utils.Interface(_abi) as PairInterface;
   }
   static connect(address: string, signerOrProvider: Signer | Provider): Pair {
-    return new Contract(address, _abi, signerOrProvider) as Pair
+    return new Contract(address, _abi, signerOrProvider) as Pair;
   }
 }

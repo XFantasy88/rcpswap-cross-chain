@@ -1,25 +1,25 @@
-import { Contract } from "@ethersproject/contracts"
-import ERC20 from "../abis/ERC20.json"
-import { Token, TokenAmount } from "../entities"
-import { BaseSwapping, CrosschainSwapExactInResult } from "./baseSwapping"
-import { BeefyVault, MulticallRouter } from "./contracts"
-import { ChainId } from "../constants"
+import { Contract } from "@ethersproject/contracts";
+import ERC20 from "../abis/ERC20.json";
+import { Token, TokenAmount } from "../entities";
+import { BaseSwapping, CrosschainSwapExactInResult } from "./baseSwapping";
+import { BeefyVault, MulticallRouter } from "./contracts";
+import { ChainId } from "../constants";
 
 type ZappingBeefyExactIn = {
-  tokenAmountIn: TokenAmount
-  vaultAddress: string
-  vaultChainId: ChainId
-  from: string
-  to: string
-  slippage: number
-  deadline: number
-}
+  tokenAmountIn: TokenAmount;
+  vaultAddress: string;
+  vaultChainId: ChainId;
+  from: string;
+  to: string;
+  slippage: number;
+  deadline: number;
+};
 
 export class ZappingBeefy extends BaseSwapping {
-  protected multicallRouter!: MulticallRouter
-  protected userAddress!: string
-  protected beefyVault!: BeefyVault
-  protected aToken!: string
+  protected multicallRouter!: MulticallRouter;
+  protected userAddress!: string;
+  protected beefyVault!: BeefyVault;
+  protected aToken!: string;
 
   public async exactIn({
     tokenAmountIn,
@@ -30,24 +30,24 @@ export class ZappingBeefy extends BaseSwapping {
     slippage,
     deadline,
   }: ZappingBeefyExactIn): Promise<CrosschainSwapExactInResult> {
-    this.multicallRouter = this.symbiosis.multicallRouter(vaultChainId)
-    this.userAddress = to
+    this.multicallRouter = this.symbiosis.multicallRouter(vaultChainId);
+    this.userAddress = to;
 
-    this.beefyVault = this.symbiosis.beefyVault(vaultAddress, vaultChainId)
+    this.beefyVault = this.symbiosis.beefyVault(vaultAddress, vaultChainId);
 
-    const tokenAddress = await this.beefyVault.want()
+    const tokenAddress = await this.beefyVault.want();
     const tokenContract = new Contract(
       tokenAddress,
       ERC20,
       this.symbiosis.providers.get(vaultChainId)
-    )
-    const decimals = await tokenContract["decimals"]()
+    );
+    const decimals = await tokenContract["decimals"]();
 
     const tokenOut = new Token({
       address: tokenAddress,
       chainId: vaultChainId,
       decimals,
-    })
+    });
 
     return this.doExactIn({
       tokenAmountIn,
@@ -56,64 +56,64 @@ export class ZappingBeefy extends BaseSwapping {
       to,
       slippage,
       deadline,
-    })
+    });
   }
 
   protected override tradeCTo(): string {
-    return this.multicallRouter.address
+    return this.multicallRouter.address;
   }
 
   protected override finalReceiveSide(): string {
-    return this.multicallRouter.address
+    return this.multicallRouter.address;
   }
 
   protected override finalCalldata(): string | [] {
-    return this.buildMulticall()
+    return this.buildMulticall();
   }
 
   protected override finalOffset(): number {
-    return 36
+    return 36;
   }
 
   protected override extraSwapTokens(): string[] {
-    return [this.aToken]
+    return [this.aToken];
   }
 
   private buildMulticall() {
-    const callDatas = []
-    const receiveSides = []
-    const path = []
-    const offsets = []
+    const callDatas = [];
+    const receiveSides = [];
+    const path = [];
+    const offsets = [];
 
-    let amount
-    let supplyToken
+    let amount;
+    let supplyToken;
 
     if (this.tradeC) {
-      amount = this.tradeC.tokenAmountIn.raw.toString()
-      supplyToken = this.tradeC.amountOut.token
+      amount = this.tradeC.tokenAmountIn.raw.toString();
+      supplyToken = this.tradeC.amountOut.token;
 
-      callDatas.push(this.tradeC.callData)
-      receiveSides.push(this.tradeC.routerAddress)
-      path.push(this.tradeC.tokenAmountIn.token.address)
-      offsets.push(this.tradeC.callDataOffset!)
+      callDatas.push(this.tradeC.callData);
+      receiveSides.push(this.tradeC.routerAddress);
+      path.push(this.tradeC.tokenAmountIn.token.address);
+      offsets.push(this.tradeC.callDataOffset!);
     } else {
-      amount = this.transit.amountOut.raw.toString()
+      amount = this.transit.amountOut.raw.toString();
       if (this.transit.direction === "mint") {
-        supplyToken = this.transit.amountOut.token
+        supplyToken = this.transit.amountOut.token;
       } else {
-        supplyToken = this.transit.feeToken
+        supplyToken = this.transit.feeToken;
       }
     }
 
     const beefyCalldata = this.beefyVault.interface.encodeFunctionData(
       "deposit",
       ["0"]
-    ) // amount will be patched
+    ); // amount will be patched
 
-    callDatas.push(beefyCalldata)
-    receiveSides.push(this.beefyVault.address)
-    path.push(supplyToken.address, this.beefyVault.address)
-    offsets.push(36)
+    callDatas.push(beefyCalldata);
+    receiveSides.push(this.beefyVault.address);
+    path.push(supplyToken.address, this.beefyVault.address);
+    offsets.push(36);
 
     return this.multicallRouter.interface.encodeFunctionData("multicall", [
       amount,
@@ -122,6 +122,6 @@ export class ZappingBeefy extends BaseSwapping {
       path,
       offsets,
       this.userAddress,
-    ])
+    ]);
   }
 }

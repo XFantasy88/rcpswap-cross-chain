@@ -1,38 +1,38 @@
-import { BaseSwapping, CrosschainSwapExactInResult } from "./baseSwapping"
-import { Token, TokenAmount, wrappedToken } from "../entities"
+import { BaseSwapping, CrosschainSwapExactInResult } from "./baseSwapping";
+import { Token, TokenAmount, wrappedToken } from "../entities";
 import {
   MulticallRouter,
   SyncSwapLaunchPool,
   SyncSwapLaunchPool__factory,
-} from "./contracts"
-import { ChainId } from "../constants"
-import JSBI from "jsbi"
-import type { Symbiosis } from "./symbiosis"
-import { OmniPoolConfig } from "./types"
+} from "./contracts";
+import { ChainId } from "../constants";
+import JSBI from "jsbi";
+import type { Symbiosis } from "./symbiosis";
+import { OmniPoolConfig } from "./types";
 
 interface ZappingSyncSwapLaunchPoolParams {
-  symbiosis: Symbiosis
-  chainId: ChainId
-  address: string
-  token: Token
-  omniPoolConfig: OmniPoolConfig
+  symbiosis: Symbiosis;
+  chainId: ChainId;
+  address: string;
+  token: Token;
+  omniPoolConfig: OmniPoolConfig;
 }
 interface ZappingSyncSwapLaunchPoolExactInParams {
-  tokenAmountIn: TokenAmount
-  from: string
-  to: string
-  slippage: number
-  deadline: number
+  tokenAmountIn: TokenAmount;
+  from: string;
+  to: string;
+  slippage: number;
+  deadline: number;
 }
 
 export class ZappingSyncSwapLaunchPool extends BaseSwapping {
-  protected multicallRouter!: MulticallRouter
-  protected userAddress!: string
-  protected pool!: SyncSwapLaunchPool
+  protected multicallRouter!: MulticallRouter;
+  protected userAddress!: string;
+  protected pool!: SyncSwapLaunchPool;
 
-  protected chainId: ChainId
-  protected address: string
-  protected declare tokenOut: Token
+  protected chainId: ChainId;
+  protected address: string;
+  protected declare tokenOut: Token;
 
   constructor({
     address,
@@ -41,11 +41,11 @@ export class ZappingSyncSwapLaunchPool extends BaseSwapping {
     token,
     omniPoolConfig,
   }: ZappingSyncSwapLaunchPoolParams) {
-    super(symbiosis, omniPoolConfig)
+    super(symbiosis, omniPoolConfig);
 
-    this.chainId = chainId
-    this.address = address
-    this.tokenOut = token
+    this.chainId = chainId;
+    this.address = address;
+    this.tokenOut = token;
   }
 
   public async exactIn({
@@ -55,13 +55,13 @@ export class ZappingSyncSwapLaunchPool extends BaseSwapping {
     slippage,
     deadline,
   }: ZappingSyncSwapLaunchPoolExactInParams): Promise<CrosschainSwapExactInResult> {
-    this.multicallRouter = this.symbiosis.multicallRouter(this.chainId)
-    this.userAddress = to
+    this.multicallRouter = this.symbiosis.multicallRouter(this.chainId);
+    this.userAddress = to;
 
     this.pool = SyncSwapLaunchPool__factory.connect(
       this.address,
       this.symbiosis.getProvider(this.chainId)
-    )
+    );
 
     return this.doExactIn({
       tokenAmountIn,
@@ -70,58 +70,58 @@ export class ZappingSyncSwapLaunchPool extends BaseSwapping {
       to,
       slippage,
       deadline,
-    })
+    });
   }
 
   protected override tradeCTo(): string {
-    return this.multicallRouter.address
+    return this.multicallRouter.address;
   }
 
   protected override finalReceiveSide(): string {
-    return this.multicallRouter.address
+    return this.multicallRouter.address;
   }
 
   protected override finalCalldata(): string | [] {
-    return this.buildMulticall()
+    return this.buildMulticall();
   }
 
   protected override finalOffset(): number {
-    return 36
+    return 36;
   }
 
   protected override extraSwapTokens(): string[] {
-    return []
+    return [];
   }
 
   private buildMulticall() {
-    const callDatas = []
-    const receiveSides = []
-    const path = []
-    const offsets = []
+    const callDatas = [];
+    const receiveSides = [];
+    const path = [];
+    const offsets = [];
 
-    let amount
-    let supplyToken
+    let amount;
+    let supplyToken;
 
     if (this.tradeC) {
-      amount = this.tradeC.tokenAmountIn.raw.toString()
-      supplyToken = this.tradeC.amountOut.token
+      amount = this.tradeC.tokenAmountIn.raw.toString();
+      supplyToken = this.tradeC.amountOut.token;
 
-      callDatas.push(this.tradeC.callData)
-      receiveSides.push(this.tradeC.routerAddress)
-      path.push(this.tradeC.tokenAmountIn.token.address)
-      offsets.push(this.tradeC.callDataOffset!)
+      callDatas.push(this.tradeC.callData);
+      receiveSides.push(this.tradeC.routerAddress);
+      path.push(this.tradeC.tokenAmountIn.token.address);
+      offsets.push(this.tradeC.callDataOffset!);
     } else {
       if (this.transit.isV2()) {
-        let rawAmount = this.transit.amountOut.raw
+        let rawAmount = this.transit.amountOut.raw;
         if (this.feeV2) {
-          rawAmount = JSBI.subtract(rawAmount, this.feeV2.raw)
+          rawAmount = JSBI.subtract(rawAmount, this.feeV2.raw);
         }
 
-        amount = rawAmount.toString()
-        supplyToken = this.tokenOut
+        amount = rawAmount.toString();
+        supplyToken = this.tokenOut;
       } else {
-        amount = this.transit.amountOut.raw.toString()
-        supplyToken = this.transit.amountOut.token
+        amount = this.transit.amountOut.raw.toString();
+        supplyToken = this.transit.amountOut.token;
       }
     }
 
@@ -131,12 +131,12 @@ export class ZappingSyncSwapLaunchPool extends BaseSwapping {
         "0", // will be patched
         this.to,
       ]
-    )
+    );
 
-    callDatas.push(supplyCalldata)
-    receiveSides.push(this.pool.address)
-    path.push(supplyToken.address)
-    offsets.push(36)
+    callDatas.push(supplyCalldata);
+    receiveSides.push(this.pool.address);
+    path.push(supplyToken.address);
+    offsets.push(36);
 
     return this.multicallRouter.interface.encodeFunctionData("multicall", [
       amount,
@@ -145,6 +145,6 @@ export class ZappingSyncSwapLaunchPool extends BaseSwapping {
       path,
       offsets,
       this.userAddress,
-    ])
+    ]);
   }
 }

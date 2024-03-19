@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { Unwrapper, UnwrapperInterface } from "../Unwrapper"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { Unwrapper, UnwrapperInterface } from "../Unwrapper";
 
 const _abi = [
   {
@@ -114,17 +114,17 @@ const _abi = [
     stateMutability: "view",
     type: "function",
   },
-]
+];
 
 export class Unwrapper__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): UnwrapperInterface {
-    return new utils.Interface(_abi) as UnwrapperInterface
+    return new utils.Interface(_abi) as UnwrapperInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): Unwrapper {
-    return new Contract(address, _abi, signerOrProvider) as Unwrapper
+    return new Contract(address, _abi, signerOrProvider) as Unwrapper;
   }
 }

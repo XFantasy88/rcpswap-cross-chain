@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { IzumiQuoter, IzumiQuoterInterface } from "../IzumiQuoter"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { IzumiQuoter, IzumiQuoterInterface } from "../IzumiQuoter";
 
 const _abi = [
   {
@@ -429,17 +429,17 @@ const _abi = [
     stateMutability: "payable",
     type: "receive",
   },
-]
+];
 
 export class IzumiQuoter__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): IzumiQuoterInterface {
-    return new utils.Interface(_abi) as IzumiQuoterInterface
+    return new utils.Interface(_abi) as IzumiQuoterInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): IzumiQuoter {
-    return new Contract(address, _abi, signerOrProvider) as IzumiQuoter
+    return new Contract(address, _abi, signerOrProvider) as IzumiQuoter;
   }
 }

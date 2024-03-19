@@ -1,97 +1,99 @@
-import { AddressZero, MaxUint256 } from "@ethersproject/constants"
+import { AddressZero, MaxUint256 } from "@ethersproject/constants";
 import {
   Log,
   TransactionReceipt,
   TransactionRequest,
-} from "@ethersproject/providers"
-import { BigNumber } from "ethers"
-import JSBI from "jsbi"
-import { Percent, Token, TokenAmount, wrappedToken } from "../entities"
-import { BIPS_BASE, CROSS_CHAIN_ID } from "./constants"
-import { Portal__factory, Synthesis, Synthesis__factory } from "./contracts"
-import { DataProvider } from "./dataProvider"
-import type { Symbiosis } from "./symbiosis"
-import { AggregatorTrade, SymbiosisTradeType, WrapTrade } from "./trade"
-import { Transit } from "./transit"
+} from "@ethersproject/providers";
+import { BigNumber } from "ethers";
+import JSBI from "jsbi";
+import { Percent, Token, TokenAmount, wrappedToken } from "../entities";
+import { BIPS_BASE, CROSS_CHAIN_ID } from "./constants";
+import { Portal__factory, Synthesis, Synthesis__factory } from "./contracts";
+import { DataProvider } from "./dataProvider";
+import type { Symbiosis } from "./symbiosis";
+import { AggregatorTrade, SymbiosisTradeType, WrapTrade } from "./trade";
+import { Transit } from "./transit";
 import {
   splitSlippage,
   getExternalId,
   getInternalId,
   DetailedSlippage,
-} from "./utils"
-import { WaitForComplete } from "./waitForComplete"
-import { Error, ErrorCode } from "./error"
-import { SymbiosisTrade } from "./trade/symbiosisTrade"
-import { OneInchProtocols } from "./trade/oneInchTrade"
-import { OmniPoolConfig } from "./types"
+} from "./utils";
+import { WaitForComplete } from "./waitForComplete";
+import { Error, ErrorCode } from "./error";
+import { SymbiosisTrade } from "./trade/symbiosisTrade";
+import { OneInchProtocols } from "./trade/oneInchTrade";
+import { OmniPoolConfig } from "./types";
 
 export interface SwapExactInParams {
-  tokenAmountIn: TokenAmount
-  tokenOut: Token
-  from: string
-  to: string
-  slippage: number
-  deadline: number
-  oneInchProtocols?: OneInchProtocols
-  maxDepth?: number
+  tokenAmountIn: TokenAmount;
+  tokenOut: Token;
+  from: string;
+  to: string;
+  slippage: number;
+  deadline: number;
+  oneInchProtocols?: OneInchProtocols;
+  maxDepth?: number;
 }
 
 export interface CrossChainSwapInfo {
-  fee: TokenAmount
-  tokenAmountOut: TokenAmount
-  tokenAmountOutMin: TokenAmount
-  route: Token[]
-  priceImpact: Percent
-  amountInUsd: TokenAmount
-  approveTo: string
-  inTradeType?: SymbiosisTradeType
-  outTradeType?: SymbiosisTradeType
+  save: TokenAmount;
+  fee: TokenAmount;
+  extraFee?: TokenAmount;
+  tokenAmountOut: TokenAmount;
+  tokenAmountOutMin: TokenAmount;
+  route: Token[];
+  priceImpact: Percent;
+  amountInUsd: TokenAmount;
+  approveTo: string;
+  inTradeType?: SymbiosisTradeType;
+  outTradeType?: SymbiosisTradeType;
 }
 
 export type EthSwapExactIn = CrossChainSwapInfo & {
-  type: "evm"
-  transactionRequest: TransactionRequest
-}
+  type: "evm";
+  transactionRequest: TransactionRequest;
+};
 
-export type CrosschainSwapExactInResult = EthSwapExactIn
+export type CrosschainSwapExactInResult = EthSwapExactIn;
 
 export abstract class BaseSwapping {
-  public amountInUsd: TokenAmount | undefined
+  public amountInUsd: TokenAmount | undefined;
 
-  protected from!: string
-  protected to!: string
-  protected tokenAmountIn!: TokenAmount
-  protected tokenOut!: Token
-  protected slippage!: DetailedSlippage
-  protected deadline!: number
-  protected ttl!: number
-  protected revertableAddresses!: { AB: string; BC: string }
+  protected from!: string;
+  protected to!: string;
+  protected tokenAmountIn!: TokenAmount;
+  protected tokenOut!: Token;
+  protected slippage!: DetailedSlippage;
+  protected deadline!: number;
+  protected ttl!: number;
+  protected revertableAddresses!: { AB: string; BC: string };
 
-  protected maxDepth?: number
+  protected maxDepth?: number;
 
-  protected route!: Token[]
+  protected route!: Token[];
 
-  protected tradeA: SymbiosisTrade | undefined
-  protected transit!: Transit
-  protected tradeC: SymbiosisTrade | undefined
+  protected tradeA: SymbiosisTrade | undefined;
+  protected transit!: Transit;
+  protected tradeC: SymbiosisTrade | undefined;
 
-  protected dataProvider: DataProvider
+  protected dataProvider: DataProvider;
 
-  protected readonly symbiosis: Symbiosis
-  protected synthesisV2!: Synthesis
+  protected readonly symbiosis: Symbiosis;
+  protected synthesisV2!: Synthesis;
 
-  protected transitTokenIn!: Token
-  protected transitTokenOut!: Token
+  protected transitTokenIn!: Token;
+  protected transitTokenOut!: Token;
 
-  protected omniPoolConfig: OmniPoolConfig
-  protected oneInchProtocols?: OneInchProtocols
+  protected omniPoolConfig: OmniPoolConfig;
+  protected oneInchProtocols?: OneInchProtocols;
 
-  protected feeV2: TokenAmount | undefined
+  protected feeV2: TokenAmount | undefined;
 
   public constructor(symbiosis: Symbiosis, omniPoolConfig: OmniPoolConfig) {
-    this.omniPoolConfig = omniPoolConfig
-    this.symbiosis = symbiosis
-    this.dataProvider = new DataProvider(symbiosis)
+    this.omniPoolConfig = omniPoolConfig;
+    this.symbiosis = symbiosis;
+    this.dataProvider = new DataProvider(symbiosis);
   }
 
   async doExactIn({
@@ -104,90 +106,106 @@ export abstract class BaseSwapping {
     oneInchProtocols,
     maxDepth,
   }: SwapExactInParams): Promise<CrosschainSwapExactInResult> {
-    this.oneInchProtocols = oneInchProtocols
-    this.tokenAmountIn = tokenAmountIn
-    this.tokenOut = tokenOut
-    this.maxDepth = maxDepth
+    this.oneInchProtocols = oneInchProtocols;
+    this.tokenAmountIn = tokenAmountIn;
+    this.tokenOut = tokenOut;
+    this.maxDepth = maxDepth;
 
     this.transitTokenIn = this.symbiosis.transitToken(
       this.tokenAmountIn.token.chainId,
       this.omniPoolConfig
-    )
+    );
     this.transitTokenOut = this.symbiosis.transitToken(
       this.tokenOut.chainId,
       this.omniPoolConfig
-    )
+    );
 
-    this.from = from
-    this.to = to
-    this.slippage = this.buildDetailedSlippage(slippage)
-    this.deadline = deadline
-    this.ttl = deadline - Math.floor(Date.now() / 1000)
-    this.synthesisV2 = this.symbiosis.synthesis(this.omniPoolConfig.chainId)
+    this.from = from;
+    this.to = to;
+    this.slippage = this.buildDetailedSlippage(slippage);
+    this.deadline = deadline;
+    this.ttl = deadline - Math.floor(Date.now() / 1000);
+    this.synthesisV2 = this.symbiosis.synthesis(this.omniPoolConfig.chainId);
 
-    this.revertableAddresses = { AB: this.from, BC: this.from }
+    this.revertableAddresses = { AB: this.from, BC: this.from };
 
     if (!this.transitTokenIn.equals(tokenAmountIn.token)) {
-      this.tradeA = this.buildTradeA()
-      await this.tradeA.init()
+      this.tradeA = this.buildTradeA();
+      await this.tradeA.init();
     }
 
-    this.transit = this.buildTransit()
-    await this.transit.init()
+    this.transit = this.buildTransit();
+    await this.transit.init();
 
-    await this.doPostTransitAction()
+    await this.doPostTransitAction();
 
-    this.amountInUsd = this.transit.getBridgeAmountIn()
+    this.amountInUsd = this.transit.getBridgeAmountIn();
 
     if (!this.transitTokenOut.equals(tokenOut)) {
-      this.tradeC = this.buildTradeC()
-      await this.tradeC.init()
+      this.tradeC = this.buildTradeC();
+      await this.tradeC.init();
     }
 
-    this.route = this.getRoute()
+    this.route = this.getRoute();
 
-    const [fee, feeV2] = await Promise.all([
+    const [{ fee, save }, feeV2Raw] = await Promise.all([
       this.getFee(this.transit.feeToken),
       this.transit.isV2() ? this.getFeeV2() : undefined,
-    ])
+    ]);
 
-    this.feeV2 = feeV2
+    const feeV2 = feeV2Raw?.fee;
+    this.feeV2 = feeV2;
 
     // >>> NOTE create trades with calculated fee
-    this.transit = this.buildTransit(fee)
-    await this.transit.init()
+    this.transit = this.buildTransit(fee);
+    await this.transit.init();
 
-    await this.doPostTransitAction()
+    await this.doPostTransitAction();
     if (!this.transitTokenOut.equals(tokenOut)) {
-      this.tradeC = this.buildTradeC()
-      await this.tradeC.init()
+      this.tradeC = this.buildTradeC();
+      await this.tradeC.init();
     }
     // <<< NOTE create trades with calculated fee
 
-    let crossChainFee = fee
+    let crossChainFee = fee;
     if (feeV2) {
-      const pow = BigNumber.from(10).pow(fee.token.decimals)
-      const powV2 = BigNumber.from(10).pow(feeV2.token.decimals)
+      const pow = BigNumber.from(10).pow(fee.token.decimals);
+      const powV2 = BigNumber.from(10).pow(feeV2.token.decimals);
 
-      const feeBase = BigNumber.from(fee.raw.toString()).mul(powV2)
-      const feeV2Base = BigNumber.from(feeV2.raw.toString()).mul(pow)
+      const feeBase = BigNumber.from(fee.raw.toString()).mul(powV2);
+      const feeV2Base = BigNumber.from(feeV2.raw.toString()).mul(pow);
 
       crossChainFee = new TokenAmount(
         feeV2.token,
         feeBase.add(feeV2Base).div(pow).toString()
-      )
+      );
     }
 
-    const tokenAmountOut = this.tokenAmountOut(feeV2)
+    let crossChainSave = save;
+    if (feeV2Raw?.save) {
+      const pow = BigNumber.from(10).pow(save.token.decimals);
+      const powV2 = BigNumber.from(10).pow(feeV2Raw.save.token.decimals);
+
+      const feeBase = BigNumber.from(save.raw.toString()).mul(powV2);
+      const feeV2Base = BigNumber.from(feeV2Raw.save.raw.toString()).mul(pow);
+
+      crossChainSave = new TokenAmount(
+        feeV2Raw.save.token,
+        feeBase.add(feeV2Base).div(pow).toString()
+      );
+    }
+
+    const tokenAmountOut = this.tokenAmountOut(feeV2);
     const tokenAmountOutMin = new TokenAmount(
       tokenAmountOut.token,
       JSBI.divide(
         JSBI.multiply(this.transit.amountOutMin.raw, tokenAmountOut.raw),
         this.transit.amountOut.raw
       )
-    )
+    );
 
     const swapInfo: CrossChainSwapInfo = {
+      save: crossChainSave,
       fee: crossChainFee,
       tokenAmountOut,
       tokenAmountOutMin,
@@ -197,39 +215,39 @@ export abstract class BaseSwapping {
       approveTo: this.approveTo(),
       inTradeType: this.tradeA?.tradeType,
       outTradeType: this.tradeC?.tradeType,
-    }
+    };
 
-    const transactionRequest = this.getEvmTransactionRequest(fee, feeV2)
+    const transactionRequest = this.getEvmTransactionRequest(fee, feeV2);
 
     return {
       ...swapInfo,
       type: "evm",
       transactionRequest,
-    }
+    };
   }
 
   private getRevertableAddress(side: "AB" | "BC"): string {
-    return this.revertableAddresses[side]
+    return this.revertableAddresses[side];
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected async doPostTransitAction() {}
 
   protected buildDetailedSlippage(totalSlippage: number): DetailedSlippage {
-    const hasTradeA = !this.transitTokenIn.equals(this.tokenAmountIn.token)
-    const hasTradeC = !this.transitTokenOut.equals(this.tokenOut)
+    const hasTradeA = !this.transitTokenIn.equals(this.tokenAmountIn.token);
+    const hasTradeC = !this.transitTokenOut.equals(this.tokenOut);
 
-    return splitSlippage(totalSlippage, hasTradeA, hasTradeC)
+    return splitSlippage(totalSlippage, hasTradeA, hasTradeC);
   }
 
   protected approveTo(): string {
     return this.symbiosis.chainConfig(this.tokenAmountIn.token.chainId)
-      .metaRouterGateway
+      .metaRouterGateway;
   }
 
   public async waitForComplete(receipt: TransactionReceipt): Promise<Log> {
     if (!this.tokenOut) {
-      throw new Error("Tokens are not set")
+      throw new Error("Tokens are not set");
     }
 
     if (this.transit.isV2()) {
@@ -239,11 +257,13 @@ export abstract class BaseSwapping {
         revertableAddress: this.getRevertableAddress("AB"),
         chainIdIn: this.tokenAmountIn.token.chainId,
         chainIdOut: this.omniPoolConfig.chainId,
-      })
-      const log = await wfc1.waitForComplete(receipt)
+      });
+      const log = await wfc1.waitForComplete(receipt);
 
-      const provider = this.symbiosis.getProvider(this.omniPoolConfig.chainId)
-      const receipt2 = await provider.getTransactionReceipt(log.transactionHash)
+      const provider = this.symbiosis.getProvider(this.omniPoolConfig.chainId);
+      const receipt2 = await provider.getTransactionReceipt(
+        log.transactionHash
+      );
 
       const wfc2 = new WaitForComplete({
         direction: "burn",
@@ -251,8 +271,8 @@ export abstract class BaseSwapping {
         revertableAddress: this.getRevertableAddress("BC"),
         chainIdIn: this.omniPoolConfig.chainId,
         chainIdOut: this.tokenOut.chainId,
-      })
-      return wfc2.waitForComplete(receipt2)
+      });
+      return wfc2.waitForComplete(receipt2);
     }
 
     return new WaitForComplete({
@@ -261,23 +281,23 @@ export abstract class BaseSwapping {
       symbiosis: this.symbiosis,
       revertableAddress: this.getRevertableAddress("AB"),
       chainIdIn: this.tokenAmountIn.token.chainId,
-    }).waitForComplete(receipt)
+    }).waitForComplete(receipt);
   }
 
   protected getEvmTransactionRequest(
     fee: TokenAmount,
     feeV2: TokenAmount | undefined
   ): TransactionRequest {
-    const chainId = this.tokenAmountIn.token.chainId
-    const metaRouter = this.symbiosis.metaRouter(chainId)
+    const chainId = this.tokenAmountIn.token.chainId;
+    const metaRouter = this.symbiosis.metaRouter(chainId);
 
-    const [relayRecipient, otherSideCalldata] = this.otherSideData(fee, feeV2)
+    const [relayRecipient, otherSideCalldata] = this.otherSideData(fee, feeV2);
 
-    const amount = this.tradeA ? this.tradeA.tokenAmountIn : this.tokenAmountIn
+    const amount = this.tradeA ? this.tradeA.tokenAmountIn : this.tokenAmountIn;
     const value =
       this.tradeA && this.tokenAmountIn.token.isNative
         ? BigNumber.from(this.tradeA.tokenAmountIn.raw.toString())
-        : undefined
+        : undefined;
 
     const data = metaRouter.interface.encodeFunctionData("metaRoute", [
       {
@@ -292,65 +312,65 @@ export abstract class BaseSwapping {
         relayRecipient,
         otherSideCalldata,
       },
-    ])
+    ]);
 
     return {
       chainId,
       to: metaRouter.address,
       data,
       value,
-    }
+    };
   }
 
   protected calculatePriceImpact(): Percent {
-    const zero = new Percent(JSBI.BigInt(0), BIPS_BASE) // 0%
-    const pia = this.tradeA?.priceImpact || zero
-    const pib = this.transit.priceImpact || zero
-    const pic = this.tradeC?.priceImpact || zero
+    const zero = new Percent(JSBI.BigInt(0), BIPS_BASE); // 0%
+    const pia = this.tradeA?.priceImpact || zero;
+    const pib = this.transit.priceImpact || zero;
+    const pic = this.tradeC?.priceImpact || zero;
 
     // console.log([pia, pib, pic].map((i) => i.toSignificant()))
 
-    let pi = pia.add(pib).add(pic)
+    let pi = pia.add(pib).add(pic);
 
-    const max = new Percent(JSBI.BigInt(10000), BIPS_BASE) // 100%
-    if (pi.greaterThan(max)) pi = max
+    const max = new Percent(JSBI.BigInt(10000), BIPS_BASE); // 100%
+    if (pi.greaterThan(max)) pi = max;
 
-    return new Percent(pi.numerator, pi.denominator)
+    return new Percent(pi.numerator, pi.denominator);
   }
 
   protected tokenAmountOut(feeV2?: TokenAmount | undefined): TokenAmount {
     if (this.tradeC) {
-      return this.tradeC.amountOut
+      return this.tradeC.amountOut;
     }
     if (this.transit.isV2()) {
-      let amount = this.transit.amountOut.raw
+      let amount = this.transit.amountOut.raw;
       if (feeV2) {
         if (JSBI.lessThan(amount, feeV2.raw)) {
           throw new Error(
             `Amount ${this.transit.amountOut.toSignificant()} ${
               feeV2.token.symbol
-            } less than fee ${feeV2.toSignificant()} ${feeV2.token.symbol}`,
+            } less than feeV2 ${feeV2.toSignificant()} ${feeV2.token.symbol}`,
             ErrorCode.AMOUNT_LESS_THAN_FEE
-          )
+          );
         }
-        amount = JSBI.subtract(amount, feeV2.raw)
+        amount = JSBI.subtract(amount, feeV2.raw);
       }
-      return new TokenAmount(this.tokenOut, amount)
+      return new TokenAmount(this.tokenOut, amount);
     }
 
-    return this.transit.amountOut
+    return this.transit.amountOut;
   }
 
   protected buildTradeA(): SymbiosisTrade {
-    const tokenOut = this.transitTokenIn
+    const tokenOut = this.transitTokenIn;
 
     if (WrapTrade.isSupported(this.tokenAmountIn, tokenOut)) {
-      return new WrapTrade(this.tokenAmountIn, tokenOut, this.to)
+      return new WrapTrade(this.tokenAmountIn, tokenOut, this.to);
     }
 
-    const chainId = this.tokenAmountIn.token.chainId
-    const from = this.symbiosis.metaRouter(chainId).address
-    const to = from
+    const chainId = this.tokenAmountIn.token.chainId;
+    const from = this.symbiosis.metaRouter(chainId).address;
+    const to = from;
 
     return new AggregatorTrade({
       tokenAmountIn: this.tokenAmountIn,
@@ -364,12 +384,12 @@ export abstract class BaseSwapping {
       ttl: this.ttl,
       oneInchProtocols: this.oneInchProtocols,
       maxDepth: this.maxDepth,
-    })
+    });
   }
 
   protected buildTransit(fee?: TokenAmount): Transit {
-    const amountIn = this.tradeA ? this.tradeA.amountOut : this.tokenAmountIn
-    const amountInMin = this.tradeA ? this.tradeA.amountOutMin : amountIn
+    const amountIn = this.tradeA ? this.tradeA.amountOut : this.tokenAmountIn;
+    const amountInMin = this.tradeA ? this.tradeA.amountOutMin : amountIn;
 
     return new Transit(
       this.symbiosis,
@@ -382,46 +402,46 @@ export abstract class BaseSwapping {
       this.deadline,
       this.omniPoolConfig,
       fee
-    )
+    );
   }
 
   protected tradeCTo() {
-    return this.to
+    return this.to;
   }
 
   protected getTradeCAmountIn(): TokenAmount {
-    let amountIn = this.transit.amountOut
+    let amountIn = this.transit.amountOut;
 
     if (this.transit.isV2()) {
-      let amountRaw = amountIn.raw
+      let amountRaw = amountIn.raw;
       if (this.feeV2) {
         if (amountIn.lessThan(this.feeV2)) {
           throw new Error(
             `Amount ${amountIn.toSignificant()} ${
               amountIn.token.symbol
-            } less than fee ${this.feeV2.toSignificant()} ${
+            } less than feeV2 ${this.feeV2.toSignificant()} ${
               this.feeV2.token.symbol
             }`,
             ErrorCode.AMOUNT_LESS_THAN_FEE
-          )
+          );
         }
-        amountRaw = JSBI.subtract(amountRaw, this.feeV2.raw)
+        amountRaw = JSBI.subtract(amountRaw, this.feeV2.raw);
       }
-      amountIn = new TokenAmount(this.transitTokenOut, amountRaw)
+      amountIn = new TokenAmount(this.transitTokenOut, amountRaw);
     }
-    return amountIn
+    return amountIn;
   }
 
   protected buildTradeC() {
-    const amountIn = this.getTradeCAmountIn()
+    const amountIn = this.getTradeCAmountIn();
 
-    const chainId = this.tokenOut.chainId
+    const chainId = this.tokenOut.chainId;
 
     if (WrapTrade.isSupported(amountIn, this.tokenOut)) {
-      return new WrapTrade(amountIn, this.tokenOut, this.to)
+      return new WrapTrade(amountIn, this.tokenOut, this.to);
     }
 
-    const from = this.symbiosis.metaRouter(chainId).address
+    const from = this.symbiosis.metaRouter(chainId).address;
     return new AggregatorTrade({
       tokenAmountIn: amountIn,
       tokenOut: this.tokenOut,
@@ -434,12 +454,12 @@ export abstract class BaseSwapping {
       ttl: this.ttl,
       oneInchProtocols: this.oneInchProtocols,
       maxDepth: this.maxDepth,
-    })
+    });
   }
 
   protected getRoute(): Token[] {
-    const started = this.tradeA ? [] : [this.tokenAmountIn.token]
-    const terminated = this.tradeC ? [] : [this.tokenOut]
+    const started = this.tradeA ? [] : [this.tokenAmountIn.token];
+    const terminated = this.tradeC ? [] : [this.tokenOut];
 
     return [
       ...started,
@@ -448,20 +468,22 @@ export abstract class BaseSwapping {
       ...(this.tradeC ? this.tradeC.route : []),
       ...terminated,
     ].reduce((acc: Token[], token: Token) => {
-      const found = acc.find((i) => i.equals(token))
-      if (found) return acc
-      return [...acc, token]
-    }, [])
+      const found = acc.find((i) => i.equals(token));
+      if (found) return acc;
+      return [...acc, token];
+    }, []);
   }
 
   protected metaBurnSyntheticToken(fee: TokenAmount): [string, string] {
     if (!this.tokenAmountIn || !this.tokenOut) {
-      throw new Error("Tokens are not set")
+      throw new Error("Tokens are not set");
     }
 
-    const synthesis = this.symbiosis.synthesis(this.tokenAmountIn.token.chainId)
+    const synthesis = this.symbiosis.synthesis(
+      this.tokenAmountIn.token.chainId
+    );
 
-    const amount = this.transit.getBridgeAmountIn()
+    const amount = this.transit.getBridgeAmountIn();
 
     return [
       synthesis.address,
@@ -483,7 +505,7 @@ export abstract class BaseSwapping {
           clientID: this.symbiosis.clientId,
         },
       ]),
-    ]
+    ];
   }
 
   protected metaSynthesize(
@@ -491,16 +513,16 @@ export abstract class BaseSwapping {
     feeV2: TokenAmount | undefined
   ): [string, string] {
     if (!this.tokenAmountIn || !this.tokenOut) {
-      throw new Error("Tokens are not set")
+      throw new Error("Tokens are not set");
     }
 
-    const chainIdIn = this.tokenAmountIn.token.chainId
+    const chainIdIn = this.tokenAmountIn.token.chainId;
     const chainIdOut = this.transit.isV2()
       ? this.omniPoolConfig.chainId
-      : this.tokenOut.chainId
-    const tokenAmount = this.transit.getBridgeAmountIn()
+      : this.tokenOut.chainId;
+    const tokenAmount = this.transit.getBridgeAmountIn();
 
-    const portal = this.symbiosis.portal(chainIdIn)
+    const portal = this.symbiosis.portal(chainIdIn);
 
     return [
       portal.address,
@@ -519,18 +541,14 @@ export abstract class BaseSwapping {
           secondSwapCalldata: this.secondSwapCalldata(),
           finalReceiveSide: this.transit.isV2()
             ? this.finalReceiveSideV2()
-            : this.finalReceiveSide(),
-          finalCalldata: this.transit.isV2()
-            ? this.finalCalldataV2(feeV2)
-            : this.finalCalldata(),
-          finalOffset: this.transit.isV2()
-            ? this.finalOffsetV2()
-            : this.finalOffset(),
+            : AddressZero,
+          finalCalldata: this.transit.isV2() ? this.finalCalldataV2(feeV2) : [],
+          finalOffset: this.transit.isV2() ? this.finalOffsetV2() : 0,
           revertableAddress: this.getRevertableAddress("AB"),
           clientID: this.symbiosis.clientId,
         },
       ]),
-    ]
+    ];
   }
 
   protected otherSideData(
@@ -539,34 +557,34 @@ export abstract class BaseSwapping {
   ): [string, string] {
     return this.transit.direction === "burn"
       ? this.metaBurnSyntheticToken(fee)
-      : this.metaSynthesize(fee, feeV2) // mint or v2
+      : this.metaSynthesize(fee, feeV2); // mint or v2
   }
 
   protected feeMintCallData(): [string, string] {
-    const chainIdIn = this.tokenAmountIn.token.chainId
+    const chainIdIn = this.tokenAmountIn.token.chainId;
     const chainIdOut = this.transit.isV2()
       ? this.omniPoolConfig.chainId
-      : this.tokenOut.chainId
+      : this.tokenOut.chainId;
 
-    const portalAddress = this.symbiosis.chainConfig(chainIdIn).portal
-    const synthesisAddress = this.symbiosis.chainConfig(chainIdOut).synthesis
+    const portalAddress = this.symbiosis.chainConfig(chainIdIn).portal;
+    const synthesisAddress = this.symbiosis.chainConfig(chainIdOut).synthesis;
 
     const internalId = getInternalId({
       contractAddress: portalAddress,
       requestCount: MaxUint256,
       chainId: chainIdIn,
-    })
+    });
 
     const externalId = getExternalId({
       internalId,
       contractAddress: synthesisAddress,
       revertableAddress: this.getRevertableAddress("AB"),
       chainId: chainIdOut,
-    })
+    });
 
-    const amount = this.transit.getBridgeAmountIn()
+    const amount = this.transit.getBridgeAmountIn();
 
-    const synthesisInterface = Synthesis__factory.createInterface()
+    const synthesisInterface = Synthesis__factory.createInterface();
 
     const callData = synthesisInterface.encodeFunctionData(
       "metaMintSyntheticToken",
@@ -584,43 +602,39 @@ export abstract class BaseSwapping {
           secondSwapCalldata: this.secondSwapCalldata(),
           finalReceiveSide: this.transit.isV2()
             ? this.finalReceiveSideV2()
-            : this.finalReceiveSide(),
-          finalCalldata: this.transit.isV2()
-            ? this.finalCalldataV2()
-            : this.finalCalldata(),
-          finalOffset: this.transit.isV2()
-            ? this.finalOffsetV2()
-            : this.finalOffset(),
+            : AddressZero,
+          finalCalldata: this.transit.isV2() ? this.finalCalldataV2() : [],
+          finalOffset: this.transit.isV2() ? this.finalOffsetV2() : 0,
         },
       ]
-    )
+    );
 
-    return [synthesisAddress, callData]
+    return [synthesisAddress, callData];
   }
 
   protected feeBurnCallData(): [string, string] {
-    const chainIdIn = this.tokenAmountIn.token.chainId
-    const chainIdOut = this.tokenOut.chainId
+    const chainIdIn = this.tokenAmountIn.token.chainId;
+    const chainIdOut = this.tokenOut.chainId;
 
-    const synthesisAddress = this.symbiosis.chainConfig(chainIdIn).synthesis
-    const portalAddress = this.symbiosis.chainConfig(chainIdOut).portal
+    const synthesisAddress = this.symbiosis.chainConfig(chainIdIn).synthesis;
+    const portalAddress = this.symbiosis.chainConfig(chainIdOut).portal;
 
     const internalId = getInternalId({
       contractAddress: synthesisAddress,
       requestCount: MaxUint256,
       chainId: chainIdIn,
-    })
+    });
 
     const externalId = getExternalId({
       internalId,
       contractAddress: portalAddress,
       revertableAddress: this.getRevertableAddress("BC"),
       chainId: chainIdOut,
-    })
+    });
 
-    const amount = this.transit.amountOut
+    const amount = this.transit.amountOut;
 
-    const portalInterface = Portal__factory.createInterface()
+    const portalInterface = Portal__factory.createInterface();
 
     const calldata = portalInterface.encodeFunctionData("metaUnsynthesize", [
       "0", // _stableBridgingFee
@@ -632,32 +646,32 @@ export abstract class BaseSwapping {
       this.finalReceiveSide(), // _finalReceiveSide
       this.finalCalldata(), // _finalCalldata
       this.finalOffset(), // _finalOffset
-    ])
+    ]);
 
-    return [portalAddress, calldata]
+    return [portalAddress, calldata];
   }
 
   protected feeBurnCallDataV2(): [string, string] {
-    const chainIdIn = this.omniPoolConfig.chainId
-    const chainIdOut = this.tokenOut.chainId
+    const chainIdIn = this.omniPoolConfig.chainId;
+    const chainIdOut = this.tokenOut.chainId;
 
-    const synthesisAddress = this.symbiosis.chainConfig(chainIdIn).synthesis
-    const portalAddress = this.symbiosis.chainConfig(chainIdOut).portal
+    const synthesisAddress = this.symbiosis.chainConfig(chainIdIn).synthesis;
+    const portalAddress = this.symbiosis.chainConfig(chainIdOut).portal;
 
     const internalId = getInternalId({
       contractAddress: synthesisAddress,
       requestCount: MaxUint256,
       chainId: chainIdIn,
-    })
+    });
 
     const externalId = getExternalId({
       internalId,
       contractAddress: portalAddress,
       revertableAddress: this.getRevertableAddress("BC"),
       chainId: chainIdOut,
-    })
+    });
 
-    const portalInterface = Portal__factory.createInterface()
+    const portalInterface = Portal__factory.createInterface();
 
     const calldata = portalInterface.encodeFunctionData("metaUnsynthesize", [
       "0", // _stableBridgingFee
@@ -669,92 +683,132 @@ export abstract class BaseSwapping {
       this.finalReceiveSide(), // _finalReceiveSide
       this.finalCalldata(), // _finalCalldata
       this.finalOffset(), // _finalOffset
-    ])
+    ]);
 
-    return [portalAddress, calldata]
+    return [portalAddress, calldata];
   }
 
-  protected async getFee(feeToken: Token): Promise<TokenAmount> {
-    const chainIdFrom = this.tokenAmountIn.token.chainId
+  protected async getFee(
+    feeToken: Token
+  ): Promise<{ fee: TokenAmount; save: TokenAmount }> {
+    const chainIdFrom = this.tokenAmountIn.token.chainId;
     const chainIdTo = this.transit.isV2()
       ? this.omniPoolConfig.chainId
-      : this.tokenOut.chainId
+      : this.tokenOut.chainId;
     const [receiveSide, calldata] =
       this.transit.direction === "burn"
         ? this.feeBurnCallData()
-        : this.feeMintCallData() // mint or v2
-    const fee = await this.symbiosis.getBridgeFee({
+        : this.feeMintCallData(); // mint or v2
+    const { price: fee, save } = await this.symbiosis.getBridgeFee({
       receiveSide,
       calldata,
       chainIdFrom,
       chainIdTo,
-    })
+    });
 
-    return new TokenAmount(feeToken, fee.toString())
+    return {
+      fee: new TokenAmount(feeToken, fee),
+      save: new TokenAmount(feeToken, save),
+    };
   }
 
-  protected async getFeeV2(): Promise<TokenAmount> {
-    const feeToken = this.transitTokenOut
-    const [receiveSide, calldata] = this.feeBurnCallDataV2()
+  protected async getFeeV2(): Promise<{ fee: TokenAmount; save: TokenAmount }> {
+    const feeToken = this.transitTokenOut;
+    const [receiveSide, calldata] = this.feeBurnCallDataV2();
 
-    const fee = await this.symbiosis.getBridgeFee({
+    const { price: fee, save } = await this.symbiosis.getBridgeFee({
       receiveSide,
       calldata,
       chainIdFrom: this.omniPoolConfig.chainId,
       chainIdTo: this.tokenOut.chainId,
-    })
-    return new TokenAmount(feeToken, fee.toString())
+    });
+    return {
+      fee: new TokenAmount(feeToken, fee),
+      save: new TokenAmount(feeToken, save),
+    };
   }
 
   protected approvedTokens(): string[] {
     let firstToken = this.tradeA
       ? this.tradeA.tokenAmountIn.token.address
-      : this.tokenAmountIn.token.address
+      : this.tokenAmountIn.token.address;
     if (!firstToken) {
-      firstToken = AddressZero // AddressZero if first token is GasToken
+      firstToken = AddressZero; // AddressZero if first token is GasToken
     }
 
-    let tokens: string[]
+    let tokens: string[];
     if (this.transit.direction === "burn") {
-      tokens = [firstToken, ...this.transit.route.map((i) => i.address)]
+      tokens = [firstToken, ...this.transit.route.map((i) => i.address)];
     } else {
       tokens = [
         firstToken,
         this.tradeA
           ? this.tradeA.amountOut.token.address
           : this.tokenAmountIn.token.address,
-      ]
+      ];
     }
-    return tokens
+    return tokens;
   }
 
   protected firstDexRouter(): string {
-    return this.tradeA?.routerAddress || AddressZero
+    return this.tradeA?.routerAddress || AddressZero;
   }
 
   protected firstSwapCalldata(): string | [] {
-    return this.tradeA?.callData || []
+    return this.tradeA?.callData || [];
   }
 
   protected secondDexRouter(): string {
-    return this.transit.receiveSide
+    const multicallRouter = this.symbiosis.multicallRouter(
+      this.omniPoolConfig.chainId
+    );
+    return multicallRouter.address;
   }
 
   protected secondSwapCalldata(): string | [] {
-    return this.transit.callData
+    if (!this.transit.trade) {
+      return [];
+    }
+
+    const calldatas = [this.transit.trade.callData];
+    const receiveSides = [this.transit.trade.pool.address];
+    const paths = [
+      this.transit.trade.tokenAmountIn.token.address,
+      this.transit.trade.amountOut.token.address,
+    ];
+    const offsets = [this.transit.trade.callDataOffset];
+
+    if (this.transit.direction === "mint" && this.tradeC) {
+      calldatas.push(this.finalCalldata() as string);
+      receiveSides.push(this.finalReceiveSide());
+      paths.push(wrappedToken(this.tradeC.amountOut.token).address);
+      offsets.push(this.finalOffset());
+    }
+
+    const multicallRouter = this.symbiosis.multicallRouter(
+      this.omniPoolConfig.chainId
+    );
+    return multicallRouter.interface.encodeFunctionData("multicall", [
+      this.transit.amountIn.raw.toString(),
+      calldatas, // calldata
+      receiveSides, // receiveSides
+      paths, // path
+      offsets, // offset
+      this.symbiosis.metaRouter(this.omniPoolConfig.chainId).address,
+    ]);
   }
 
   protected finalReceiveSide(): string {
-    return this.tradeC?.routerAddress || AddressZero
+    return this.tradeC?.routerAddress || AddressZero;
   }
 
   protected finalReceiveSideV2(): string {
-    return this.synthesisV2.address
+    return this.synthesisV2.address;
   }
 
   // C
   protected finalCalldata(): string | [] {
-    return this.tradeC?.callData || []
+    return this.tradeC?.callData || [];
   }
 
   protected finalCalldataV2(feeV2?: TokenAmount | undefined): string {
@@ -779,40 +833,40 @@ export abstract class BaseSwapping {
           clientID: this.symbiosis.clientId,
         },
       ]
-    )
+    );
   }
 
   protected finalOffset(): number {
-    return this.tradeC?.callDataOffset || 0
+    return this.tradeC?.callDataOffset || 0;
   }
 
   protected finalOffsetV2(): number {
-    return 100
+    return 100;
   }
 
   protected swapTokens(): string[] {
     if (this.transit.route.length === 0) {
-      return []
+      return [];
     }
 
     const tokens = [
       this.transit.route[0].address,
       this.transit.route[this.transit.route.length - 1].address,
-    ]
+    ];
 
     if (this.transit.isV2()) {
-      return tokens
+      return tokens;
     }
 
     if (this.tradeC) {
-      tokens.push(wrappedToken(this.tradeC.amountOut.token).address)
+      tokens.push(wrappedToken(this.tradeC.amountOut.token).address);
     } else {
-      tokens.push(...this.extraSwapTokens())
+      tokens.push(...this.extraSwapTokens());
     }
-    return tokens
+    return tokens;
   }
 
   protected extraSwapTokens(): string[] {
-    return []
+    return [];
   }
 }

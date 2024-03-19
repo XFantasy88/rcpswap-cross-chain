@@ -1,15 +1,15 @@
-import { Contract } from "@ethersproject/contracts"
-import { getNetwork } from "@ethersproject/networks"
-import { getDefaultProvider } from "@ethersproject/providers"
-import { Pair, TokenAmount } from "./entities"
-import invariant from "tiny-invariant"
-import IPancakePair from "./abis/IPancakePair.json"
-import ERC20 from "./abis/ERC20.json"
-import { ChainId } from "./constants"
-import { Token } from "./entities"
+import { Contract } from "@ethersproject/contracts";
+import { getNetwork } from "@ethersproject/networks";
+import { getDefaultProvider } from "@ethersproject/providers";
+import { Pair, TokenAmount } from "./entities";
+import invariant from "tiny-invariant";
+import IPancakePair from "./abis/IPancakePair.json";
+import ERC20 from "./abis/ERC20.json";
+import { ChainId } from "./constants";
+import { Token } from "./entities";
 
 let TOKEN_DECIMALS_CACHE: { [chainId: number]: { [address: string]: number } } =
-  {}
+  {};
 
 /**
  * Contains methods for constructing instances of pairs and tokens from on-chain data.
@@ -42,16 +42,16 @@ export abstract class Fetcher {
                   ...TOKEN_DECIMALS_CACHE?.[chainId],
                   [address]: decimals,
                 },
-              }
-              return decimals
-            })
+              };
+              return decimals;
+            });
     return new Token({
       chainId,
       address,
       decimals: parsedDecimals,
       symbol,
       name,
-    })
+    });
   }
 
   /**
@@ -65,19 +65,19 @@ export abstract class Fetcher {
     tokenB: Token,
     provider = getDefaultProvider(getNetwork(tokenA.chainId))
   ): Promise<Pair> {
-    invariant(tokenA.chainId === tokenB.chainId, "CHAIN_ID")
-    const address = Pair.getAddress(tokenA, tokenB)
+    invariant(tokenA.chainId === tokenB.chainId, "CHAIN_ID");
+    const address = Pair.getAddress(tokenA, tokenB);
     const [reserves0, reserves1] = await new Contract(
       address,
       IPancakePair.abi,
       provider
-    )["getReserves"]()
+    )["getReserves"]();
     const balances = tokenA.sortsBefore(tokenB)
       ? [reserves0, reserves1]
-      : [reserves1, reserves0]
+      : [reserves1, reserves0];
     return new Pair(
       new TokenAmount(tokenA, balances[0]),
       new TokenAmount(tokenB, balances[1])
-    )
+    );
   }
 }

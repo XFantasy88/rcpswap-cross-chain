@@ -12,1014 +12,1029 @@ import {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers"
-import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi"
-import { Listener, Provider } from "@ethersproject/providers"
-import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common"
+} from "ethers";
+import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
+import { Listener, Provider } from "@ethersproject/providers";
+import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface CreamComptrollerInterface extends utils.Interface {
-  contractName: "CreamComptroller"
+  contractName: "CreamComptroller";
   functions: {
-    "_become(address)": FunctionFragment
-    "_borrowGuardianPaused()": FunctionFragment
-    "_delistMarket(address)": FunctionFragment
-    "_mintGuardianPaused()": FunctionFragment
-    "_setBorrowCapGuardian(address)": FunctionFragment
-    "_setBorrowPaused(address,bool)": FunctionFragment
-    "_setCloseFactor(uint256)": FunctionFragment
-    "_setCollateralFactor(address,uint256)": FunctionFragment
-    "_setFlashloanPaused(address,bool)": FunctionFragment
-    "_setLiquidationIncentive(uint256)": FunctionFragment
-    "_setLiquidityMining(address)": FunctionFragment
-    "_setMarketBorrowCaps(address[],uint256[])": FunctionFragment
-    "_setMarketSupplyCaps(address[],uint256[])": FunctionFragment
-    "_setMintPaused(address,bool)": FunctionFragment
-    "_setPauseGuardian(address)": FunctionFragment
-    "_setPriceOracle(address)": FunctionFragment
-    "_setSeizePaused(bool)": FunctionFragment
-    "_setSupplyCapGuardian(address)": FunctionFragment
-    "_setTransferPaused(bool)": FunctionFragment
-    "_supportMarket(address,uint8)": FunctionFragment
-    "accountAssets(address,uint256)": FunctionFragment
-    "admin()": FunctionFragment
-    "allMarkets(uint256)": FunctionFragment
-    "borrowAllowed(address,address,uint256)": FunctionFragment
-    "borrowCapGuardian()": FunctionFragment
-    "borrowCaps(address)": FunctionFragment
-    "borrowGuardianPaused(address)": FunctionFragment
-    "borrowVerify(address,address,uint256)": FunctionFragment
-    "checkMembership(address,address)": FunctionFragment
-    "claimComp(address[],address[],bool,bool)": FunctionFragment
-    "closeFactorMantissa()": FunctionFragment
-    "compAccrued(address)": FunctionFragment
-    "compBorrowState(address)": FunctionFragment
-    "compBorrowerIndex(address,address)": FunctionFragment
-    "compInitialIndex()": FunctionFragment
-    "compRate()": FunctionFragment
-    "compSpeeds(address)": FunctionFragment
-    "compSupplierIndex(address,address)": FunctionFragment
-    "compSupplyState(address)": FunctionFragment
-    "comptrollerImplementation()": FunctionFragment
-    "enterMarkets(address[])": FunctionFragment
-    "exitMarket(address)": FunctionFragment
-    "flashloanAllowed(address,address,uint256,bytes)": FunctionFragment
-    "flashloanGuardianPaused(address)": FunctionFragment
-    "getAccountLiquidity(address)": FunctionFragment
-    "getAllMarkets()": FunctionFragment
-    "getAssetsIn(address)": FunctionFragment
-    "getBlockNumber()": FunctionFragment
-    "getCompAddress()": FunctionFragment
-    "getHypotheticalAccountLiquidity(address,address,uint256,uint256)": FunctionFragment
-    "isComptroller()": FunctionFragment
-    "isMarketListed(address)": FunctionFragment
-    "liquidateBorrowAllowed(address,address,address,address,uint256)": FunctionFragment
-    "liquidateBorrowVerify(address,address,address,address,uint256,uint256)": FunctionFragment
-    "liquidateCalculateSeizeTokens(address,address,uint256)": FunctionFragment
-    "liquidationIncentiveMantissa()": FunctionFragment
-    "liquidityMining()": FunctionFragment
-    "markets(address)": FunctionFragment
-    "maxAssets()": FunctionFragment
-    "mintAllowed(address,address,uint256)": FunctionFragment
-    "mintGuardianPaused(address)": FunctionFragment
-    "mintVerify(address,address,uint256,uint256)": FunctionFragment
-    "oracle()": FunctionFragment
-    "pauseGuardian()": FunctionFragment
-    "pendingAdmin()": FunctionFragment
-    "pendingComptrollerImplementation()": FunctionFragment
-    "redeemAllowed(address,address,uint256)": FunctionFragment
-    "redeemVerify(address,address,uint256,uint256)": FunctionFragment
-    "repayBorrowAllowed(address,address,address,uint256)": FunctionFragment
-    "repayBorrowVerify(address,address,address,uint256,uint256)": FunctionFragment
-    "seizeAllowed(address,address,address,address,uint256)": FunctionFragment
-    "seizeGuardianPaused()": FunctionFragment
-    "seizeVerify(address,address,address,address,uint256)": FunctionFragment
-    "supplyCapGuardian()": FunctionFragment
-    "supplyCaps(address)": FunctionFragment
-    "transferAllowed(address,address,address,uint256)": FunctionFragment
-    "transferGuardianPaused()": FunctionFragment
-    "transferVerify(address,address,address,uint256)": FunctionFragment
-    "updateCTokenVersion(address,uint8)": FunctionFragment
-  }
+    "_become(address)": FunctionFragment;
+    "_borrowGuardianPaused()": FunctionFragment;
+    "_delistMarket(address)": FunctionFragment;
+    "_mintGuardianPaused()": FunctionFragment;
+    "_setBorrowCapGuardian(address)": FunctionFragment;
+    "_setBorrowPaused(address,bool)": FunctionFragment;
+    "_setCloseFactor(uint256)": FunctionFragment;
+    "_setCollateralFactor(address,uint256)": FunctionFragment;
+    "_setFlashloanPaused(address,bool)": FunctionFragment;
+    "_setLiquidationIncentive(uint256)": FunctionFragment;
+    "_setLiquidityMining(address)": FunctionFragment;
+    "_setMarketBorrowCaps(address[],uint256[])": FunctionFragment;
+    "_setMarketSupplyCaps(address[],uint256[])": FunctionFragment;
+    "_setMintPaused(address,bool)": FunctionFragment;
+    "_setPauseGuardian(address)": FunctionFragment;
+    "_setPriceOracle(address)": FunctionFragment;
+    "_setSeizePaused(bool)": FunctionFragment;
+    "_setSupplyCapGuardian(address)": FunctionFragment;
+    "_setTransferPaused(bool)": FunctionFragment;
+    "_supportMarket(address,uint8)": FunctionFragment;
+    "accountAssets(address,uint256)": FunctionFragment;
+    "admin()": FunctionFragment;
+    "allMarkets(uint256)": FunctionFragment;
+    "borrowAllowed(address,address,uint256)": FunctionFragment;
+    "borrowCapGuardian()": FunctionFragment;
+    "borrowCaps(address)": FunctionFragment;
+    "borrowGuardianPaused(address)": FunctionFragment;
+    "borrowVerify(address,address,uint256)": FunctionFragment;
+    "checkMembership(address,address)": FunctionFragment;
+    "claimComp(address[],address[],bool,bool)": FunctionFragment;
+    "closeFactorMantissa()": FunctionFragment;
+    "compAccrued(address)": FunctionFragment;
+    "compBorrowState(address)": FunctionFragment;
+    "compBorrowerIndex(address,address)": FunctionFragment;
+    "compInitialIndex()": FunctionFragment;
+    "compRate()": FunctionFragment;
+    "compSpeeds(address)": FunctionFragment;
+    "compSupplierIndex(address,address)": FunctionFragment;
+    "compSupplyState(address)": FunctionFragment;
+    "comptrollerImplementation()": FunctionFragment;
+    "enterMarkets(address[])": FunctionFragment;
+    "exitMarket(address)": FunctionFragment;
+    "flashloanAllowed(address,address,uint256,bytes)": FunctionFragment;
+    "flashloanGuardianPaused(address)": FunctionFragment;
+    "getAccountLiquidity(address)": FunctionFragment;
+    "getAllMarkets()": FunctionFragment;
+    "getAssetsIn(address)": FunctionFragment;
+    "getBlockNumber()": FunctionFragment;
+    "getCompAddress()": FunctionFragment;
+    "getHypotheticalAccountLiquidity(address,address,uint256,uint256)": FunctionFragment;
+    "isComptroller()": FunctionFragment;
+    "isMarketListed(address)": FunctionFragment;
+    "liquidateBorrowAllowed(address,address,address,address,uint256)": FunctionFragment;
+    "liquidateBorrowVerify(address,address,address,address,uint256,uint256)": FunctionFragment;
+    "liquidateCalculateSeizeTokens(address,address,uint256)": FunctionFragment;
+    "liquidationIncentiveMantissa()": FunctionFragment;
+    "liquidityMining()": FunctionFragment;
+    "markets(address)": FunctionFragment;
+    "maxAssets()": FunctionFragment;
+    "mintAllowed(address,address,uint256)": FunctionFragment;
+    "mintGuardianPaused(address)": FunctionFragment;
+    "mintVerify(address,address,uint256,uint256)": FunctionFragment;
+    "oracle()": FunctionFragment;
+    "pauseGuardian()": FunctionFragment;
+    "pendingAdmin()": FunctionFragment;
+    "pendingComptrollerImplementation()": FunctionFragment;
+    "redeemAllowed(address,address,uint256)": FunctionFragment;
+    "redeemVerify(address,address,uint256,uint256)": FunctionFragment;
+    "repayBorrowAllowed(address,address,address,uint256)": FunctionFragment;
+    "repayBorrowVerify(address,address,address,uint256,uint256)": FunctionFragment;
+    "seizeAllowed(address,address,address,address,uint256)": FunctionFragment;
+    "seizeGuardianPaused()": FunctionFragment;
+    "seizeVerify(address,address,address,address,uint256)": FunctionFragment;
+    "supplyCapGuardian()": FunctionFragment;
+    "supplyCaps(address)": FunctionFragment;
+    "transferAllowed(address,address,address,uint256)": FunctionFragment;
+    "transferGuardianPaused()": FunctionFragment;
+    "transferVerify(address,address,address,uint256)": FunctionFragment;
+    "updateCTokenVersion(address,uint8)": FunctionFragment;
+  };
 
-  encodeFunctionData(functionFragment: "_become", values: [string]): string
+  encodeFunctionData(functionFragment: "_become", values: [string]): string;
   encodeFunctionData(
     functionFragment: "_borrowGuardianPaused",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_delistMarket",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_mintGuardianPaused",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setBorrowCapGuardian",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setBorrowPaused",
     values: [string, boolean]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setCloseFactor",
     values: [BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setCollateralFactor",
     values: [string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setFlashloanPaused",
     values: [string, boolean]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setLiquidationIncentive",
     values: [BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setLiquidityMining",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setMarketBorrowCaps",
     values: [string[], BigNumberish[]]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setMarketSupplyCaps",
     values: [string[], BigNumberish[]]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setMintPaused",
     values: [string, boolean]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setPauseGuardian",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setPriceOracle",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setSeizePaused",
     values: [boolean]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setSupplyCapGuardian",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_setTransferPaused",
     values: [boolean]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "_supportMarket",
     values: [string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "accountAssets",
     values: [string, BigNumberish]
-  ): string
-  encodeFunctionData(functionFragment: "admin", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "admin", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "allMarkets",
     values: [BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "borrowAllowed",
     values: [string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "borrowCapGuardian",
     values?: undefined
-  ): string
-  encodeFunctionData(functionFragment: "borrowCaps", values: [string]): string
+  ): string;
+  encodeFunctionData(functionFragment: "borrowCaps", values: [string]): string;
   encodeFunctionData(
     functionFragment: "borrowGuardianPaused",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "borrowVerify",
     values: [string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "checkMembership",
     values: [string, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "claimComp",
     values: [string[], string[], boolean, boolean]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "closeFactorMantissa",
     values?: undefined
-  ): string
-  encodeFunctionData(functionFragment: "compAccrued", values: [string]): string
+  ): string;
+  encodeFunctionData(functionFragment: "compAccrued", values: [string]): string;
   encodeFunctionData(
     functionFragment: "compBorrowState",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "compBorrowerIndex",
     values: [string, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "compInitialIndex",
     values?: undefined
-  ): string
-  encodeFunctionData(functionFragment: "compRate", values?: undefined): string
-  encodeFunctionData(functionFragment: "compSpeeds", values: [string]): string
+  ): string;
+  encodeFunctionData(functionFragment: "compRate", values?: undefined): string;
+  encodeFunctionData(functionFragment: "compSpeeds", values: [string]): string;
   encodeFunctionData(
     functionFragment: "compSupplierIndex",
     values: [string, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "compSupplyState",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "comptrollerImplementation",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "enterMarkets",
     values: [string[]]
-  ): string
-  encodeFunctionData(functionFragment: "exitMarket", values: [string]): string
+  ): string;
+  encodeFunctionData(functionFragment: "exitMarket", values: [string]): string;
   encodeFunctionData(
     functionFragment: "flashloanAllowed",
     values: [string, string, BigNumberish, BytesLike]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "flashloanGuardianPaused",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "getAccountLiquidity",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "getAllMarkets",
     values?: undefined
-  ): string
-  encodeFunctionData(functionFragment: "getAssetsIn", values: [string]): string
+  ): string;
+  encodeFunctionData(functionFragment: "getAssetsIn", values: [string]): string;
   encodeFunctionData(
     functionFragment: "getBlockNumber",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "getCompAddress",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "getHypotheticalAccountLiquidity",
     values: [string, string, BigNumberish, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "isComptroller",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "isMarketListed",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "liquidateBorrowAllowed",
     values: [string, string, string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "liquidateBorrowVerify",
     values: [string, string, string, string, BigNumberish, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "liquidateCalculateSeizeTokens",
     values: [string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "liquidationIncentiveMantissa",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "liquidityMining",
     values?: undefined
-  ): string
-  encodeFunctionData(functionFragment: "markets", values: [string]): string
-  encodeFunctionData(functionFragment: "maxAssets", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "markets", values: [string]): string;
+  encodeFunctionData(functionFragment: "maxAssets", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "mintAllowed",
     values: [string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "mintGuardianPaused",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "mintVerify",
     values: [string, string, BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(functionFragment: "oracle", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "oracle", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "pauseGuardian",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "pendingAdmin",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "pendingComptrollerImplementation",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "redeemAllowed",
     values: [string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "redeemVerify",
     values: [string, string, BigNumberish, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "repayBorrowAllowed",
     values: [string, string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "repayBorrowVerify",
     values: [string, string, string, BigNumberish, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "seizeAllowed",
     values: [string, string, string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "seizeGuardianPaused",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "seizeVerify",
     values: [string, string, string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "supplyCapGuardian",
     values?: undefined
-  ): string
-  encodeFunctionData(functionFragment: "supplyCaps", values: [string]): string
+  ): string;
+  encodeFunctionData(functionFragment: "supplyCaps", values: [string]): string;
   encodeFunctionData(
     functionFragment: "transferAllowed",
     values: [string, string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "transferGuardianPaused",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "transferVerify",
     values: [string, string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "updateCTokenVersion",
     values: [string, BigNumberish]
-  ): string
+  ): string;
 
-  decodeFunctionResult(functionFragment: "_become", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "_become", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "_borrowGuardianPaused",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_delistMarket",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_mintGuardianPaused",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setBorrowCapGuardian",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setBorrowPaused",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setCloseFactor",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setCollateralFactor",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setFlashloanPaused",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setLiquidationIncentive",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setLiquidityMining",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setMarketBorrowCaps",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setMarketSupplyCaps",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setMintPaused",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setPauseGuardian",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setPriceOracle",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setSeizePaused",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setSupplyCapGuardian",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_setTransferPaused",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_supportMarket",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "accountAssets",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "admin", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "allMarkets", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "admin", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "allMarkets", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "borrowAllowed",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "borrowCapGuardian",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "borrowCaps", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "borrowCaps", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "borrowGuardianPaused",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "borrowVerify",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "checkMembership",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "claimComp", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "claimComp", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "closeFactorMantissa",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "compAccrued", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "compAccrued",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "compBorrowState",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "compBorrowerIndex",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "compInitialIndex",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "compRate", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "compSpeeds", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "compRate", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "compSpeeds", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "compSupplierIndex",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "compSupplyState",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "comptrollerImplementation",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "enterMarkets",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "exitMarket", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "exitMarket", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "flashloanAllowed",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "flashloanGuardianPaused",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getAccountLiquidity",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getAllMarkets",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "getAssetsIn", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAssetsIn",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getBlockNumber",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getCompAddress",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getHypotheticalAccountLiquidity",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "isComptroller",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "isMarketListed",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "liquidateBorrowAllowed",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "liquidateBorrowVerify",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "liquidateCalculateSeizeTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "liquidationIncentiveMantissa",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "liquidityMining",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "markets", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "maxAssets", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "mintAllowed", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "markets", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "maxAssets", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "mintAllowed",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "mintGuardianPaused",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "mintVerify", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "oracle", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "mintVerify", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "oracle", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "pauseGuardian",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "pendingAdmin",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "pendingComptrollerImplementation",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "redeemAllowed",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "redeemVerify",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "repayBorrowAllowed",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "repayBorrowVerify",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "seizeAllowed",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "seizeGuardianPaused",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "seizeVerify", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "seizeVerify",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "supplyCapGuardian",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "supplyCaps", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "supplyCaps", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferAllowed",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferGuardianPaused",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferVerify",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "updateCTokenVersion",
     data: BytesLike
-  ): Result
+  ): Result;
 
   events: {
-    "ActionPaused(string,bool)": EventFragment
-    "DistributedBorrowerComp(address,address,uint256,uint256)": EventFragment
-    "DistributedSupplierComp(address,address,uint256,uint256)": EventFragment
-    "Failure(uint256,uint256,uint256)": EventFragment
-    "MarketDelisted(address)": EventFragment
-    "MarketEntered(address,address)": EventFragment
-    "MarketExited(address,address)": EventFragment
-    "MarketListed(address)": EventFragment
-    "NewBorrowCap(address,uint256)": EventFragment
-    "NewBorrowCapGuardian(address,address)": EventFragment
-    "NewCTokenVersion(address,uint8,uint8)": EventFragment
-    "NewCloseFactor(uint256,uint256)": EventFragment
-    "NewCollateralFactor(address,uint256,uint256)": EventFragment
-    "NewLiquidationIncentive(uint256,uint256)": EventFragment
-    "NewLiquidityMining(address,address)": EventFragment
-    "NewPauseGuardian(address,address)": EventFragment
-    "NewPriceOracle(address,address)": EventFragment
-    "NewSupplyCap(address,uint256)": EventFragment
-    "NewSupplyCapGuardian(address,address)": EventFragment
-  }
+    "ActionPaused(string,bool)": EventFragment;
+    "DistributedBorrowerComp(address,address,uint256,uint256)": EventFragment;
+    "DistributedSupplierComp(address,address,uint256,uint256)": EventFragment;
+    "Failure(uint256,uint256,uint256)": EventFragment;
+    "MarketDelisted(address)": EventFragment;
+    "MarketEntered(address,address)": EventFragment;
+    "MarketExited(address,address)": EventFragment;
+    "MarketListed(address)": EventFragment;
+    "NewBorrowCap(address,uint256)": EventFragment;
+    "NewBorrowCapGuardian(address,address)": EventFragment;
+    "NewCTokenVersion(address,uint8,uint8)": EventFragment;
+    "NewCloseFactor(uint256,uint256)": EventFragment;
+    "NewCollateralFactor(address,uint256,uint256)": EventFragment;
+    "NewLiquidationIncentive(uint256,uint256)": EventFragment;
+    "NewLiquidityMining(address,address)": EventFragment;
+    "NewPauseGuardian(address,address)": EventFragment;
+    "NewPriceOracle(address,address)": EventFragment;
+    "NewSupplyCap(address,uint256)": EventFragment;
+    "NewSupplyCapGuardian(address,address)": EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: "ActionPaused"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "DistributedBorrowerComp"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "DistributedSupplierComp"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "Failure"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "MarketDelisted"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "MarketEntered"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "MarketExited"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "MarketListed"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "NewBorrowCap"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "NewBorrowCapGuardian"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "NewCTokenVersion"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "NewCloseFactor"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "NewCollateralFactor"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "NewLiquidationIncentive"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "NewLiquidityMining"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "NewPauseGuardian"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "NewPriceOracle"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "NewSupplyCap"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "NewSupplyCapGuardian"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "ActionPaused"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DistributedBorrowerComp"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DistributedSupplierComp"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Failure"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MarketDelisted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MarketEntered"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MarketExited"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MarketListed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewBorrowCap"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewBorrowCapGuardian"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewCTokenVersion"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewCloseFactor"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewCollateralFactor"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewLiquidationIncentive"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewLiquidityMining"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewPauseGuardian"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewPriceOracle"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewSupplyCap"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewSupplyCapGuardian"): EventFragment;
 }
 
 export type ActionPaused_string_bool_Event = TypedEvent<
   [string, boolean],
   { action: string; pauseState: boolean }
->
+>;
 
 export type ActionPaused_string_bool_EventFilter =
-  TypedEventFilter<ActionPaused_string_bool_Event>
+  TypedEventFilter<ActionPaused_string_bool_Event>;
 
 export type ActionPaused_address_string_bool_Event = TypedEvent<
   [string, string, boolean],
   { cToken: string; action: string; pauseState: boolean }
->
+>;
 
 export type ActionPaused_address_string_bool_EventFilter =
-  TypedEventFilter<ActionPaused_address_string_bool_Event>
+  TypedEventFilter<ActionPaused_address_string_bool_Event>;
 
 export type DistributedBorrowerCompEvent = TypedEvent<
   [string, string, BigNumber, BigNumber],
   {
-    cToken: string
-    borrower: string
-    compDelta: BigNumber
-    compBorrowIndex: BigNumber
+    cToken: string;
+    borrower: string;
+    compDelta: BigNumber;
+    compBorrowIndex: BigNumber;
   }
->
+>;
 
 export type DistributedBorrowerCompEventFilter =
-  TypedEventFilter<DistributedBorrowerCompEvent>
+  TypedEventFilter<DistributedBorrowerCompEvent>;
 
 export type DistributedSupplierCompEvent = TypedEvent<
   [string, string, BigNumber, BigNumber],
   {
-    cToken: string
-    supplier: string
-    compDelta: BigNumber
-    compSupplyIndex: BigNumber
+    cToken: string;
+    supplier: string;
+    compDelta: BigNumber;
+    compSupplyIndex: BigNumber;
   }
->
+>;
 
 export type DistributedSupplierCompEventFilter =
-  TypedEventFilter<DistributedSupplierCompEvent>
+  TypedEventFilter<DistributedSupplierCompEvent>;
 
 export type FailureEvent = TypedEvent<
   [BigNumber, BigNumber, BigNumber],
   { error: BigNumber; info: BigNumber; detail: BigNumber }
->
+>;
 
-export type FailureEventFilter = TypedEventFilter<FailureEvent>
+export type FailureEventFilter = TypedEventFilter<FailureEvent>;
 
-export type MarketDelistedEvent = TypedEvent<[string], { cToken: string }>
+export type MarketDelistedEvent = TypedEvent<[string], { cToken: string }>;
 
-export type MarketDelistedEventFilter = TypedEventFilter<MarketDelistedEvent>
+export type MarketDelistedEventFilter = TypedEventFilter<MarketDelistedEvent>;
 
 export type MarketEnteredEvent = TypedEvent<
   [string, string],
   { cToken: string; account: string }
->
+>;
 
-export type MarketEnteredEventFilter = TypedEventFilter<MarketEnteredEvent>
+export type MarketEnteredEventFilter = TypedEventFilter<MarketEnteredEvent>;
 
 export type MarketExitedEvent = TypedEvent<
   [string, string],
   { cToken: string; account: string }
->
+>;
 
-export type MarketExitedEventFilter = TypedEventFilter<MarketExitedEvent>
+export type MarketExitedEventFilter = TypedEventFilter<MarketExitedEvent>;
 
-export type MarketListedEvent = TypedEvent<[string], { cToken: string }>
+export type MarketListedEvent = TypedEvent<[string], { cToken: string }>;
 
-export type MarketListedEventFilter = TypedEventFilter<MarketListedEvent>
+export type MarketListedEventFilter = TypedEventFilter<MarketListedEvent>;
 
 export type NewBorrowCapEvent = TypedEvent<
   [string, BigNumber],
   { cToken: string; newBorrowCap: BigNumber }
->
+>;
 
-export type NewBorrowCapEventFilter = TypedEventFilter<NewBorrowCapEvent>
+export type NewBorrowCapEventFilter = TypedEventFilter<NewBorrowCapEvent>;
 
 export type NewBorrowCapGuardianEvent = TypedEvent<
   [string, string],
   { oldBorrowCapGuardian: string; newBorrowCapGuardian: string }
->
+>;
 
 export type NewBorrowCapGuardianEventFilter =
-  TypedEventFilter<NewBorrowCapGuardianEvent>
+  TypedEventFilter<NewBorrowCapGuardianEvent>;
 
 export type NewCTokenVersionEvent = TypedEvent<
   [string, number, number],
   { cToken: string; oldVersion: number; newVersion: number }
->
+>;
 
 export type NewCTokenVersionEventFilter =
-  TypedEventFilter<NewCTokenVersionEvent>
+  TypedEventFilter<NewCTokenVersionEvent>;
 
 export type NewCloseFactorEvent = TypedEvent<
   [BigNumber, BigNumber],
   { oldCloseFactorMantissa: BigNumber; newCloseFactorMantissa: BigNumber }
->
+>;
 
-export type NewCloseFactorEventFilter = TypedEventFilter<NewCloseFactorEvent>
+export type NewCloseFactorEventFilter = TypedEventFilter<NewCloseFactorEvent>;
 
 export type NewCollateralFactorEvent = TypedEvent<
   [string, BigNumber, BigNumber],
   {
-    cToken: string
-    oldCollateralFactorMantissa: BigNumber
-    newCollateralFactorMantissa: BigNumber
+    cToken: string;
+    oldCollateralFactorMantissa: BigNumber;
+    newCollateralFactorMantissa: BigNumber;
   }
->
+>;
 
 export type NewCollateralFactorEventFilter =
-  TypedEventFilter<NewCollateralFactorEvent>
+  TypedEventFilter<NewCollateralFactorEvent>;
 
 export type NewLiquidationIncentiveEvent = TypedEvent<
   [BigNumber, BigNumber],
   {
-    oldLiquidationIncentiveMantissa: BigNumber
-    newLiquidationIncentiveMantissa: BigNumber
+    oldLiquidationIncentiveMantissa: BigNumber;
+    newLiquidationIncentiveMantissa: BigNumber;
   }
->
+>;
 
 export type NewLiquidationIncentiveEventFilter =
-  TypedEventFilter<NewLiquidationIncentiveEvent>
+  TypedEventFilter<NewLiquidationIncentiveEvent>;
 
 export type NewLiquidityMiningEvent = TypedEvent<
   [string, string],
   { oldLiquidityMining: string; newLiquidityMining: string }
->
+>;
 
 export type NewLiquidityMiningEventFilter =
-  TypedEventFilter<NewLiquidityMiningEvent>
+  TypedEventFilter<NewLiquidityMiningEvent>;
 
 export type NewPauseGuardianEvent = TypedEvent<
   [string, string],
   { oldPauseGuardian: string; newPauseGuardian: string }
->
+>;
 
 export type NewPauseGuardianEventFilter =
-  TypedEventFilter<NewPauseGuardianEvent>
+  TypedEventFilter<NewPauseGuardianEvent>;
 
 export type NewPriceOracleEvent = TypedEvent<
   [string, string],
   { oldPriceOracle: string; newPriceOracle: string }
->
+>;
 
-export type NewPriceOracleEventFilter = TypedEventFilter<NewPriceOracleEvent>
+export type NewPriceOracleEventFilter = TypedEventFilter<NewPriceOracleEvent>;
 
 export type NewSupplyCapEvent = TypedEvent<
   [string, BigNumber],
   { cToken: string; newSupplyCap: BigNumber }
->
+>;
 
-export type NewSupplyCapEventFilter = TypedEventFilter<NewSupplyCapEvent>
+export type NewSupplyCapEventFilter = TypedEventFilter<NewSupplyCapEvent>;
 
 export type NewSupplyCapGuardianEvent = TypedEvent<
   [string, string],
   { oldSupplyCapGuardian: string; newSupplyCapGuardian: string }
->
+>;
 
 export type NewSupplyCapGuardianEventFilter =
-  TypedEventFilter<NewSupplyCapGuardianEvent>
+  TypedEventFilter<NewSupplyCapGuardianEvent>;
 
 export interface CreamComptroller extends BaseContract {
-  contractName: "CreamComptroller"
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  contractName: "CreamComptroller";
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: CreamComptrollerInterface
+  interface: CreamComptrollerInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     _become(
       unitroller: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    _borrowGuardianPaused(overrides?: CallOverrides): Promise<[boolean]>
+    _borrowGuardianPaused(overrides?: CallOverrides): Promise<[boolean]>;
 
     _delistMarket(
       cToken: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    _mintGuardianPaused(overrides?: CallOverrides): Promise<[boolean]>
+    _mintGuardianPaused(overrides?: CallOverrides): Promise<[boolean]>;
 
     _setBorrowCapGuardian(
       newBorrowCapGuardian: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setBorrowPaused(
       cToken: string,
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setCloseFactor(
       newCloseFactorMantissa: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setCollateralFactor(
       cToken: string,
       newCollateralFactorMantissa: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setFlashloanPaused(
       cToken: string,
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setLiquidationIncentive(
       newLiquidationIncentiveMantissa: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setLiquidityMining(
       newLiquidityMining: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setMarketBorrowCaps(
       cTokens: string[],
       newBorrowCaps: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setMarketSupplyCaps(
       cTokens: string[],
       newSupplyCaps: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setMintPaused(
       cToken: string,
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setPauseGuardian(
       newPauseGuardian: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setPriceOracle(
       newOracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setSeizePaused(
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setSupplyCapGuardian(
       newSupplyCapGuardian: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _setTransferPaused(
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     _supportMarket(
       cToken: string,
       version: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     accountAssets(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[string]>
+    ): Promise<[string]>;
 
-    admin(overrides?: CallOverrides): Promise<[string]>
+    admin(overrides?: CallOverrides): Promise<[string]>;
 
-    allMarkets(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>
+    allMarkets(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     borrowAllowed(
       cToken: string,
       borrower: string,
       borrowAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    borrowCapGuardian(overrides?: CallOverrides): Promise<[string]>
+    borrowCapGuardian(overrides?: CallOverrides): Promise<[string]>;
 
-    borrowCaps(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>
+    borrowCaps(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     borrowGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<[boolean]>
+    ): Promise<[boolean]>;
 
     borrowVerify(
       cToken: string,
       borrower: string,
       borrowAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     checkMembership(
       account: string,
       cToken: string,
       overrides?: CallOverrides
-    ): Promise<[boolean]>
+    ): Promise<[boolean]>;
 
     "claimComp(address[],address[],bool,bool)"(
       holders: string[],
@@ -1027,56 +1042,56 @@ export interface CreamComptroller extends BaseContract {
       borrowers: boolean,
       suppliers: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     "claimComp(address)"(
       holder: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    closeFactorMantissa(overrides?: CallOverrides): Promise<[BigNumber]>
+    closeFactorMantissa(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    compAccrued(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>
+    compAccrued(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     compBorrowState(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>
+    ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>;
 
     compBorrowerIndex(
       arg0: string,
       arg1: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>
+    ): Promise<[BigNumber]>;
 
-    compInitialIndex(overrides?: CallOverrides): Promise<[BigNumber]>
+    compInitialIndex(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    compRate(overrides?: CallOverrides): Promise<[BigNumber]>
+    compRate(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    compSpeeds(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>
+    compSpeeds(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     compSupplierIndex(
       arg0: string,
       arg1: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>
+    ): Promise<[BigNumber]>;
 
     compSupplyState(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>
+    ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>;
 
-    comptrollerImplementation(overrides?: CallOverrides): Promise<[string]>
+    comptrollerImplementation(overrides?: CallOverrides): Promise<[string]>;
 
     enterMarkets(
       cTokens: string[],
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     exitMarket(
       cTokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     flashloanAllowed(
       cToken: string,
@@ -1084,25 +1099,28 @@ export interface CreamComptroller extends BaseContract {
       amount: BigNumberish,
       params: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     flashloanGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<[boolean]>
+    ): Promise<[boolean]>;
 
     getAccountLiquidity(
       account: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber, BigNumber]>
+    ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
-    getAllMarkets(overrides?: CallOverrides): Promise<[string[]]>
+    getAllMarkets(overrides?: CallOverrides): Promise<[string[]]>;
 
-    getAssetsIn(account: string, overrides?: CallOverrides): Promise<[string[]]>
+    getAssetsIn(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<[string[]]>;
 
-    getBlockNumber(overrides?: CallOverrides): Promise<[BigNumber]>
+    getBlockNumber(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getCompAddress(overrides?: CallOverrides): Promise<[string]>
+    getCompAddress(overrides?: CallOverrides): Promise<[string]>;
 
     getHypotheticalAccountLiquidity(
       account: string,
@@ -1110,14 +1128,14 @@ export interface CreamComptroller extends BaseContract {
       redeemTokens: BigNumberish,
       borrowAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber, BigNumber]>
+    ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
-    isComptroller(overrides?: CallOverrides): Promise<[boolean]>
+    isComptroller(overrides?: CallOverrides): Promise<[boolean]>;
 
     isMarketListed(
       cTokenAddress: string,
       overrides?: CallOverrides
-    ): Promise<[boolean]>
+    ): Promise<[boolean]>;
 
     liquidateBorrowAllowed(
       cTokenBorrowed: string,
@@ -1126,7 +1144,7 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       repayAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     liquidateBorrowVerify(
       cTokenBorrowed: string,
@@ -1136,46 +1154,46 @@ export interface CreamComptroller extends BaseContract {
       actualRepayAmount: BigNumberish,
       seizeTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     liquidateCalculateSeizeTokens(
       cTokenBorrowed: string,
       cTokenCollateral: string,
       actualRepayAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber]>
+    ): Promise<[BigNumber, BigNumber]>;
 
     liquidationIncentiveMantissa(
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>
+    ): Promise<[BigNumber]>;
 
-    liquidityMining(overrides?: CallOverrides): Promise<[string]>
+    liquidityMining(overrides?: CallOverrides): Promise<[string]>;
 
     markets(
       arg0: string,
       overrides?: CallOverrides
     ): Promise<
       [boolean, BigNumber, boolean, number] & {
-        isListed: boolean
-        collateralFactorMantissa: BigNumber
-        isComped: boolean
-        version: number
+        isListed: boolean;
+        collateralFactorMantissa: BigNumber;
+        isComped: boolean;
+        version: number;
       }
-    >
+    >;
 
-    maxAssets(overrides?: CallOverrides): Promise<[BigNumber]>
+    maxAssets(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     mintAllowed(
       cToken: string,
       minter: string,
       mintAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     mintGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<[boolean]>
+    ): Promise<[boolean]>;
 
     mintVerify(
       cToken: string,
@@ -1183,24 +1201,24 @@ export interface CreamComptroller extends BaseContract {
       actualMintAmount: BigNumberish,
       mintTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    oracle(overrides?: CallOverrides): Promise<[string]>
+    oracle(overrides?: CallOverrides): Promise<[string]>;
 
-    pauseGuardian(overrides?: CallOverrides): Promise<[string]>
+    pauseGuardian(overrides?: CallOverrides): Promise<[string]>;
 
-    pendingAdmin(overrides?: CallOverrides): Promise<[string]>
+    pendingAdmin(overrides?: CallOverrides): Promise<[string]>;
 
     pendingComptrollerImplementation(
       overrides?: CallOverrides
-    ): Promise<[string]>
+    ): Promise<[string]>;
 
     redeemAllowed(
       cToken: string,
       redeemer: string,
       redeemTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     redeemVerify(
       cToken: string,
@@ -1208,7 +1226,7 @@ export interface CreamComptroller extends BaseContract {
       redeemAmount: BigNumberish,
       redeemTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     repayBorrowAllowed(
       cToken: string,
@@ -1216,7 +1234,7 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       repayAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     repayBorrowVerify(
       cToken: string,
@@ -1225,7 +1243,7 @@ export interface CreamComptroller extends BaseContract {
       actualRepayAmount: BigNumberish,
       borrowerIndex: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     seizeAllowed(
       cTokenCollateral: string,
@@ -1234,9 +1252,9 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       seizeTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    seizeGuardianPaused(overrides?: CallOverrides): Promise<[boolean]>
+    seizeGuardianPaused(overrides?: CallOverrides): Promise<[boolean]>;
 
     seizeVerify(
       cTokenCollateral: string,
@@ -1245,11 +1263,11 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       seizeTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    supplyCapGuardian(overrides?: CallOverrides): Promise<[string]>
+    supplyCapGuardian(overrides?: CallOverrides): Promise<[string]>;
 
-    supplyCaps(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>
+    supplyCaps(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transferAllowed(
       cToken: string,
@@ -1257,9 +1275,9 @@ export interface CreamComptroller extends BaseContract {
       dst: string,
       transferTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    transferGuardianPaused(overrides?: CallOverrides): Promise<[boolean]>
+    transferGuardianPaused(overrides?: CallOverrides): Promise<[boolean]>;
 
     transferVerify(
       cToken: string,
@@ -1267,154 +1285,154 @@ export interface CreamComptroller extends BaseContract {
       dst: string,
       transferTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     updateCTokenVersion(
       cToken: string,
       newVersion: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
-  }
+    ): Promise<ContractTransaction>;
+  };
 
   _become(
     unitroller: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  _borrowGuardianPaused(overrides?: CallOverrides): Promise<boolean>
+  _borrowGuardianPaused(overrides?: CallOverrides): Promise<boolean>;
 
   _delistMarket(
     cToken: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  _mintGuardianPaused(overrides?: CallOverrides): Promise<boolean>
+  _mintGuardianPaused(overrides?: CallOverrides): Promise<boolean>;
 
   _setBorrowCapGuardian(
     newBorrowCapGuardian: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setBorrowPaused(
     cToken: string,
     state: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setCloseFactor(
     newCloseFactorMantissa: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setCollateralFactor(
     cToken: string,
     newCollateralFactorMantissa: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setFlashloanPaused(
     cToken: string,
     state: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setLiquidationIncentive(
     newLiquidationIncentiveMantissa: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setLiquidityMining(
     newLiquidityMining: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setMarketBorrowCaps(
     cTokens: string[],
     newBorrowCaps: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setMarketSupplyCaps(
     cTokens: string[],
     newSupplyCaps: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setMintPaused(
     cToken: string,
     state: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setPauseGuardian(
     newPauseGuardian: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setPriceOracle(
     newOracle: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setSeizePaused(
     state: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setSupplyCapGuardian(
     newSupplyCapGuardian: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _setTransferPaused(
     state: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   _supportMarket(
     cToken: string,
     version: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   accountAssets(
     arg0: string,
     arg1: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<string>
+  ): Promise<string>;
 
-  admin(overrides?: CallOverrides): Promise<string>
+  admin(overrides?: CallOverrides): Promise<string>;
 
-  allMarkets(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
+  allMarkets(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
   borrowAllowed(
     cToken: string,
     borrower: string,
     borrowAmount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  borrowCapGuardian(overrides?: CallOverrides): Promise<string>
+  borrowCapGuardian(overrides?: CallOverrides): Promise<string>;
 
-  borrowCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+  borrowCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   borrowGuardianPaused(
     arg0: string,
     overrides?: CallOverrides
-  ): Promise<boolean>
+  ): Promise<boolean>;
 
   borrowVerify(
     cToken: string,
     borrower: string,
     borrowAmount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   checkMembership(
     account: string,
     cToken: string,
     overrides?: CallOverrides
-  ): Promise<boolean>
+  ): Promise<boolean>;
 
   "claimComp(address[],address[],bool,bool)"(
     holders: string[],
@@ -1422,56 +1440,56 @@ export interface CreamComptroller extends BaseContract {
     borrowers: boolean,
     suppliers: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   "claimComp(address)"(
     holder: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  closeFactorMantissa(overrides?: CallOverrides): Promise<BigNumber>
+  closeFactorMantissa(overrides?: CallOverrides): Promise<BigNumber>;
 
-  compAccrued(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+  compAccrued(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   compBorrowState(
     arg0: string,
     overrides?: CallOverrides
-  ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>
+  ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>;
 
   compBorrowerIndex(
     arg0: string,
     arg1: string,
     overrides?: CallOverrides
-  ): Promise<BigNumber>
+  ): Promise<BigNumber>;
 
-  compInitialIndex(overrides?: CallOverrides): Promise<BigNumber>
+  compInitialIndex(overrides?: CallOverrides): Promise<BigNumber>;
 
-  compRate(overrides?: CallOverrides): Promise<BigNumber>
+  compRate(overrides?: CallOverrides): Promise<BigNumber>;
 
-  compSpeeds(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+  compSpeeds(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   compSupplierIndex(
     arg0: string,
     arg1: string,
     overrides?: CallOverrides
-  ): Promise<BigNumber>
+  ): Promise<BigNumber>;
 
   compSupplyState(
     arg0: string,
     overrides?: CallOverrides
-  ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>
+  ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>;
 
-  comptrollerImplementation(overrides?: CallOverrides): Promise<string>
+  comptrollerImplementation(overrides?: CallOverrides): Promise<string>;
 
   enterMarkets(
     cTokens: string[],
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   exitMarket(
     cTokenAddress: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   flashloanAllowed(
     cToken: string,
@@ -1479,25 +1497,25 @@ export interface CreamComptroller extends BaseContract {
     amount: BigNumberish,
     params: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   flashloanGuardianPaused(
     arg0: string,
     overrides?: CallOverrides
-  ): Promise<boolean>
+  ): Promise<boolean>;
 
   getAccountLiquidity(
     account: string,
     overrides?: CallOverrides
-  ): Promise<[BigNumber, BigNumber, BigNumber]>
+  ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
-  getAllMarkets(overrides?: CallOverrides): Promise<string[]>
+  getAllMarkets(overrides?: CallOverrides): Promise<string[]>;
 
-  getAssetsIn(account: string, overrides?: CallOverrides): Promise<string[]>
+  getAssetsIn(account: string, overrides?: CallOverrides): Promise<string[]>;
 
-  getBlockNumber(overrides?: CallOverrides): Promise<BigNumber>
+  getBlockNumber(overrides?: CallOverrides): Promise<BigNumber>;
 
-  getCompAddress(overrides?: CallOverrides): Promise<string>
+  getCompAddress(overrides?: CallOverrides): Promise<string>;
 
   getHypotheticalAccountLiquidity(
     account: string,
@@ -1505,14 +1523,14 @@ export interface CreamComptroller extends BaseContract {
     redeemTokens: BigNumberish,
     borrowAmount: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<[BigNumber, BigNumber, BigNumber]>
+  ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
-  isComptroller(overrides?: CallOverrides): Promise<boolean>
+  isComptroller(overrides?: CallOverrides): Promise<boolean>;
 
   isMarketListed(
     cTokenAddress: string,
     overrides?: CallOverrides
-  ): Promise<boolean>
+  ): Promise<boolean>;
 
   liquidateBorrowAllowed(
     cTokenBorrowed: string,
@@ -1521,7 +1539,7 @@ export interface CreamComptroller extends BaseContract {
     borrower: string,
     repayAmount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   liquidateBorrowVerify(
     cTokenBorrowed: string,
@@ -1531,41 +1549,41 @@ export interface CreamComptroller extends BaseContract {
     actualRepayAmount: BigNumberish,
     seizeTokens: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   liquidateCalculateSeizeTokens(
     cTokenBorrowed: string,
     cTokenCollateral: string,
     actualRepayAmount: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<[BigNumber, BigNumber]>
+  ): Promise<[BigNumber, BigNumber]>;
 
-  liquidationIncentiveMantissa(overrides?: CallOverrides): Promise<BigNumber>
+  liquidationIncentiveMantissa(overrides?: CallOverrides): Promise<BigNumber>;
 
-  liquidityMining(overrides?: CallOverrides): Promise<string>
+  liquidityMining(overrides?: CallOverrides): Promise<string>;
 
   markets(
     arg0: string,
     overrides?: CallOverrides
   ): Promise<
     [boolean, BigNumber, boolean, number] & {
-      isListed: boolean
-      collateralFactorMantissa: BigNumber
-      isComped: boolean
-      version: number
+      isListed: boolean;
+      collateralFactorMantissa: BigNumber;
+      isComped: boolean;
+      version: number;
     }
-  >
+  >;
 
-  maxAssets(overrides?: CallOverrides): Promise<BigNumber>
+  maxAssets(overrides?: CallOverrides): Promise<BigNumber>;
 
   mintAllowed(
     cToken: string,
     minter: string,
     mintAmount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  mintGuardianPaused(arg0: string, overrides?: CallOverrides): Promise<boolean>
+  mintGuardianPaused(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
   mintVerify(
     cToken: string,
@@ -1573,22 +1591,22 @@ export interface CreamComptroller extends BaseContract {
     actualMintAmount: BigNumberish,
     mintTokens: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  oracle(overrides?: CallOverrides): Promise<string>
+  oracle(overrides?: CallOverrides): Promise<string>;
 
-  pauseGuardian(overrides?: CallOverrides): Promise<string>
+  pauseGuardian(overrides?: CallOverrides): Promise<string>;
 
-  pendingAdmin(overrides?: CallOverrides): Promise<string>
+  pendingAdmin(overrides?: CallOverrides): Promise<string>;
 
-  pendingComptrollerImplementation(overrides?: CallOverrides): Promise<string>
+  pendingComptrollerImplementation(overrides?: CallOverrides): Promise<string>;
 
   redeemAllowed(
     cToken: string,
     redeemer: string,
     redeemTokens: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   redeemVerify(
     cToken: string,
@@ -1596,7 +1614,7 @@ export interface CreamComptroller extends BaseContract {
     redeemAmount: BigNumberish,
     redeemTokens: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   repayBorrowAllowed(
     cToken: string,
@@ -1604,7 +1622,7 @@ export interface CreamComptroller extends BaseContract {
     borrower: string,
     repayAmount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   repayBorrowVerify(
     cToken: string,
@@ -1613,7 +1631,7 @@ export interface CreamComptroller extends BaseContract {
     actualRepayAmount: BigNumberish,
     borrowerIndex: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   seizeAllowed(
     cTokenCollateral: string,
@@ -1622,9 +1640,9 @@ export interface CreamComptroller extends BaseContract {
     borrower: string,
     seizeTokens: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  seizeGuardianPaused(overrides?: CallOverrides): Promise<boolean>
+  seizeGuardianPaused(overrides?: CallOverrides): Promise<boolean>;
 
   seizeVerify(
     cTokenCollateral: string,
@@ -1633,11 +1651,11 @@ export interface CreamComptroller extends BaseContract {
     borrower: string,
     seizeTokens: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  supplyCapGuardian(overrides?: CallOverrides): Promise<string>
+  supplyCapGuardian(overrides?: CallOverrides): Promise<string>;
 
-  supplyCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+  supplyCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   transferAllowed(
     cToken: string,
@@ -1645,9 +1663,9 @@ export interface CreamComptroller extends BaseContract {
     dst: string,
     transferTokens: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  transferGuardianPaused(overrides?: CallOverrides): Promise<boolean>
+  transferGuardianPaused(overrides?: CallOverrides): Promise<boolean>;
 
   transferVerify(
     cToken: string,
@@ -1655,145 +1673,148 @@ export interface CreamComptroller extends BaseContract {
     dst: string,
     transferTokens: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   updateCTokenVersion(
     cToken: string,
     newVersion: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    _become(unitroller: string, overrides?: CallOverrides): Promise<void>
+    _become(unitroller: string, overrides?: CallOverrides): Promise<void>;
 
-    _borrowGuardianPaused(overrides?: CallOverrides): Promise<boolean>
+    _borrowGuardianPaused(overrides?: CallOverrides): Promise<boolean>;
 
-    _delistMarket(cToken: string, overrides?: CallOverrides): Promise<void>
+    _delistMarket(cToken: string, overrides?: CallOverrides): Promise<void>;
 
-    _mintGuardianPaused(overrides?: CallOverrides): Promise<boolean>
+    _mintGuardianPaused(overrides?: CallOverrides): Promise<boolean>;
 
     _setBorrowCapGuardian(
       newBorrowCapGuardian: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     _setBorrowPaused(
       cToken: string,
       state: boolean,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     _setCloseFactor(
       newCloseFactorMantissa: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setCollateralFactor(
       cToken: string,
       newCollateralFactorMantissa: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setFlashloanPaused(
       cToken: string,
       state: boolean,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     _setLiquidationIncentive(
       newLiquidationIncentiveMantissa: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setLiquidityMining(
       newLiquidityMining: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     _setMarketBorrowCaps(
       cTokens: string[],
       newBorrowCaps: BigNumberish[],
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     _setMarketSupplyCaps(
       cTokens: string[],
       newSupplyCaps: BigNumberish[],
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     _setMintPaused(
       cToken: string,
       state: boolean,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     _setPauseGuardian(
       newPauseGuardian: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setPriceOracle(
       newOracle: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    _setSeizePaused(state: boolean, overrides?: CallOverrides): Promise<boolean>
+    _setSeizePaused(
+      state: boolean,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     _setSupplyCapGuardian(
       newSupplyCapGuardian: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     _setTransferPaused(
       state: boolean,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     _supportMarket(
       cToken: string,
       version: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     accountAssets(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<string>
+    ): Promise<string>;
 
-    admin(overrides?: CallOverrides): Promise<string>
+    admin(overrides?: CallOverrides): Promise<string>;
 
-    allMarkets(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
+    allMarkets(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
     borrowAllowed(
       cToken: string,
       borrower: string,
       borrowAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    borrowCapGuardian(overrides?: CallOverrides): Promise<string>
+    borrowCapGuardian(overrides?: CallOverrides): Promise<string>;
 
-    borrowCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    borrowCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     borrowGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     borrowVerify(
       cToken: string,
       borrower: string,
       borrowAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     checkMembership(
       account: string,
       cToken: string,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     "claimComp(address[],address[],bool,bool)"(
       holders: string[],
@@ -1801,56 +1822,56 @@ export interface CreamComptroller extends BaseContract {
       borrowers: boolean,
       suppliers: boolean,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     "claimComp(address)"(
       holder: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
-    closeFactorMantissa(overrides?: CallOverrides): Promise<BigNumber>
+    closeFactorMantissa(overrides?: CallOverrides): Promise<BigNumber>;
 
-    compAccrued(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    compAccrued(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     compBorrowState(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>
+    ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>;
 
     compBorrowerIndex(
       arg0: string,
       arg1: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    compInitialIndex(overrides?: CallOverrides): Promise<BigNumber>
+    compInitialIndex(overrides?: CallOverrides): Promise<BigNumber>;
 
-    compRate(overrides?: CallOverrides): Promise<BigNumber>
+    compRate(overrides?: CallOverrides): Promise<BigNumber>;
 
-    compSpeeds(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    compSpeeds(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     compSupplierIndex(
       arg0: string,
       arg1: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     compSupplyState(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>
+    ): Promise<[BigNumber, number] & { index: BigNumber; block: number }>;
 
-    comptrollerImplementation(overrides?: CallOverrides): Promise<string>
+    comptrollerImplementation(overrides?: CallOverrides): Promise<string>;
 
     enterMarkets(
       cTokens: string[],
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     exitMarket(
       cTokenAddress: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     flashloanAllowed(
       cToken: string,
@@ -1858,25 +1879,25 @@ export interface CreamComptroller extends BaseContract {
       amount: BigNumberish,
       params: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     flashloanGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     getAccountLiquidity(
       account: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber, BigNumber]>
+    ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
-    getAllMarkets(overrides?: CallOverrides): Promise<string[]>
+    getAllMarkets(overrides?: CallOverrides): Promise<string[]>;
 
-    getAssetsIn(account: string, overrides?: CallOverrides): Promise<string[]>
+    getAssetsIn(account: string, overrides?: CallOverrides): Promise<string[]>;
 
-    getBlockNumber(overrides?: CallOverrides): Promise<BigNumber>
+    getBlockNumber(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getCompAddress(overrides?: CallOverrides): Promise<string>
+    getCompAddress(overrides?: CallOverrides): Promise<string>;
 
     getHypotheticalAccountLiquidity(
       account: string,
@@ -1884,14 +1905,14 @@ export interface CreamComptroller extends BaseContract {
       redeemTokens: BigNumberish,
       borrowAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber, BigNumber]>
+    ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
-    isComptroller(overrides?: CallOverrides): Promise<boolean>
+    isComptroller(overrides?: CallOverrides): Promise<boolean>;
 
     isMarketListed(
       cTokenAddress: string,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     liquidateBorrowAllowed(
       cTokenBorrowed: string,
@@ -1900,7 +1921,7 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       repayAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     liquidateBorrowVerify(
       cTokenBorrowed: string,
@@ -1910,44 +1931,44 @@ export interface CreamComptroller extends BaseContract {
       actualRepayAmount: BigNumberish,
       seizeTokens: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     liquidateCalculateSeizeTokens(
       cTokenBorrowed: string,
       cTokenCollateral: string,
       actualRepayAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber]>
+    ): Promise<[BigNumber, BigNumber]>;
 
-    liquidationIncentiveMantissa(overrides?: CallOverrides): Promise<BigNumber>
+    liquidationIncentiveMantissa(overrides?: CallOverrides): Promise<BigNumber>;
 
-    liquidityMining(overrides?: CallOverrides): Promise<string>
+    liquidityMining(overrides?: CallOverrides): Promise<string>;
 
     markets(
       arg0: string,
       overrides?: CallOverrides
     ): Promise<
       [boolean, BigNumber, boolean, number] & {
-        isListed: boolean
-        collateralFactorMantissa: BigNumber
-        isComped: boolean
-        version: number
+        isListed: boolean;
+        collateralFactorMantissa: BigNumber;
+        isComped: boolean;
+        version: number;
       }
-    >
+    >;
 
-    maxAssets(overrides?: CallOverrides): Promise<BigNumber>
+    maxAssets(overrides?: CallOverrides): Promise<BigNumber>;
 
     mintAllowed(
       cToken: string,
       minter: string,
       mintAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     mintGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     mintVerify(
       cToken: string,
@@ -1955,22 +1976,24 @@ export interface CreamComptroller extends BaseContract {
       actualMintAmount: BigNumberish,
       mintTokens: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
-    oracle(overrides?: CallOverrides): Promise<string>
+    oracle(overrides?: CallOverrides): Promise<string>;
 
-    pauseGuardian(overrides?: CallOverrides): Promise<string>
+    pauseGuardian(overrides?: CallOverrides): Promise<string>;
 
-    pendingAdmin(overrides?: CallOverrides): Promise<string>
+    pendingAdmin(overrides?: CallOverrides): Promise<string>;
 
-    pendingComptrollerImplementation(overrides?: CallOverrides): Promise<string>
+    pendingComptrollerImplementation(
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     redeemAllowed(
       cToken: string,
       redeemer: string,
       redeemTokens: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     redeemVerify(
       cToken: string,
@@ -1978,7 +2001,7 @@ export interface CreamComptroller extends BaseContract {
       redeemAmount: BigNumberish,
       redeemTokens: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     repayBorrowAllowed(
       cToken: string,
@@ -1986,7 +2009,7 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       repayAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     repayBorrowVerify(
       cToken: string,
@@ -1995,7 +2018,7 @@ export interface CreamComptroller extends BaseContract {
       actualRepayAmount: BigNumberish,
       borrowerIndex: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     seizeAllowed(
       cTokenCollateral: string,
@@ -2004,9 +2027,9 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       seizeTokens: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    seizeGuardianPaused(overrides?: CallOverrides): Promise<boolean>
+    seizeGuardianPaused(overrides?: CallOverrides): Promise<boolean>;
 
     seizeVerify(
       cTokenCollateral: string,
@@ -2015,11 +2038,11 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       seizeTokens: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
-    supplyCapGuardian(overrides?: CallOverrides): Promise<string>
+    supplyCapGuardian(overrides?: CallOverrides): Promise<string>;
 
-    supplyCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    supplyCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     transferAllowed(
       cToken: string,
@@ -2027,9 +2050,9 @@ export interface CreamComptroller extends BaseContract {
       dst: string,
       transferTokens: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    transferGuardianPaused(overrides?: CallOverrides): Promise<boolean>
+    transferGuardianPaused(overrides?: CallOverrides): Promise<boolean>;
 
     transferVerify(
       cToken: string,
@@ -2037,324 +2060,324 @@ export interface CreamComptroller extends BaseContract {
       dst: string,
       transferTokens: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     updateCTokenVersion(
       cToken: string,
       newVersion: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
-  }
+    ): Promise<void>;
+  };
 
   filters: {
     "ActionPaused(string,bool)"(
       action?: null,
       pauseState?: null
-    ): ActionPaused_string_bool_EventFilter
+    ): ActionPaused_string_bool_EventFilter;
     "ActionPaused(address,string,bool)"(
       cToken?: null,
       action?: null,
       pauseState?: null
-    ): ActionPaused_address_string_bool_EventFilter
+    ): ActionPaused_address_string_bool_EventFilter;
 
     "DistributedBorrowerComp(address,address,uint256,uint256)"(
       cToken?: string | null,
       borrower?: string | null,
       compDelta?: null,
       compBorrowIndex?: null
-    ): DistributedBorrowerCompEventFilter
+    ): DistributedBorrowerCompEventFilter;
     DistributedBorrowerComp(
       cToken?: string | null,
       borrower?: string | null,
       compDelta?: null,
       compBorrowIndex?: null
-    ): DistributedBorrowerCompEventFilter
+    ): DistributedBorrowerCompEventFilter;
 
     "DistributedSupplierComp(address,address,uint256,uint256)"(
       cToken?: string | null,
       supplier?: string | null,
       compDelta?: null,
       compSupplyIndex?: null
-    ): DistributedSupplierCompEventFilter
+    ): DistributedSupplierCompEventFilter;
     DistributedSupplierComp(
       cToken?: string | null,
       supplier?: string | null,
       compDelta?: null,
       compSupplyIndex?: null
-    ): DistributedSupplierCompEventFilter
+    ): DistributedSupplierCompEventFilter;
 
     "Failure(uint256,uint256,uint256)"(
       error?: null,
       info?: null,
       detail?: null
-    ): FailureEventFilter
-    Failure(error?: null, info?: null, detail?: null): FailureEventFilter
+    ): FailureEventFilter;
+    Failure(error?: null, info?: null, detail?: null): FailureEventFilter;
 
-    "MarketDelisted(address)"(cToken?: null): MarketDelistedEventFilter
-    MarketDelisted(cToken?: null): MarketDelistedEventFilter
+    "MarketDelisted(address)"(cToken?: null): MarketDelistedEventFilter;
+    MarketDelisted(cToken?: null): MarketDelistedEventFilter;
 
     "MarketEntered(address,address)"(
       cToken?: null,
       account?: null
-    ): MarketEnteredEventFilter
-    MarketEntered(cToken?: null, account?: null): MarketEnteredEventFilter
+    ): MarketEnteredEventFilter;
+    MarketEntered(cToken?: null, account?: null): MarketEnteredEventFilter;
 
     "MarketExited(address,address)"(
       cToken?: null,
       account?: null
-    ): MarketExitedEventFilter
-    MarketExited(cToken?: null, account?: null): MarketExitedEventFilter
+    ): MarketExitedEventFilter;
+    MarketExited(cToken?: null, account?: null): MarketExitedEventFilter;
 
-    "MarketListed(address)"(cToken?: null): MarketListedEventFilter
-    MarketListed(cToken?: null): MarketListedEventFilter
+    "MarketListed(address)"(cToken?: null): MarketListedEventFilter;
+    MarketListed(cToken?: null): MarketListedEventFilter;
 
     "NewBorrowCap(address,uint256)"(
       cToken?: string | null,
       newBorrowCap?: null
-    ): NewBorrowCapEventFilter
+    ): NewBorrowCapEventFilter;
     NewBorrowCap(
       cToken?: string | null,
       newBorrowCap?: null
-    ): NewBorrowCapEventFilter
+    ): NewBorrowCapEventFilter;
 
     "NewBorrowCapGuardian(address,address)"(
       oldBorrowCapGuardian?: null,
       newBorrowCapGuardian?: null
-    ): NewBorrowCapGuardianEventFilter
+    ): NewBorrowCapGuardianEventFilter;
     NewBorrowCapGuardian(
       oldBorrowCapGuardian?: null,
       newBorrowCapGuardian?: null
-    ): NewBorrowCapGuardianEventFilter
+    ): NewBorrowCapGuardianEventFilter;
 
     "NewCTokenVersion(address,uint8,uint8)"(
       cToken?: null,
       oldVersion?: null,
       newVersion?: null
-    ): NewCTokenVersionEventFilter
+    ): NewCTokenVersionEventFilter;
     NewCTokenVersion(
       cToken?: null,
       oldVersion?: null,
       newVersion?: null
-    ): NewCTokenVersionEventFilter
+    ): NewCTokenVersionEventFilter;
 
     "NewCloseFactor(uint256,uint256)"(
       oldCloseFactorMantissa?: null,
       newCloseFactorMantissa?: null
-    ): NewCloseFactorEventFilter
+    ): NewCloseFactorEventFilter;
     NewCloseFactor(
       oldCloseFactorMantissa?: null,
       newCloseFactorMantissa?: null
-    ): NewCloseFactorEventFilter
+    ): NewCloseFactorEventFilter;
 
     "NewCollateralFactor(address,uint256,uint256)"(
       cToken?: null,
       oldCollateralFactorMantissa?: null,
       newCollateralFactorMantissa?: null
-    ): NewCollateralFactorEventFilter
+    ): NewCollateralFactorEventFilter;
     NewCollateralFactor(
       cToken?: null,
       oldCollateralFactorMantissa?: null,
       newCollateralFactorMantissa?: null
-    ): NewCollateralFactorEventFilter
+    ): NewCollateralFactorEventFilter;
 
     "NewLiquidationIncentive(uint256,uint256)"(
       oldLiquidationIncentiveMantissa?: null,
       newLiquidationIncentiveMantissa?: null
-    ): NewLiquidationIncentiveEventFilter
+    ): NewLiquidationIncentiveEventFilter;
     NewLiquidationIncentive(
       oldLiquidationIncentiveMantissa?: null,
       newLiquidationIncentiveMantissa?: null
-    ): NewLiquidationIncentiveEventFilter
+    ): NewLiquidationIncentiveEventFilter;
 
     "NewLiquidityMining(address,address)"(
       oldLiquidityMining?: null,
       newLiquidityMining?: null
-    ): NewLiquidityMiningEventFilter
+    ): NewLiquidityMiningEventFilter;
     NewLiquidityMining(
       oldLiquidityMining?: null,
       newLiquidityMining?: null
-    ): NewLiquidityMiningEventFilter
+    ): NewLiquidityMiningEventFilter;
 
     "NewPauseGuardian(address,address)"(
       oldPauseGuardian?: null,
       newPauseGuardian?: null
-    ): NewPauseGuardianEventFilter
+    ): NewPauseGuardianEventFilter;
     NewPauseGuardian(
       oldPauseGuardian?: null,
       newPauseGuardian?: null
-    ): NewPauseGuardianEventFilter
+    ): NewPauseGuardianEventFilter;
 
     "NewPriceOracle(address,address)"(
       oldPriceOracle?: null,
       newPriceOracle?: null
-    ): NewPriceOracleEventFilter
+    ): NewPriceOracleEventFilter;
     NewPriceOracle(
       oldPriceOracle?: null,
       newPriceOracle?: null
-    ): NewPriceOracleEventFilter
+    ): NewPriceOracleEventFilter;
 
     "NewSupplyCap(address,uint256)"(
       cToken?: string | null,
       newSupplyCap?: null
-    ): NewSupplyCapEventFilter
+    ): NewSupplyCapEventFilter;
     NewSupplyCap(
       cToken?: string | null,
       newSupplyCap?: null
-    ): NewSupplyCapEventFilter
+    ): NewSupplyCapEventFilter;
 
     "NewSupplyCapGuardian(address,address)"(
       oldSupplyCapGuardian?: null,
       newSupplyCapGuardian?: null
-    ): NewSupplyCapGuardianEventFilter
+    ): NewSupplyCapGuardianEventFilter;
     NewSupplyCapGuardian(
       oldSupplyCapGuardian?: null,
       newSupplyCapGuardian?: null
-    ): NewSupplyCapGuardianEventFilter
-  }
+    ): NewSupplyCapGuardianEventFilter;
+  };
 
   estimateGas: {
     _become(
       unitroller: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    _borrowGuardianPaused(overrides?: CallOverrides): Promise<BigNumber>
+    _borrowGuardianPaused(overrides?: CallOverrides): Promise<BigNumber>;
 
     _delistMarket(
       cToken: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    _mintGuardianPaused(overrides?: CallOverrides): Promise<BigNumber>
+    _mintGuardianPaused(overrides?: CallOverrides): Promise<BigNumber>;
 
     _setBorrowCapGuardian(
       newBorrowCapGuardian: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setBorrowPaused(
       cToken: string,
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setCloseFactor(
       newCloseFactorMantissa: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setCollateralFactor(
       cToken: string,
       newCollateralFactorMantissa: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setFlashloanPaused(
       cToken: string,
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setLiquidationIncentive(
       newLiquidationIncentiveMantissa: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setLiquidityMining(
       newLiquidityMining: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setMarketBorrowCaps(
       cTokens: string[],
       newBorrowCaps: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setMarketSupplyCaps(
       cTokens: string[],
       newSupplyCaps: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setMintPaused(
       cToken: string,
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setPauseGuardian(
       newPauseGuardian: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setPriceOracle(
       newOracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setSeizePaused(
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setSupplyCapGuardian(
       newSupplyCapGuardian: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _setTransferPaused(
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     _supportMarket(
       cToken: string,
       version: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     accountAssets(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    admin(overrides?: CallOverrides): Promise<BigNumber>
+    admin(overrides?: CallOverrides): Promise<BigNumber>;
 
     allMarkets(
       arg0: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     borrowAllowed(
       cToken: string,
       borrower: string,
       borrowAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    borrowCapGuardian(overrides?: CallOverrides): Promise<BigNumber>
+    borrowCapGuardian(overrides?: CallOverrides): Promise<BigNumber>;
 
-    borrowCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    borrowCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     borrowGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     borrowVerify(
       cToken: string,
       borrower: string,
       borrowAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     checkMembership(
       account: string,
       cToken: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     "claimComp(address[],address[],bool,bool)"(
       holders: string[],
@@ -2362,50 +2385,56 @@ export interface CreamComptroller extends BaseContract {
       borrowers: boolean,
       suppliers: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     "claimComp(address)"(
       holder: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    closeFactorMantissa(overrides?: CallOverrides): Promise<BigNumber>
+    closeFactorMantissa(overrides?: CallOverrides): Promise<BigNumber>;
 
-    compAccrued(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    compAccrued(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    compBorrowState(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    compBorrowState(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     compBorrowerIndex(
       arg0: string,
       arg1: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    compInitialIndex(overrides?: CallOverrides): Promise<BigNumber>
+    compInitialIndex(overrides?: CallOverrides): Promise<BigNumber>;
 
-    compRate(overrides?: CallOverrides): Promise<BigNumber>
+    compRate(overrides?: CallOverrides): Promise<BigNumber>;
 
-    compSpeeds(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    compSpeeds(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     compSupplierIndex(
       arg0: string,
       arg1: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    compSupplyState(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    compSupplyState(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    comptrollerImplementation(overrides?: CallOverrides): Promise<BigNumber>
+    comptrollerImplementation(overrides?: CallOverrides): Promise<BigNumber>;
 
     enterMarkets(
       cTokens: string[],
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     exitMarket(
       cTokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     flashloanAllowed(
       cToken: string,
@@ -2413,25 +2442,25 @@ export interface CreamComptroller extends BaseContract {
       amount: BigNumberish,
       params: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     flashloanGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getAccountLiquidity(
       account: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    getAllMarkets(overrides?: CallOverrides): Promise<BigNumber>
+    getAllMarkets(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getAssetsIn(account: string, overrides?: CallOverrides): Promise<BigNumber>
+    getAssetsIn(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    getBlockNumber(overrides?: CallOverrides): Promise<BigNumber>
+    getBlockNumber(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getCompAddress(overrides?: CallOverrides): Promise<BigNumber>
+    getCompAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     getHypotheticalAccountLiquidity(
       account: string,
@@ -2439,14 +2468,14 @@ export interface CreamComptroller extends BaseContract {
       redeemTokens: BigNumberish,
       borrowAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    isComptroller(overrides?: CallOverrides): Promise<BigNumber>
+    isComptroller(overrides?: CallOverrides): Promise<BigNumber>;
 
     isMarketListed(
       cTokenAddress: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     liquidateBorrowAllowed(
       cTokenBorrowed: string,
@@ -2455,7 +2484,7 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       repayAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     liquidateBorrowVerify(
       cTokenBorrowed: string,
@@ -2465,34 +2494,34 @@ export interface CreamComptroller extends BaseContract {
       actualRepayAmount: BigNumberish,
       seizeTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     liquidateCalculateSeizeTokens(
       cTokenBorrowed: string,
       cTokenCollateral: string,
       actualRepayAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    liquidationIncentiveMantissa(overrides?: CallOverrides): Promise<BigNumber>
+    liquidationIncentiveMantissa(overrides?: CallOverrides): Promise<BigNumber>;
 
-    liquidityMining(overrides?: CallOverrides): Promise<BigNumber>
+    liquidityMining(overrides?: CallOverrides): Promise<BigNumber>;
 
-    markets(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    markets(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    maxAssets(overrides?: CallOverrides): Promise<BigNumber>
+    maxAssets(overrides?: CallOverrides): Promise<BigNumber>;
 
     mintAllowed(
       cToken: string,
       minter: string,
       mintAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     mintGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     mintVerify(
       cToken: string,
@@ -2500,24 +2529,24 @@ export interface CreamComptroller extends BaseContract {
       actualMintAmount: BigNumberish,
       mintTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    oracle(overrides?: CallOverrides): Promise<BigNumber>
+    oracle(overrides?: CallOverrides): Promise<BigNumber>;
 
-    pauseGuardian(overrides?: CallOverrides): Promise<BigNumber>
+    pauseGuardian(overrides?: CallOverrides): Promise<BigNumber>;
 
-    pendingAdmin(overrides?: CallOverrides): Promise<BigNumber>
+    pendingAdmin(overrides?: CallOverrides): Promise<BigNumber>;
 
     pendingComptrollerImplementation(
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     redeemAllowed(
       cToken: string,
       redeemer: string,
       redeemTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     redeemVerify(
       cToken: string,
@@ -2525,7 +2554,7 @@ export interface CreamComptroller extends BaseContract {
       redeemAmount: BigNumberish,
       redeemTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     repayBorrowAllowed(
       cToken: string,
@@ -2533,7 +2562,7 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       repayAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     repayBorrowVerify(
       cToken: string,
@@ -2542,7 +2571,7 @@ export interface CreamComptroller extends BaseContract {
       actualRepayAmount: BigNumberish,
       borrowerIndex: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     seizeAllowed(
       cTokenCollateral: string,
@@ -2551,9 +2580,9 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       seizeTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    seizeGuardianPaused(overrides?: CallOverrides): Promise<BigNumber>
+    seizeGuardianPaused(overrides?: CallOverrides): Promise<BigNumber>;
 
     seizeVerify(
       cTokenCollateral: string,
@@ -2562,11 +2591,11 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       seizeTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    supplyCapGuardian(overrides?: CallOverrides): Promise<BigNumber>
+    supplyCapGuardian(overrides?: CallOverrides): Promise<BigNumber>;
 
-    supplyCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    supplyCaps(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     transferAllowed(
       cToken: string,
@@ -2574,9 +2603,9 @@ export interface CreamComptroller extends BaseContract {
       dst: string,
       transferTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    transferGuardianPaused(overrides?: CallOverrides): Promise<BigNumber>
+    transferGuardianPaused(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferVerify(
       cToken: string,
@@ -2584,165 +2613,165 @@ export interface CreamComptroller extends BaseContract {
       dst: string,
       transferTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     updateCTokenVersion(
       cToken: string,
       newVersion: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     _become(
       unitroller: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _borrowGuardianPaused(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _delistMarket(
       cToken: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _mintGuardianPaused(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setBorrowCapGuardian(
       newBorrowCapGuardian: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setBorrowPaused(
       cToken: string,
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setCloseFactor(
       newCloseFactorMantissa: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setCollateralFactor(
       cToken: string,
       newCollateralFactorMantissa: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setFlashloanPaused(
       cToken: string,
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setLiquidationIncentive(
       newLiquidationIncentiveMantissa: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setLiquidityMining(
       newLiquidityMining: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setMarketBorrowCaps(
       cTokens: string[],
       newBorrowCaps: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setMarketSupplyCaps(
       cTokens: string[],
       newSupplyCaps: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setMintPaused(
       cToken: string,
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setPauseGuardian(
       newPauseGuardian: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setPriceOracle(
       newOracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setSeizePaused(
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setSupplyCapGuardian(
       newSupplyCapGuardian: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _setTransferPaused(
       state: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     _supportMarket(
       cToken: string,
       version: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     accountAssets(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    admin(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    admin(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allMarkets(
       arg0: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     borrowAllowed(
       cToken: string,
       borrower: string,
       borrowAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    borrowCapGuardian(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    borrowCapGuardian(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     borrowCaps(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     borrowGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     borrowVerify(
       cToken: string,
       borrower: string,
       borrowAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     checkMembership(
       account: string,
       cToken: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     "claimComp(address[],address[],bool,bool)"(
       holders: string[],
@@ -2750,66 +2779,66 @@ export interface CreamComptroller extends BaseContract {
       borrowers: boolean,
       suppliers: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     "claimComp(address)"(
       holder: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     closeFactorMantissa(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     compAccrued(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     compBorrowState(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     compBorrowerIndex(
       arg0: string,
       arg1: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    compInitialIndex(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    compInitialIndex(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    compRate(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    compRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     compSpeeds(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     compSupplierIndex(
       arg0: string,
       arg1: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     compSupplyState(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     comptrollerImplementation(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     enterMarkets(
       cTokens: string[],
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     exitMarket(
       cTokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     flashloanAllowed(
       cToken: string,
@@ -2817,28 +2846,28 @@ export interface CreamComptroller extends BaseContract {
       amount: BigNumberish,
       params: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     flashloanGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getAccountLiquidity(
       account: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    getAllMarkets(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    getAllMarkets(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getAssetsIn(
       account: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    getBlockNumber(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    getBlockNumber(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getCompAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    getCompAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getHypotheticalAccountLiquidity(
       account: string,
@@ -2846,14 +2875,14 @@ export interface CreamComptroller extends BaseContract {
       redeemTokens: BigNumberish,
       borrowAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    isComptroller(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    isComptroller(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     isMarketListed(
       cTokenAddress: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     liquidateBorrowAllowed(
       cTokenBorrowed: string,
@@ -2862,7 +2891,7 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       repayAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     liquidateBorrowVerify(
       cTokenBorrowed: string,
@@ -2872,39 +2901,39 @@ export interface CreamComptroller extends BaseContract {
       actualRepayAmount: BigNumberish,
       seizeTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     liquidateCalculateSeizeTokens(
       cTokenBorrowed: string,
       cTokenCollateral: string,
       actualRepayAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     liquidationIncentiveMantissa(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    liquidityMining(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    liquidityMining(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     markets(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    maxAssets(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    maxAssets(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     mintAllowed(
       cToken: string,
       minter: string,
       mintAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     mintGuardianPaused(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     mintVerify(
       cToken: string,
@@ -2912,24 +2941,24 @@ export interface CreamComptroller extends BaseContract {
       actualMintAmount: BigNumberish,
       mintTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    oracle(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    oracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    pauseGuardian(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    pauseGuardian(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    pendingAdmin(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    pendingAdmin(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     pendingComptrollerImplementation(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     redeemAllowed(
       cToken: string,
       redeemer: string,
       redeemTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     redeemVerify(
       cToken: string,
@@ -2937,7 +2966,7 @@ export interface CreamComptroller extends BaseContract {
       redeemAmount: BigNumberish,
       redeemTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     repayBorrowAllowed(
       cToken: string,
@@ -2945,7 +2974,7 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       repayAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     repayBorrowVerify(
       cToken: string,
@@ -2954,7 +2983,7 @@ export interface CreamComptroller extends BaseContract {
       actualRepayAmount: BigNumberish,
       borrowerIndex: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     seizeAllowed(
       cTokenCollateral: string,
@@ -2963,11 +2992,11 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       seizeTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     seizeGuardianPaused(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     seizeVerify(
       cTokenCollateral: string,
@@ -2976,14 +3005,14 @@ export interface CreamComptroller extends BaseContract {
       borrower: string,
       seizeTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    supplyCapGuardian(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    supplyCapGuardian(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     supplyCaps(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     transferAllowed(
       cToken: string,
@@ -2991,11 +3020,11 @@ export interface CreamComptroller extends BaseContract {
       dst: string,
       transferTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     transferGuardianPaused(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     transferVerify(
       cToken: string,
@@ -3003,12 +3032,12 @@ export interface CreamComptroller extends BaseContract {
       dst: string,
       transferTokens: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     updateCTokenVersion(
       cToken: string,
       newVersion: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }

@@ -1,8 +1,8 @@
-import invariant from "tiny-invariant"
+import invariant from "tiny-invariant";
 
-import { TradeType } from "./constants"
-import { validateAndParseAddress } from "./utils"
-import { Percent, TokenAmount, Trade } from "./entities"
+import { ChainId, TradeType } from "./constants";
+import { validateAndParseAddress } from "./utils";
+import { Percent, TokenAmount, Trade } from "./entities";
 
 /**
  * Options for producing the arguments to send call to the router.
@@ -11,29 +11,29 @@ export interface TradeOptions {
   /**
    * How much the execution price is allowed to move unfavorably from the trade execution price.
    */
-  allowedSlippage: Percent
+  allowedSlippage: Percent;
   /**
    * How long the swap is valid until it expires, in seconds.
    * This will be used to produce a `deadline` parameter which is computed from when the swap call parameters
    * are generated.
    */
-  ttl: number
+  ttl: number;
   /**
    * The account that should receive the output of the swap.
    */
-  recipient: string
+  recipient: string;
 
   /**
    * Whether any of the tokens in the path are fee on transfer tokens, which should be handled with special methods
    */
-  feeOnTransfer?: boolean
+  feeOnTransfer?: boolean;
 }
 
 type Route = {
-  from: string
-  to: string
-  stable: boolean
-}
+  from: string;
+  to: string;
+  stable: boolean;
+};
 
 /**
  * The parameters to use in the call to the Uniswap V2 Router to execute a trade.
@@ -42,27 +42,27 @@ export interface SwapParameters {
   /**
    * The method to call on the Uniswap V2 Router.
    */
-  methodName: string
+  methodName: string;
   /**
    * The arguments to pass to the method, all hex encoded.
    */
-  args: (string | string[] | Route[])[]
+  args: (string | string[] | Route[])[];
   /**
    * The amount of wei to send in hex.
    */
-  value: string
+  value: string;
 
   /**
    * The offset of amount.
    */
-  offset: number
+  offset: number;
 }
 
 function toHex(tokenAmount: TokenAmount) {
-  return `0x${tokenAmount.raw.toString(16)}`
+  return `0x${tokenAmount.raw.toString(16)}`;
 }
 
-const ZERO_HEX = "0x0"
+const ZERO_HEX = "0x0";
 
 /**
  * Represents the Uniswap V2 Router, and has static methods for helping execute trades.
@@ -81,84 +81,88 @@ export abstract class Router {
     invariant(
       !(trade.inputAmount.token.isNative && trade.outputAmount.token.isNative),
       "ETHER_IN_OUT"
-    )
-    invariant(options.ttl > 0, "TTL")
+    );
+    invariant(options.ttl > 0, "TTL");
 
-    const to: string = validateAndParseAddress(options.recipient)
+    const to: string = validateAndParseAddress(options.recipient);
     const amountIn: string = toHex(
       trade.maximumAmountIn(options.allowedSlippage)
-    )
+    );
     const amountOut: string = toHex(
       trade.minimumAmountOut(options.allowedSlippage)
-    )
+    );
 
-    let path = trade.route.path.map((token) => token.address)
+    let path = trade.route.path.map((token) => token.address);
 
     const deadline = `0x${(
       Math.floor(new Date().getTime() / 1000) + options.ttl
-    ).toString(16)}`
-    const useFeeOnTransfer = Boolean(options.feeOnTransfer)
+    ).toString(16)}`;
+    const useFeeOnTransfer = Boolean(options.feeOnTransfer);
 
-    let methodName: string
-    let args: (string | string[] | Route[])[]
-    let value: string
-    let offset: number
+    let methodName: string;
+    let args: (string | string[] | Route[])[];
+    let value: string;
+    let offset: number;
     switch (trade.tradeType) {
       case TradeType.EXACT_INPUT:
         if (trade.inputAmount.token.isNative) {
-          methodName = useFeeOnTransfer
-            ? "swapExactETHForTokensSupportingFeeOnTransferTokens"
-            : "swapExactETHForTokens"
+          methodName = "swapExactETHForTokens";
           // (uint amountOutMin, address[] call  data path, address to, uint deadline)
-          args = [amountOut, path, to, deadline]
-          value = amountIn
-          offset = 0
+          args = [amountOut, path, to, deadline];
+          if (useFeeOnTransfer) {
+            methodName = "swapExactETHForTokensSupportingFeeOnTransferTokens";
+          }
+          value = amountIn;
+          offset = 0;
         } else if (trade.outputAmount.token.isNative) {
-          methodName = useFeeOnTransfer
-            ? "swapExactTokensForETHSupportingFeeOnTransferTokens"
-            : "swapExactTokensForETH"
+          methodName = "swapExactTokensForETH";
           // (uint amountIn, uint amountOutMin, address[] call data path, address to, uint deadline)
-          args = [amountIn, amountOut, path, to, deadline]
-          value = ZERO_HEX
-          offset = 36
+          args = [amountIn, amountOut, path, to, deadline];
+          if (useFeeOnTransfer) {
+            methodName = "swapExactTokensForETHSupportingFeeOnTransferTokens";
+          }
+          value = ZERO_HEX;
+          offset = 36;
         } else {
-          methodName = useFeeOnTransfer
-            ? "swapExactTokensForTokensSupportingFeeOnTransferTokens"
-            : "swapExactTokensForTokens"
+          methodName = "swapExactTokensForTokens";
           // (uint amountIn, uint amountOutMin, address[] call data path, address to, uint deadline)
-          args = [amountIn, amountOut, path, to, deadline]
-          value = ZERO_HEX
-          offset = 36
+          args = [amountIn, amountOut, path, to, deadline];
+          if (useFeeOnTransfer) {
+            methodName =
+              "swapExactTokensForTokensSupportingFeeOnTransferTokens";
+          }
+          value = ZERO_HEX;
+          offset = 36;
         }
-        break
+        break;
       case TradeType.EXACT_OUTPUT:
-        invariant(!useFeeOnTransfer, "EXACT_OUT_FOT")
+        invariant(!useFeeOnTransfer, "EXACT_OUT_FOT");
         if (trade.inputAmount.token.isNative) {
-          methodName = "swapETHForExactTokens"
+          methodName = "swapETHForExactTokens";
           // (uint amountOut, address[] call data path, address to, uint deadline)
-          args = [amountOut, path, to, deadline]
-          value = amountIn
-          offset = 0
+          args = [amountOut, path, to, deadline];
+          value = amountIn;
+          offset = 0;
         } else if (trade.outputAmount.token.isNative) {
-          methodName = "swapTokensForExactETH"
+          methodName = "swapTokensForExactETH";
           // (uint amountOut, uint amountInMax, address[] call data path, address to, uint deadline)
-          args = [amountOut, amountIn, path, to, deadline]
-          value = ZERO_HEX
-          offset = 68
+          args = [amountOut, amountIn, path, to, deadline];
+          value = ZERO_HEX;
+          offset = 68;
         } else {
-          methodName = "swapTokensForExactTokens"
+          methodName = "swapTokensForExactTokens";
           // (uint amountOut, uint amountInMax, address[] call data path, address to, uint deadline)
-          args = [amountOut, amountIn, path, to, deadline]
-          value = ZERO_HEX
-          offset = 68
+          args = [amountOut, amountIn, path, to, deadline];
+          value = ZERO_HEX;
+          offset = 68;
         }
-        break
+        break;
     }
     return {
       methodName,
       args,
       value,
       offset,
-    }
+    };
   }
 }

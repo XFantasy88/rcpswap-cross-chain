@@ -1,4 +1,5 @@
-import { Config } from "../types"
+import { ChainId } from "../../constants";
+import { Config } from "../types";
 
 export const config: Config = {
   advisor: {
@@ -106,28 +107,6 @@ export const config: Config = {
       blocksPerYear: 0,
     },
     {
-      id: 56288,
-      rpc: "https://symbiosis.bnb.boba.network",
-      filterBlockOffset: 3000,
-      waitForBlocksCount: 0,
-      stables: [],
-      router: "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
-      dexFee: 30,
-      metaRouter: "0x906C9b4802AeC01d565b0412422224D1a2932D76",
-      metaRouterGateway: "0x5F010D019e4D4f9b1CbA682e055A622BF76c0575",
-      bridge: "0xe1f16F6C5cCbF9BA32E0fd1E668a133AFAe0f105",
-      synthesis: "0xF818D26215BB22B79F8501530bd6d54FfE166735",
-      portal: "0x0000000000000000000000000000000000000000",
-      fabric: "0x6BB1864d4e5A58dfcD142d9f560bB6389742822E",
-      multicallRouter: "0xcB28fbE3E9C0FEA62E0E63ff3f232CECfE555aD4",
-      aavePool: "0x0000000000000000000000000000000000000000",
-      aavePoolDataProvider: "0x0000000000000000000000000000000000000000",
-      creamComptroller: "0x0000000000000000000000000000000000000000",
-      creamCompoundLens: "0x0000000000000000000000000000000000000000",
-      renGatewayRegistry: "0x0000000000000000000000000000000000000000",
-      blocksPerYear: 0,
-    },
-    {
       id: 42161,
       rpc: "https://arb1.arbitrum.io/rpc",
       filterBlockOffset: 2000,
@@ -176,5 +155,27 @@ export const config: Config = {
       renGatewayRegistry: "0x0000000000000000000000000000000000000000",
       blocksPerYear: 0,
     },
+    {
+      id: 56288,
+      rpc: "https://symbiosis.bnb.boba.network",
+      filterBlockOffset: 3000,
+      waitForBlocksCount: 0,
+      stables: [],
+      router: "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
+      dexFee: 30,
+      metaRouter: "0x906C9b4802AeC01d565b0412422224D1a2932D76",
+      metaRouterGateway: "0x5F010D019e4D4f9b1CbA682e055A622BF76c0575",
+      bridge: "0xe1f16F6C5cCbF9BA32E0fd1E668a133AFAe0f105",
+      synthesis: "0xF818D26215BB22B79F8501530bd6d54FfE166735",
+      portal: "0x0000000000000000000000000000000000000000",
+      fabric: "0x6BB1864d4e5A58dfcD142d9f560bB6389742822E",
+      multicallRouter: "0xcB28fbE3E9C0FEA62E0E63ff3f232CECfE555aD4",
+      aavePool: "0x0000000000000000000000000000000000000000",
+      aavePoolDataProvider: "0x0000000000000000000000000000000000000000",
+      creamComptroller: "0x0000000000000000000000000000000000000000",
+      creamCompoundLens: "0x0000000000000000000000000000000000000000",
+      renGatewayRegistry: "0x0000000000000000000000000000000000000000",
+      blocksPerYear: 0,
+    },
   ],
-}
+};

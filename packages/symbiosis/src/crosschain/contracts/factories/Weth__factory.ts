@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { Weth, WethInterface } from "../Weth"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { Weth, WethInterface } from "../Weth";
 
 const _abi = [
   {
@@ -284,14 +284,14 @@ const _abi = [
     name: "Withdrawal",
     type: "event",
   },
-]
+];
 
 export class Weth__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): WethInterface {
-    return new utils.Interface(_abi) as WethInterface
+    return new utils.Interface(_abi) as WethInterface;
   }
   static connect(address: string, signerOrProvider: Signer | Provider): Weth {
-    return new Contract(address, _abi, signerOrProvider) as Weth
+    return new Contract(address, _abi, signerOrProvider) as Weth;
   }
 }

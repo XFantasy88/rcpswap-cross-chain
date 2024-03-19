@@ -13,140 +13,143 @@ import {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers"
-import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi"
-import { Listener, Provider } from "@ethersproject/providers"
-import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common"
+} from "ethers";
+import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
+import { Listener, Provider } from "@ethersproject/providers";
+import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface FeeCollectorInterface extends utils.Interface {
-  contractName: "FeeCollector"
+  contractName: "FeeCollector";
   functions: {
-    "changeFee(uint256)": FunctionFragment
-    "claimTokens(address)": FunctionFragment
-    "fee()": FunctionFragment
-    "onchainGateway()": FunctionFragment
-    "onswap(address,uint256,address,address,bytes)": FunctionFragment
-    "owner()": FunctionFragment
-    "renounceOwnership()": FunctionFragment
-    "transferOwnership(address)": FunctionFragment
-  }
+    "changeFee(uint256)": FunctionFragment;
+    "claimTokens(address)": FunctionFragment;
+    "fee()": FunctionFragment;
+    "onchainGateway()": FunctionFragment;
+    "onswap(address,uint256,address,address,bytes)": FunctionFragment;
+    "owner()": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+  };
 
   encodeFunctionData(
     functionFragment: "changeFee",
     values: [BigNumberish]
-  ): string
-  encodeFunctionData(functionFragment: "claimTokens", values: [string]): string
-  encodeFunctionData(functionFragment: "fee", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "claimTokens", values: [string]): string;
+  encodeFunctionData(functionFragment: "fee", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "onchainGateway",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "onswap",
     values: [string, BigNumberish, string, string, BytesLike]
-  ): string
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
-  ): string
+  ): string;
 
-  decodeFunctionResult(functionFragment: "changeFee", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "claimTokens", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "fee", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "changeFee", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "claimTokens",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "fee", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "onchainGateway",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "onswap", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "onswap", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
-  ): Result
+  ): Result;
 
   events: {
-    "ClaimedTokens(address,address,uint256)": EventFragment
-    "OnchainSwap(address,uint256,uint256)": EventFragment
-    "OwnershipTransferred(address,address)": EventFragment
-  }
+    "ClaimedTokens(address,address,uint256)": EventFragment;
+    "OnchainSwap(address,uint256,uint256)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: "ClaimedTokens"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "OnchainSwap"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "ClaimedTokens"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OnchainSwap"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
 
 export type ClaimedTokensEvent = TypedEvent<
   [string, string, BigNumber],
   { token: string; owner: string; balance: BigNumber }
->
+>;
 
-export type ClaimedTokensEventFilter = TypedEventFilter<ClaimedTokensEvent>
+export type ClaimedTokensEventFilter = TypedEventFilter<ClaimedTokensEvent>;
 
 export type OnchainSwapEvent = TypedEvent<
   [string, BigNumber, BigNumber],
   { token: string; amount: BigNumber; fee: BigNumber }
->
+>;
 
-export type OnchainSwapEventFilter = TypedEventFilter<OnchainSwapEvent>
+export type OnchainSwapEventFilter = TypedEventFilter<OnchainSwapEvent>;
 
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string],
   { previousOwner: string; newOwner: string }
->
+>;
 
 export type OwnershipTransferredEventFilter =
-  TypedEventFilter<OwnershipTransferredEvent>
+  TypedEventFilter<OwnershipTransferredEvent>;
 
 export interface FeeCollector extends BaseContract {
-  contractName: "FeeCollector"
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  contractName: "FeeCollector";
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: FeeCollectorInterface
+  interface: FeeCollectorInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     changeFee(
       _newFee: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     claimTokens(
       _token: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    fee(overrides?: CallOverrides): Promise<[BigNumber]>
+    fee(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    onchainGateway(overrides?: CallOverrides): Promise<[string]>
+    onchainGateway(overrides?: CallOverrides): Promise<[string]>;
 
     onswap(
       token: string,
@@ -155,33 +158,33 @@ export interface FeeCollector extends BaseContract {
       dexgateway: string,
       calldata_: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    owner(overrides?: CallOverrides): Promise<[string]>
+    owner(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
-  }
+    ): Promise<ContractTransaction>;
+  };
 
   changeFee(
     _newFee: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   claimTokens(
     _token: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  fee(overrides?: CallOverrides): Promise<BigNumber>
+  fee(overrides?: CallOverrides): Promise<BigNumber>;
 
-  onchainGateway(overrides?: CallOverrides): Promise<string>
+  onchainGateway(overrides?: CallOverrides): Promise<string>;
 
   onswap(
     token: string,
@@ -190,27 +193,27 @@ export interface FeeCollector extends BaseContract {
     dexgateway: string,
     calldata_: BytesLike,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  owner(overrides?: CallOverrides): Promise<string>
+  owner(overrides?: CallOverrides): Promise<string>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   transferOwnership(
     newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    changeFee(_newFee: BigNumberish, overrides?: CallOverrides): Promise<void>
+    changeFee(_newFee: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
-    claimTokens(_token: string, overrides?: CallOverrides): Promise<void>
+    claimTokens(_token: string, overrides?: CallOverrides): Promise<void>;
 
-    fee(overrides?: CallOverrides): Promise<BigNumber>
+    fee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    onchainGateway(overrides?: CallOverrides): Promise<string>
+    onchainGateway(overrides?: CallOverrides): Promise<string>;
 
     onswap(
       token: string,
@@ -219,61 +222,65 @@ export interface FeeCollector extends BaseContract {
       dexgateway: string,
       calldata_: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
-    owner(overrides?: CallOverrides): Promise<string>
+    owner(overrides?: CallOverrides): Promise<string>;
 
-    renounceOwnership(overrides?: CallOverrides): Promise<void>
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
     transferOwnership(
       newOwner: string,
       overrides?: CallOverrides
-    ): Promise<void>
-  }
+    ): Promise<void>;
+  };
 
   filters: {
     "ClaimedTokens(address,address,uint256)"(
       token?: null,
       owner?: null,
       balance?: null
-    ): ClaimedTokensEventFilter
+    ): ClaimedTokensEventFilter;
     ClaimedTokens(
       token?: null,
       owner?: null,
       balance?: null
-    ): ClaimedTokensEventFilter
+    ): ClaimedTokensEventFilter;
 
     "OnchainSwap(address,uint256,uint256)"(
       token?: null,
       amount?: null,
       fee?: null
-    ): OnchainSwapEventFilter
-    OnchainSwap(token?: null, amount?: null, fee?: null): OnchainSwapEventFilter
+    ): OnchainSwapEventFilter;
+    OnchainSwap(
+      token?: null,
+      amount?: null,
+      fee?: null
+    ): OnchainSwapEventFilter;
 
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
       newOwner?: string | null
-    ): OwnershipTransferredEventFilter
+    ): OwnershipTransferredEventFilter;
     OwnershipTransferred(
       previousOwner?: string | null,
       newOwner?: string | null
-    ): OwnershipTransferredEventFilter
-  }
+    ): OwnershipTransferredEventFilter;
+  };
 
   estimateGas: {
     changeFee(
       _newFee: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     claimTokens(
       _token: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    fee(overrides?: CallOverrides): Promise<BigNumber>
+    fee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    onchainGateway(overrides?: CallOverrides): Promise<BigNumber>
+    onchainGateway(overrides?: CallOverrides): Promise<BigNumber>;
 
     onswap(
       token: string,
@@ -282,34 +289,34 @@ export interface FeeCollector extends BaseContract {
       dexgateway: string,
       calldata_: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    owner(overrides?: CallOverrides): Promise<BigNumber>
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     changeFee(
       _newFee: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     claimTokens(
       _token: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    fee(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    fee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    onchainGateway(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    onchainGateway(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     onswap(
       token: string,
@@ -318,17 +325,17 @@ export interface FeeCollector extends BaseContract {
       dexgateway: string,
       calldata_: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }

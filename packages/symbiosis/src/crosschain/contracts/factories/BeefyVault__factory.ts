@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { BeefyVault, BeefyVaultInterface } from "../BeefyVault"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { BeefyVault, BeefyVaultInterface } from "../BeefyVault";
 
 const _abi = [
   {
@@ -557,17 +557,17 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-]
+];
 
 export class BeefyVault__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): BeefyVaultInterface {
-    return new utils.Interface(_abi) as BeefyVaultInterface
+    return new utils.Interface(_abi) as BeefyVaultInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): BeefyVault {
-    return new Contract(address, _abi, signerOrProvider) as BeefyVault
+    return new Contract(address, _abi, signerOrProvider) as BeefyVault;
   }
 }

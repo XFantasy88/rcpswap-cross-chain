@@ -20,8 +20,8 @@ export const config: Record<ChainId, PublicClientConfig> = {
   [ChainId.ARBITRUM_ONE]: {
     chain: arbitrum,
     transport: http(
-      `https://arbitrum.llamarpc.com`
-      // `https://lb.drpc.org/ogrpc?network=arbitrum&dkey=${drpcId}`
+      // `https://arbitrum.llamarpc.com`
+      `https://lb.drpc.org/ogrpc?network=arbitrum&dkey=${drpcId}`
     ),
   },
   [ChainId.BSC]: {

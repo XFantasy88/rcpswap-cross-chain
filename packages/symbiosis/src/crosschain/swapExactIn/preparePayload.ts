@@ -1,13 +1,13 @@
-import { ChainId } from "../../constants"
-import { SwapExactInTransactionPayload } from "./types"
+import { ChainId } from "../../constants";
+import { SwapExactInTransactionPayload } from "./types";
 
 interface PreparePayloadParams {
-  chainId: ChainId
-  fromAddress: string
-  toAddress: string
-  value?: string
-  callData: string
-  functionSelector?: string
+  chainId: ChainId;
+  fromAddress: string;
+  toAddress: string;
+  value?: string;
+  callData: string;
+  functionSelector?: string;
 }
 
 // Prepare payload for evm or tron transaction
@@ -17,6 +17,7 @@ export function preparePayload({
   toAddress,
   callData,
   value = "0",
+  functionSelector,
 }: PreparePayloadParams): SwapExactInTransactionPayload {
   return {
     transactionType: "evm",
@@ -27,5 +28,5 @@ export function preparePayload({
       value,
       data: callData,
     },
-  }
+  };
 }

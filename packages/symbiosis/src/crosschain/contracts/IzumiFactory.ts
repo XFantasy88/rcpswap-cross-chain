@@ -12,213 +12,219 @@ import {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers"
-import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi"
-import { Listener, Provider } from "@ethersproject/providers"
-import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common"
+} from "ethers";
+import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
+import { Listener, Provider } from "@ethersproject/providers";
+import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface IzumiFactoryInterface extends utils.Interface {
-  contractName: "IzumiFactory"
+  contractName: "IzumiFactory";
   functions: {
-    "chargeReceiver()": FunctionFragment
-    "enableFeeAmount(uint24,uint24)": FunctionFragment
-    "fee2pointDelta(uint24)": FunctionFragment
-    "flashModule()": FunctionFragment
-    "limitOrderModule()": FunctionFragment
-    "liquidityModule()": FunctionFragment
-    "modifyChargeReceiver(address)": FunctionFragment
-    "newPool(address,address,uint24,int24)": FunctionFragment
-    "only_addr_()": FunctionFragment
-    "owner()": FunctionFragment
-    "pool(address,address,uint24)": FunctionFragment
-    "renounceOwnership()": FunctionFragment
-    "swapX2YModule()": FunctionFragment
-    "swapY2XModule()": FunctionFragment
-    "transferOwnership(address)": FunctionFragment
-  }
+    "chargeReceiver()": FunctionFragment;
+    "enableFeeAmount(uint24,uint24)": FunctionFragment;
+    "fee2pointDelta(uint24)": FunctionFragment;
+    "flashModule()": FunctionFragment;
+    "limitOrderModule()": FunctionFragment;
+    "liquidityModule()": FunctionFragment;
+    "modifyChargeReceiver(address)": FunctionFragment;
+    "newPool(address,address,uint24,int24)": FunctionFragment;
+    "only_addr_()": FunctionFragment;
+    "owner()": FunctionFragment;
+    "pool(address,address,uint24)": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "swapX2YModule()": FunctionFragment;
+    "swapY2XModule()": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+  };
 
   encodeFunctionData(
     functionFragment: "chargeReceiver",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "enableFeeAmount",
     values: [BigNumberish, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "fee2pointDelta",
     values: [BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "flashModule",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "limitOrderModule",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "liquidityModule",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "modifyChargeReceiver",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "newPool",
     values: [string, string, BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(functionFragment: "only_addr_", values?: undefined): string
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string
+  ): string;
+  encodeFunctionData(
+    functionFragment: "only_addr_",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "pool",
     values: [string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapX2YModule",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapY2XModule",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
-  ): string
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "chargeReceiver",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "enableFeeAmount",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "fee2pointDelta",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "flashModule", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "flashModule",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "limitOrderModule",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "liquidityModule",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "modifyChargeReceiver",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "newPool", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "only_addr_", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "pool", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "newPool", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "only_addr_", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "pool", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapX2YModule",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapY2XModule",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
-  ): Result
+  ): Result;
 
   events: {
-    "NewPool(address,address,uint24,uint24,address)": EventFragment
-    "OwnershipTransferred(address,address)": EventFragment
-  }
+    "NewPool(address,address,uint24,uint24,address)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: "NewPool"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "NewPool"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
 
 export type NewPoolEvent = TypedEvent<
   [string, string, number, number, string],
   {
-    tokenX: string
-    tokenY: string
-    fee: number
-    pointDelta: number
-    pool: string
+    tokenX: string;
+    tokenY: string;
+    fee: number;
+    pointDelta: number;
+    pool: string;
   }
->
+>;
 
-export type NewPoolEventFilter = TypedEventFilter<NewPoolEvent>
+export type NewPoolEventFilter = TypedEventFilter<NewPoolEvent>;
 
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string],
   { previousOwner: string; newOwner: string }
->
+>;
 
 export type OwnershipTransferredEventFilter =
-  TypedEventFilter<OwnershipTransferredEvent>
+  TypedEventFilter<OwnershipTransferredEvent>;
 
 export interface IzumiFactory extends BaseContract {
-  contractName: "IzumiFactory"
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  contractName: "IzumiFactory";
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: IzumiFactoryInterface
+  interface: IzumiFactoryInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
-    chargeReceiver(overrides?: CallOverrides): Promise<[string]>
+    chargeReceiver(overrides?: CallOverrides): Promise<[string]>;
 
     enableFeeAmount(
       fee: BigNumberish,
       pointDelta: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     fee2pointDelta(
       arg0: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[number]>
+    ): Promise<[number]>;
 
-    flashModule(overrides?: CallOverrides): Promise<[string]>
+    flashModule(overrides?: CallOverrides): Promise<[string]>;
 
-    limitOrderModule(overrides?: CallOverrides): Promise<[string]>
+    limitOrderModule(overrides?: CallOverrides): Promise<[string]>;
 
-    liquidityModule(overrides?: CallOverrides): Promise<[string]>
+    liquidityModule(overrides?: CallOverrides): Promise<[string]>;
 
     modifyChargeReceiver(
       _chargeReceiver: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     newPool(
       tokenX: string,
@@ -226,53 +232,56 @@ export interface IzumiFactory extends BaseContract {
       fee: BigNumberish,
       currentPoint: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    only_addr_(overrides?: CallOverrides): Promise<[string]>
+    only_addr_(overrides?: CallOverrides): Promise<[string]>;
 
-    owner(overrides?: CallOverrides): Promise<[string]>
+    owner(overrides?: CallOverrides): Promise<[string]>;
 
     pool(
       arg0: string,
       arg1: string,
       arg2: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[string]>
+    ): Promise<[string]>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    swapX2YModule(overrides?: CallOverrides): Promise<[string]>
+    swapX2YModule(overrides?: CallOverrides): Promise<[string]>;
 
-    swapY2XModule(overrides?: CallOverrides): Promise<[string]>
+    swapY2XModule(overrides?: CallOverrides): Promise<[string]>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
-  }
+    ): Promise<ContractTransaction>;
+  };
 
-  chargeReceiver(overrides?: CallOverrides): Promise<string>
+  chargeReceiver(overrides?: CallOverrides): Promise<string>;
 
   enableFeeAmount(
     fee: BigNumberish,
     pointDelta: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  fee2pointDelta(arg0: BigNumberish, overrides?: CallOverrides): Promise<number>
+  fee2pointDelta(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<number>;
 
-  flashModule(overrides?: CallOverrides): Promise<string>
+  flashModule(overrides?: CallOverrides): Promise<string>;
 
-  limitOrderModule(overrides?: CallOverrides): Promise<string>
+  limitOrderModule(overrides?: CallOverrides): Promise<string>;
 
-  liquidityModule(overrides?: CallOverrides): Promise<string>
+  liquidityModule(overrides?: CallOverrides): Promise<string>;
 
   modifyChargeReceiver(
     _chargeReceiver: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   newPool(
     tokenX: string,
@@ -280,56 +289,56 @@ export interface IzumiFactory extends BaseContract {
     fee: BigNumberish,
     currentPoint: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  only_addr_(overrides?: CallOverrides): Promise<string>
+  only_addr_(overrides?: CallOverrides): Promise<string>;
 
-  owner(overrides?: CallOverrides): Promise<string>
+  owner(overrides?: CallOverrides): Promise<string>;
 
   pool(
     arg0: string,
     arg1: string,
     arg2: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<string>
+  ): Promise<string>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  swapX2YModule(overrides?: CallOverrides): Promise<string>
+  swapX2YModule(overrides?: CallOverrides): Promise<string>;
 
-  swapY2XModule(overrides?: CallOverrides): Promise<string>
+  swapY2XModule(overrides?: CallOverrides): Promise<string>;
 
   transferOwnership(
     newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    chargeReceiver(overrides?: CallOverrides): Promise<string>
+    chargeReceiver(overrides?: CallOverrides): Promise<string>;
 
     enableFeeAmount(
       fee: BigNumberish,
       pointDelta: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     fee2pointDelta(
       arg0: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<number>
+    ): Promise<number>;
 
-    flashModule(overrides?: CallOverrides): Promise<string>
+    flashModule(overrides?: CallOverrides): Promise<string>;
 
-    limitOrderModule(overrides?: CallOverrides): Promise<string>
+    limitOrderModule(overrides?: CallOverrides): Promise<string>;
 
-    liquidityModule(overrides?: CallOverrides): Promise<string>
+    liquidityModule(overrides?: CallOverrides): Promise<string>;
 
     modifyChargeReceiver(
       _chargeReceiver: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     newPool(
       tokenX: string,
@@ -337,30 +346,30 @@ export interface IzumiFactory extends BaseContract {
       fee: BigNumberish,
       currentPoint: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<string>
+    ): Promise<string>;
 
-    only_addr_(overrides?: CallOverrides): Promise<string>
+    only_addr_(overrides?: CallOverrides): Promise<string>;
 
-    owner(overrides?: CallOverrides): Promise<string>
+    owner(overrides?: CallOverrides): Promise<string>;
 
     pool(
       arg0: string,
       arg1: string,
       arg2: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<string>
+    ): Promise<string>;
 
-    renounceOwnership(overrides?: CallOverrides): Promise<void>
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
-    swapX2YModule(overrides?: CallOverrides): Promise<string>
+    swapX2YModule(overrides?: CallOverrides): Promise<string>;
 
-    swapY2XModule(overrides?: CallOverrides): Promise<string>
+    swapY2XModule(overrides?: CallOverrides): Promise<string>;
 
     transferOwnership(
       newOwner: string,
       overrides?: CallOverrides
-    ): Promise<void>
-  }
+    ): Promise<void>;
+  };
 
   filters: {
     "NewPool(address,address,uint24,uint24,address)"(
@@ -369,49 +378,49 @@ export interface IzumiFactory extends BaseContract {
       fee?: BigNumberish | null,
       pointDelta?: null,
       pool?: null
-    ): NewPoolEventFilter
+    ): NewPoolEventFilter;
     NewPool(
       tokenX?: string | null,
       tokenY?: string | null,
       fee?: BigNumberish | null,
       pointDelta?: null,
       pool?: null
-    ): NewPoolEventFilter
+    ): NewPoolEventFilter;
 
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
       newOwner?: string | null
-    ): OwnershipTransferredEventFilter
+    ): OwnershipTransferredEventFilter;
     OwnershipTransferred(
       previousOwner?: string | null,
       newOwner?: string | null
-    ): OwnershipTransferredEventFilter
-  }
+    ): OwnershipTransferredEventFilter;
+  };
 
   estimateGas: {
-    chargeReceiver(overrides?: CallOverrides): Promise<BigNumber>
+    chargeReceiver(overrides?: CallOverrides): Promise<BigNumber>;
 
     enableFeeAmount(
       fee: BigNumberish,
       pointDelta: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     fee2pointDelta(
       arg0: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    flashModule(overrides?: CallOverrides): Promise<BigNumber>
+    flashModule(overrides?: CallOverrides): Promise<BigNumber>;
 
-    limitOrderModule(overrides?: CallOverrides): Promise<BigNumber>
+    limitOrderModule(overrides?: CallOverrides): Promise<BigNumber>;
 
-    liquidityModule(overrides?: CallOverrides): Promise<BigNumber>
+    liquidityModule(overrides?: CallOverrides): Promise<BigNumber>;
 
     modifyChargeReceiver(
       _chargeReceiver: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     newPool(
       tokenX: string,
@@ -419,57 +428,57 @@ export interface IzumiFactory extends BaseContract {
       fee: BigNumberish,
       currentPoint: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    only_addr_(overrides?: CallOverrides): Promise<BigNumber>
+    only_addr_(overrides?: CallOverrides): Promise<BigNumber>;
 
-    owner(overrides?: CallOverrides): Promise<BigNumber>
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     pool(
       arg0: string,
       arg1: string,
       arg2: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    swapX2YModule(overrides?: CallOverrides): Promise<BigNumber>
+    swapX2YModule(overrides?: CallOverrides): Promise<BigNumber>;
 
-    swapY2XModule(overrides?: CallOverrides): Promise<BigNumber>
+    swapY2XModule(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
-    chargeReceiver(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    chargeReceiver(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     enableFeeAmount(
       fee: BigNumberish,
       pointDelta: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     fee2pointDelta(
       arg0: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    flashModule(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    flashModule(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    limitOrderModule(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    limitOrderModule(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    liquidityModule(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    liquidityModule(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     modifyChargeReceiver(
       _chargeReceiver: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     newPool(
       tokenX: string,
@@ -477,30 +486,30 @@ export interface IzumiFactory extends BaseContract {
       fee: BigNumberish,
       currentPoint: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    only_addr_(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    only_addr_(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     pool(
       arg0: string,
       arg1: string,
       arg2: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    swapX2YModule(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    swapX2YModule(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    swapY2XModule(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    swapY2XModule(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }

@@ -1,42 +1,42 @@
-import { aggregatorsSwap } from "./aggregatorsSwap"
-import { isOKXSwapSupported, okxSwap } from "./okxSwap"
-import { SwapExactInParams, SwapExactInResult } from "./types"
+import { aggregatorsSwap } from "./aggregatorsSwap";
+import { isOKXSwapSupported, okxSwap } from "./okxSwap";
+import { SwapExactInParams, SwapExactInResult } from "./types";
 
 export async function onchainSwap(
   params: SwapExactInParams
 ): Promise<SwapExactInResult> {
-  const requests: Promise<SwapExactInResult>[] = [aggregatorsSwap(params)]
+  const requests: Promise<SwapExactInResult>[] = [aggregatorsSwap(params)];
 
   if (isOKXSwapSupported(params)) {
-    requests.push(okxSwap(params))
+    requests.push(okxSwap(params));
   }
 
-  const settled = await Promise.allSettled(requests)
+  const settled = await Promise.allSettled(requests);
 
-  const errors: Error[] = []
-  let bestResult: SwapExactInResult | undefined = undefined
+  const errors: Error[] = [];
+  let bestResult: SwapExactInResult | undefined = undefined;
 
   for (const result of settled) {
     if (result.status === "rejected") {
-      errors.push(result.reason)
-      continue
+      errors.push(result.reason);
+      continue;
     }
 
-    const { value } = result
+    const { value } = result;
 
     if (!bestResult) {
-      bestResult = value
-      continue
+      bestResult = value;
+      continue;
     }
 
     if (value.tokenAmountOut.greaterThan(bestResult.tokenAmountOut)) {
-      bestResult = value
+      bestResult = value;
     }
   }
 
   if (!bestResult) {
-    throw new AggregateError(errors, "No aggregator found")
+    throw new AggregateError(errors, "No aggregator found");
   }
 
-  return bestResult
+  return bestResult;
 }

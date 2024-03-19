@@ -1,4 +1,5 @@
-import { Config } from "../types"
+import { ChainId } from "../../constants";
+import { Config } from "../types";
 
 export const config: Config = {
   advisor: {
@@ -14,6 +15,11 @@ export const config: Config = {
       chainId: 56288,
       address: "0xBcc2637DFa64999F75abB53a7265b5B4932e40eB",
       oracle: "0x628613064b1902a1A422825cf11B687C6f17961E",
+    },
+    {
+      chainId: 56288,
+      address: "0xA267C428b16728831Be52b144F78b8F054411f55",
+      oracle: "0xECBe427C8F8ea1Ee5258cAf5aB0A9d26b4D91769",
     },
   ],
   revertableAddress: {
@@ -66,6 +72,18 @@ export const config: Config = {
               "https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png",
           },
         },
+        {
+          name: "Binance-Peg BTCB Token",
+          symbol: "BTCB",
+          address: "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+          chainId: 56,
+          decimals: 18,
+          icons: {
+            large: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
+            small:
+              "https://s2.coinmarketcap.com/static/img/coins/128x128/1.png",
+          },
+        },
       ],
       router: "0x10ED43C718714eb63d5aA57B78B54704E256024E",
       dexFee: 25,
@@ -81,6 +99,56 @@ export const config: Config = {
       creamComptroller: "0x589de0f0ccf905477646599bb3e5c622c84cc0ba",
       creamCompoundLens: "0x06fd4e17Dd35d0dE9FE17eeAE4e94fBA57fEF154",
       renGatewayRegistry: "0xf36666C230Fa12333579b9Bd6196CB634D6BC506",
+      blocksPerYear: 0,
+    },
+    {
+      id: 43114,
+      rpc: "https://avalanche-c-chain.publicnode.com",
+      filterBlockOffset: 2000,
+      waitForBlocksCount: 30,
+      stables: [
+        {
+          name: "USD Coin",
+          address: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+          symbol: "USDC",
+          decimals: 6,
+          chainId: 43114,
+          icons: {
+            large:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+            small:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+          },
+        },
+        {
+          deprecated: true,
+          name: "USD Coin",
+          address: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+          symbol: "USDC.e",
+          decimals: 6,
+          chainId: 43114,
+          icons: {
+            large:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+            small:
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+          },
+        },
+      ],
+      router: "0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106",
+      dexFee: 30,
+      metaRouter: "0x6F0f6393e45fE0E7215906B6f9cfeFf53EA139cf",
+      metaRouterGateway: "0x4cfA66497Fa84D739a0f785FBcEe9196f1C64e4a",
+      bridge: "0x292fC50e4eB66C3f6514b9E402dBc25961824D62",
+      synthesis: "0x0000000000000000000000000000000000000000",
+      portal: "0xE75C7E85FE6ADd07077467064aD15847E6ba9877",
+      fabric: "0x0000000000000000000000000000000000000000",
+      multicallRouter: "0xDc9a6a26209A450caC415fb78487e907c660cf6a",
+      aavePool: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+      aavePoolDataProvider: "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654",
+      creamComptroller: "0x486Af39519B4Dc9a7fCcd318217352830E8AD9b4",
+      creamCompoundLens: "0x5b4058A9000e86fe136Ac896352C4DFD539E32a1",
+      renGatewayRegistry: "0x0000000000000000000000000000000000000000",
       blocksPerYear: 0,
     },
     {
@@ -134,7 +202,7 @@ export const config: Config = {
     },
     {
       id: 56288,
-      rpc: "https://symbiosis.bnb.boba.network",
+      rpc: "https://replica.bnb.boba.network",
       filterBlockOffset: 3000,
       waitForBlocksCount: 0,
       stables: [
@@ -161,55 +229,6 @@ export const config: Config = {
       portal: "0x0000000000000000000000000000000000000000",
       fabric: "0x5Aa5f7f84eD0E5db0a4a85C3947eA16B53352FD4",
       multicallRouter: "0xcB28fbE3E9C0FEA62E0E63ff3f232CECfE555aD4",
-      aavePool: "0x0000000000000000000000000000000000000000",
-      aavePoolDataProvider: "0x0000000000000000000000000000000000000000",
-      creamComptroller: "0x0000000000000000000000000000000000000000",
-      creamCompoundLens: "0x0000000000000000000000000000000000000000",
-      renGatewayRegistry: "0x0000000000000000000000000000000000000000",
-      blocksPerYear: 0,
-    },
-    {
-      id: 42170,
-      rpc: "https://nova.arbitrum.io/rpc",
-      filterBlockOffset: 2000,
-      waitForBlocksCount: 2,
-      stables: [
-        {
-          name: "USD Coin",
-          symbol: "USDC",
-          address: "0x750ba8b76187092B0D1E87E28daaf484d1b5273b",
-          chainId: 42170,
-          decimals: 6,
-          icons: {
-            large:
-              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
-            small:
-              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
-          },
-        },
-        {
-          name: "Wrapped Ether",
-          symbol: "WETH",
-          address: "0x722e8bdd2ce80a4422e880164f2079488e115365",
-          chainId: 42170,
-          decimals: 18,
-          icons: {
-            large:
-              "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
-            small:
-              "https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png",
-          },
-        },
-      ],
-      router: "0x9186bf4F5f4b3192fBAE5467758156Ec479b2b50",
-      dexFee: 30,
-      metaRouter: "0xca506793A420E901BbCa8066be5661E3C52c84c2",
-      metaRouterGateway: "0xd92Ca299F1C2518E78E48C207b64591BA6E9b9a8",
-      bridge: "0x5523985926Aa12BA58DC5Ad00DDca99678D7227E",
-      synthesis: "0x0000000000000000000000000000000000000000",
-      portal: "0x292fC50e4eB66C3f6514b9E402dBc25961824D62",
-      fabric: "0x0000000000000000000000000000000000000000",
-      multicallRouter: "0xb8f275fBf7A959F4BCE59999A2EF122A099e81A8",
       aavePool: "0x0000000000000000000000000000000000000000",
       aavePoolDataProvider: "0x0000000000000000000000000000000000000000",
       creamComptroller: "0x0000000000000000000000000000000000000000",
@@ -281,17 +300,17 @@ export const config: Config = {
       blocksPerYear: 0,
     },
     {
-      id: 43114,
-      rpc: "https://avalanche-c-chain.publicnode.com",
+      id: 42170,
+      rpc: "https://nova.arbitrum.io/rpc",
       filterBlockOffset: 2000,
-      waitForBlocksCount: 30,
+      waitForBlocksCount: 2,
       stables: [
         {
           name: "USD Coin",
-          address: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
-          symbol: "USDC.e",
+          symbol: "USDC",
+          address: "0x750ba8b76187092B0D1E87E28daaf484d1b5273b",
+          chainId: 42170,
           decimals: 6,
-          chainId: 43114,
           icons: {
             large:
               "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
@@ -300,34 +319,34 @@ export const config: Config = {
           },
         },
         {
-          name: "USD Coin",
-          address: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
-          symbol: "USDC",
-          decimals: 6,
-          chainId: 43114,
+          name: "Wrapped Ether",
+          symbol: "WETH",
+          address: "0x722e8bdd2ce80a4422e880164f2079488e115365",
+          chainId: 42170,
+          decimals: 18,
           icons: {
             large:
-              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
             small:
-              "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
+              "https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png",
           },
         },
       ],
-      router: "0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106",
+      router: "0xEe01c0CD76354C383B8c7B4e65EA88D00B06f36f",
       dexFee: 30,
-      metaRouter: "0x6F0f6393e45fE0E7215906B6f9cfeFf53EA139cf",
-      metaRouterGateway: "0x4cfA66497Fa84D739a0f785FBcEe9196f1C64e4a",
-      bridge: "0x292fC50e4eB66C3f6514b9E402dBc25961824D62",
+      metaRouter: "0xca506793A420E901BbCa8066be5661E3C52c84c2",
+      metaRouterGateway: "0xd92Ca299F1C2518E78E48C207b64591BA6E9b9a8",
+      bridge: "0x5523985926Aa12BA58DC5Ad00DDca99678D7227E",
       synthesis: "0x0000000000000000000000000000000000000000",
-      portal: "0xE75C7E85FE6ADd07077467064aD15847E6ba9877",
+      portal: "0x292fC50e4eB66C3f6514b9E402dBc25961824D62",
       fabric: "0x0000000000000000000000000000000000000000",
-      multicallRouter: "0xDc9a6a26209A450caC415fb78487e907c660cf6a",
-      aavePool: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
-      aavePoolDataProvider: "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654",
-      creamComptroller: "0x486Af39519B4Dc9a7fCcd318217352830E8AD9b4",
-      creamCompoundLens: "0x5b4058A9000e86fe136Ac896352C4DFD539E32a1",
+      multicallRouter: "0xb8f275fBf7A959F4BCE59999A2EF122A099e81A8",
+      aavePool: "0x0000000000000000000000000000000000000000",
+      aavePoolDataProvider: "0x0000000000000000000000000000000000000000",
+      creamComptroller: "0x0000000000000000000000000000000000000000",
+      creamCompoundLens: "0x0000000000000000000000000000000000000000",
       renGatewayRegistry: "0x0000000000000000000000000000000000000000",
       blocksPerYear: 0,
     },
   ],
-}
+};

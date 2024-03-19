@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { FeeCollector, FeeCollectorInterface } from "../FeeCollector"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { FeeCollector, FeeCollectorInterface } from "../FeeCollector";
 
 const _abi = [
   {
@@ -199,17 +199,17 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-]
+];
 
 export class FeeCollector__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): FeeCollectorInterface {
-    return new utils.Interface(_abi) as FeeCollectorInterface
+    return new utils.Interface(_abi) as FeeCollectorInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): FeeCollector {
-    return new Contract(address, _abi, signerOrProvider) as FeeCollector
+    return new Contract(address, _abi, signerOrProvider) as FeeCollector;
   }
 }

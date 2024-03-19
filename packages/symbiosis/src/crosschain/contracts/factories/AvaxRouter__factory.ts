@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { AvaxRouter, AvaxRouterInterface } from "../AvaxRouter"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { AvaxRouter, AvaxRouterInterface } from "../AvaxRouter";
 
 const _abi = [
   {
@@ -978,17 +978,17 @@ const _abi = [
     stateMutability: "payable",
     type: "receive",
   },
-]
+];
 
 export class AvaxRouter__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): AvaxRouterInterface {
-    return new utils.Interface(_abi) as AvaxRouterInterface
+    return new utils.Interface(_abi) as AvaxRouterInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): AvaxRouter {
-    return new Contract(address, _abi, signerOrProvider) as AvaxRouter
+    return new Contract(address, _abi, signerOrProvider) as AvaxRouter;
   }
 }

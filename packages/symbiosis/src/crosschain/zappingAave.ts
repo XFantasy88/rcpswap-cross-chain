@@ -2,15 +2,15 @@ import {
   BaseSwapping,
   CrosschainSwapExactInResult,
   SwapExactInParams,
-} from "./baseSwapping"
-import { wrappedToken } from "../entities"
-import { Aave, MulticallRouter } from "./contracts"
+} from "./baseSwapping";
+import { wrappedToken } from "../entities";
+import { Aave, MulticallRouter } from "./contracts";
 
 export class ZappingAave extends BaseSwapping {
-  protected multicallRouter!: MulticallRouter
-  protected userAddress!: string
-  protected aavePool!: Aave
-  protected aToken!: string
+  protected multicallRouter!: MulticallRouter;
+  protected userAddress!: string;
+  protected aavePool!: Aave;
+  protected aToken!: string;
 
   public async exactIn({
     tokenAmountIn,
@@ -20,12 +20,12 @@ export class ZappingAave extends BaseSwapping {
     slippage,
     deadline,
   }: SwapExactInParams): Promise<CrosschainSwapExactInResult> {
-    this.multicallRouter = this.symbiosis.multicallRouter(tokenOut.chainId)
-    this.userAddress = to
+    this.multicallRouter = this.symbiosis.multicallRouter(tokenOut.chainId);
+    this.userAddress = to;
 
-    this.aavePool = this.symbiosis.aavePool(tokenOut.chainId)
-    const data = await this.aavePool.getReserveData(tokenOut.address)
-    this.aToken = data.aTokenAddress
+    this.aavePool = this.symbiosis.aavePool(tokenOut.chainId);
+    const data = await this.aavePool.getReserveData(tokenOut.address);
+    this.aToken = data.aTokenAddress;
 
     return this.doExactIn({
       tokenAmountIn,
@@ -34,52 +34,52 @@ export class ZappingAave extends BaseSwapping {
       to,
       slippage,
       deadline,
-    })
+    });
   }
 
   protected override tradeCTo(): string {
-    return this.multicallRouter.address
+    return this.multicallRouter.address;
   }
 
   protected override finalReceiveSide(): string {
-    return this.multicallRouter.address
+    return this.multicallRouter.address;
   }
 
   protected override finalCalldata(): string | [] {
-    return this.buildMulticall()
+    return this.buildMulticall();
   }
 
   protected override finalOffset(): number {
-    return 36
+    return 36;
   }
 
   protected override extraSwapTokens(): string[] {
-    return [this.aToken]
+    return [this.aToken];
   }
 
   private buildMulticall() {
-    const callDatas = []
-    const receiveSides = []
-    const path = []
-    const offsets = []
+    const callDatas = [];
+    const receiveSides = [];
+    const path = [];
+    const offsets = [];
 
-    let amount
-    let supplyToken
+    let amount;
+    let supplyToken;
 
     if (this.tradeC) {
-      amount = this.tradeC.tokenAmountIn.raw.toString()
-      supplyToken = this.tradeC.amountOut.token
+      amount = this.tradeC.tokenAmountIn.raw.toString();
+      supplyToken = this.tradeC.amountOut.token;
 
-      callDatas.push(this.tradeC.callData)
-      receiveSides.push(this.tradeC.routerAddress)
-      path.push(this.tradeC.tokenAmountIn.token.address)
-      offsets.push(this.tradeC.callDataOffset!)
+      callDatas.push(this.tradeC.callData);
+      receiveSides.push(this.tradeC.routerAddress);
+      path.push(this.tradeC.tokenAmountIn.token.address);
+      offsets.push(this.tradeC.callDataOffset!);
     } else {
-      amount = this.transit.amountOut.raw.toString()
+      amount = this.transit.amountOut.raw.toString();
       if (this.transit.direction === "mint") {
-        supplyToken = this.transit.amountOut.token
+        supplyToken = this.transit.amountOut.token;
       } else {
-        supplyToken = this.transit.feeToken
+        supplyToken = this.tokenOut;
       }
     }
 
@@ -91,12 +91,12 @@ export class ZappingAave extends BaseSwapping {
         this.userAddress,
         "0",
       ]
-    )
+    );
 
-    callDatas.push(supplyCalldata)
-    receiveSides.push(this.aavePool.address)
-    path.push(supplyToken.address)
-    offsets.push(68)
+    callDatas.push(supplyCalldata);
+    receiveSides.push(this.aavePool.address);
+    path.push(supplyToken.address);
+    offsets.push(68);
 
     return this.multicallRouter.interface.encodeFunctionData("multicall", [
       amount,
@@ -105,6 +105,6 @@ export class ZappingAave extends BaseSwapping {
       path,
       offsets,
       this.userAddress,
-    ])
+    ]);
   }
 }

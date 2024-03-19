@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { XfusionRouter, XfusionRouterInterface } from "../XfusionRouter"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { XfusionRouter, XfusionRouterInterface } from "../XfusionRouter";
 
 const _abi = [
   {
@@ -317,17 +317,17 @@ const _abi = [
     stateMutability: "payable",
     type: "receive",
   },
-]
+];
 
 export class XfusionRouter__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): XfusionRouterInterface {
-    return new utils.Interface(_abi) as XfusionRouterInterface
+    return new utils.Interface(_abi) as XfusionRouterInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): XfusionRouter {
-    return new Contract(address, _abi, signerOrProvider) as XfusionRouter
+    return new Contract(address, _abi, signerOrProvider) as XfusionRouter;
   }
 }

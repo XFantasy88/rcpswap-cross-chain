@@ -27,6 +27,7 @@
     "@ethersproject/units": "^5.7.0",
     "@rcpswap/router": "workspace:*",
     "@rcpswap/tines": "workspace:*",
+    "@uniswap/v3-sdk": "^3.11.0",
     "@whatwg-node/fetch": "^0.9.14",
     "big.js": "6.1.1",
     "bignumber.js": "^9.1.2",

@@ -11,7 +11,7 @@ export const rpcUrls = {
     `https://lb.drpc.org/ogrpc?network=polygon&dkey=${drpcId}`,
   ],
   [ChainId.ARBITRUM_ONE]: [
-    `https://arbitrum.llamarpc.com`,
+    // `https://arbitrum.llamarpc.com`,
     `https://lb.drpc.org/ogrpc?network=arbitrum&dkey=${drpcId}`,
   ],
   [ChainId.BSC]: [`https://lb.drpc.org/ogrpc?network=bsc&dkey=${drpcId}`],

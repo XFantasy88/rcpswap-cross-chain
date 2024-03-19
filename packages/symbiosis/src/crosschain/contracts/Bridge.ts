@@ -12,301 +12,304 @@ import {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers"
-import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi"
-import { Listener, Provider } from "@ethersproject/providers"
-import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common"
+} from "ethers";
+import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
+import { Listener, Provider } from "@ethersproject/providers";
+import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface BridgeInterface extends utils.Interface {
-  contractName: "Bridge"
+  contractName: "Bridge";
   functions: {
-    "changeMPC(address)": FunctionFragment
-    "changeMPCSigned(address,bytes)": FunctionFragment
-    "currentChainId()": FunctionFragment
-    "initialize(address)": FunctionFragment
-    "isAdmin(address)": FunctionFragment
-    "isTransmitter(address)": FunctionFragment
-    "mpc()": FunctionFragment
-    "newMPC()": FunctionFragment
-    "newMPCEffectiveTime()": FunctionFragment
-    "oldMPC()": FunctionFragment
-    "owner()": FunctionFragment
-    "receiveRequestV2(bytes,address)": FunctionFragment
-    "receiveRequestV2Signed(bytes,address,bytes)": FunctionFragment
-    "renounceOwnership()": FunctionFragment
-    "setAdminPermission(address,bool)": FunctionFragment
-    "setTransmitterStatus(address,bool)": FunctionFragment
-    "transferOwnership(address)": FunctionFragment
-    "transmitRequestV2(bytes,address,address,uint256)": FunctionFragment
-    "withdrawFee(address,address,uint256)": FunctionFragment
-  }
+    "changeMPC(address)": FunctionFragment;
+    "changeMPCSigned(address,bytes)": FunctionFragment;
+    "currentChainId()": FunctionFragment;
+    "initialize(address)": FunctionFragment;
+    "isAdmin(address)": FunctionFragment;
+    "isTransmitter(address)": FunctionFragment;
+    "mpc()": FunctionFragment;
+    "newMPC()": FunctionFragment;
+    "newMPCEffectiveTime()": FunctionFragment;
+    "oldMPC()": FunctionFragment;
+    "owner()": FunctionFragment;
+    "receiveRequestV2(bytes,address)": FunctionFragment;
+    "receiveRequestV2Signed(bytes,address,bytes)": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "setAdminPermission(address,bool)": FunctionFragment;
+    "setTransmitterStatus(address,bool)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+    "transmitRequestV2(bytes,address,address,uint256)": FunctionFragment;
+    "withdrawFee(address,address,uint256)": FunctionFragment;
+  };
 
-  encodeFunctionData(functionFragment: "changeMPC", values: [string]): string
+  encodeFunctionData(functionFragment: "changeMPC", values: [string]): string;
   encodeFunctionData(
     functionFragment: "changeMPCSigned",
     values: [string, BytesLike]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "currentChainId",
     values?: undefined
-  ): string
-  encodeFunctionData(functionFragment: "initialize", values: [string]): string
-  encodeFunctionData(functionFragment: "isAdmin", values: [string]): string
+  ): string;
+  encodeFunctionData(functionFragment: "initialize", values: [string]): string;
+  encodeFunctionData(functionFragment: "isAdmin", values: [string]): string;
   encodeFunctionData(
     functionFragment: "isTransmitter",
     values: [string]
-  ): string
-  encodeFunctionData(functionFragment: "mpc", values?: undefined): string
-  encodeFunctionData(functionFragment: "newMPC", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "mpc", values?: undefined): string;
+  encodeFunctionData(functionFragment: "newMPC", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "newMPCEffectiveTime",
     values?: undefined
-  ): string
-  encodeFunctionData(functionFragment: "oldMPC", values?: undefined): string
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "oldMPC", values?: undefined): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "receiveRequestV2",
     values: [BytesLike, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "receiveRequestV2Signed",
     values: [BytesLike, string, BytesLike]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "setAdminPermission",
     values: [string, boolean]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "setTransmitterStatus",
     values: [string, boolean]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "transmitRequestV2",
     values: [BytesLike, string, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "withdrawFee",
     values: [string, string, BigNumberish]
-  ): string
+  ): string;
 
-  decodeFunctionResult(functionFragment: "changeMPC", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "changeMPC", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "changeMPCSigned",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "currentChainId",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "isAdmin", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "isAdmin", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isTransmitter",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "mpc", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "newMPC", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "mpc", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "newMPC", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "newMPCEffectiveTime",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "oldMPC", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "oldMPC", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "receiveRequestV2",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "receiveRequestV2Signed",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "setAdminPermission",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "setTransmitterStatus",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transmitRequestV2",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "withdrawFee", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawFee",
+    data: BytesLike
+  ): Result;
 
   events: {
-    "LogChangeMPC(address,address,uint256,uint256)": EventFragment
-    "OracleRequest(address,bytes,address,address,uint256)": EventFragment
-    "OwnershipTransferred(address,address)": EventFragment
-    "SetAdminPermission(address,bool)": EventFragment
-    "SetTransmitterStatus(address,bool)": EventFragment
-  }
+    "LogChangeMPC(address,address,uint256,uint256)": EventFragment;
+    "OracleRequest(address,bytes,address,address,uint256)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
+    "SetAdminPermission(address,bool)": EventFragment;
+    "SetTransmitterStatus(address,bool)": EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: "LogChangeMPC"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "OracleRequest"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "SetAdminPermission"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "SetTransmitterStatus"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "LogChangeMPC"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OracleRequest"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SetAdminPermission"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SetTransmitterStatus"): EventFragment;
 }
 
 export type LogChangeMPCEvent = TypedEvent<
   [string, string, BigNumber, BigNumber],
   {
-    oldMPC: string
-    newMPC: string
-    effectiveTime: BigNumber
-    chainId: BigNumber
+    oldMPC: string;
+    newMPC: string;
+    effectiveTime: BigNumber;
+    chainId: BigNumber;
   }
->
+>;
 
-export type LogChangeMPCEventFilter = TypedEventFilter<LogChangeMPCEvent>
+export type LogChangeMPCEventFilter = TypedEventFilter<LogChangeMPCEvent>;
 
 export type OracleRequestEvent = TypedEvent<
   [string, string, string, string, BigNumber],
   {
-    bridge: string
-    callData: string
-    receiveSide: string
-    oppositeBridge: string
-    chainId: BigNumber
+    bridge: string;
+    callData: string;
+    receiveSide: string;
+    oppositeBridge: string;
+    chainId: BigNumber;
   }
->
+>;
 
-export type OracleRequestEventFilter = TypedEventFilter<OracleRequestEvent>
+export type OracleRequestEventFilter = TypedEventFilter<OracleRequestEvent>;
 
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string],
   { previousOwner: string; newOwner: string }
->
+>;
 
 export type OwnershipTransferredEventFilter =
-  TypedEventFilter<OwnershipTransferredEvent>
+  TypedEventFilter<OwnershipTransferredEvent>;
 
 export type SetAdminPermissionEvent = TypedEvent<
   [string, boolean],
   { admin: string; permission: boolean }
->
+>;
 
 export type SetAdminPermissionEventFilter =
-  TypedEventFilter<SetAdminPermissionEvent>
+  TypedEventFilter<SetAdminPermissionEvent>;
 
 export type SetTransmitterStatusEvent = TypedEvent<
   [string, boolean],
   { transmitter: string; status: boolean }
->
+>;
 
 export type SetTransmitterStatusEventFilter =
-  TypedEventFilter<SetTransmitterStatusEvent>
+  TypedEventFilter<SetTransmitterStatusEvent>;
 
 export interface Bridge extends BaseContract {
-  contractName: "Bridge"
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  contractName: "Bridge";
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: BridgeInterface
+  interface: BridgeInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     changeMPC(
       _newMPC: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     changeMPCSigned(
       _newMPC: string,
       signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    currentChainId(overrides?: CallOverrides): Promise<[BigNumber]>
+    currentChainId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     initialize(
       _mpc: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    isAdmin(arg0: string, overrides?: CallOverrides): Promise<[boolean]>
+    isAdmin(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
-    isTransmitter(arg0: string, overrides?: CallOverrides): Promise<[boolean]>
+    isTransmitter(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
-    mpc(overrides?: CallOverrides): Promise<[string]>
+    mpc(overrides?: CallOverrides): Promise<[string]>;
 
-    newMPC(overrides?: CallOverrides): Promise<[string]>
+    newMPC(overrides?: CallOverrides): Promise<[string]>;
 
-    newMPCEffectiveTime(overrides?: CallOverrides): Promise<[BigNumber]>
+    newMPCEffectiveTime(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    oldMPC(overrides?: CallOverrides): Promise<[string]>
+    oldMPC(overrides?: CallOverrides): Promise<[string]>;
 
-    owner(overrides?: CallOverrides): Promise<[string]>
+    owner(overrides?: CallOverrides): Promise<[string]>;
 
     receiveRequestV2(
       _callData: BytesLike,
       _receiveSide: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     receiveRequestV2Signed(
       _callData: BytesLike,
       _receiveSide: string,
       signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     setAdminPermission(
       _user: string,
       _permission: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     setTransmitterStatus(
       _transmitter: string,
       _status: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     transmitRequestV2(
       _callData: BytesLike,
@@ -314,81 +317,81 @@ export interface Bridge extends BaseContract {
       _oppositeBridge: string,
       _chainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     withdrawFee(
       token: string,
       to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
-  }
+    ): Promise<ContractTransaction>;
+  };
 
   changeMPC(
     _newMPC: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   changeMPCSigned(
     _newMPC: string,
     signature: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  currentChainId(overrides?: CallOverrides): Promise<BigNumber>
+  currentChainId(overrides?: CallOverrides): Promise<BigNumber>;
 
   initialize(
     _mpc: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  isAdmin(arg0: string, overrides?: CallOverrides): Promise<boolean>
+  isAdmin(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
-  isTransmitter(arg0: string, overrides?: CallOverrides): Promise<boolean>
+  isTransmitter(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
-  mpc(overrides?: CallOverrides): Promise<string>
+  mpc(overrides?: CallOverrides): Promise<string>;
 
-  newMPC(overrides?: CallOverrides): Promise<string>
+  newMPC(overrides?: CallOverrides): Promise<string>;
 
-  newMPCEffectiveTime(overrides?: CallOverrides): Promise<BigNumber>
+  newMPCEffectiveTime(overrides?: CallOverrides): Promise<BigNumber>;
 
-  oldMPC(overrides?: CallOverrides): Promise<string>
+  oldMPC(overrides?: CallOverrides): Promise<string>;
 
-  owner(overrides?: CallOverrides): Promise<string>
+  owner(overrides?: CallOverrides): Promise<string>;
 
   receiveRequestV2(
     _callData: BytesLike,
     _receiveSide: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   receiveRequestV2Signed(
     _callData: BytesLike,
     _receiveSide: string,
     signature: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   setAdminPermission(
     _user: string,
     _permission: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   setTransmitterStatus(
     _transmitter: string,
     _status: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   transferOwnership(
     newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   transmitRequestV2(
     _callData: BytesLike,
@@ -396,73 +399,73 @@ export interface Bridge extends BaseContract {
     _oppositeBridge: string,
     _chainId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   withdrawFee(
     token: string,
     to: string,
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    changeMPC(_newMPC: string, overrides?: CallOverrides): Promise<boolean>
+    changeMPC(_newMPC: string, overrides?: CallOverrides): Promise<boolean>;
 
     changeMPCSigned(
       _newMPC: string,
       signature: BytesLike,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
-    currentChainId(overrides?: CallOverrides): Promise<BigNumber>
+    currentChainId(overrides?: CallOverrides): Promise<BigNumber>;
 
-    initialize(_mpc: string, overrides?: CallOverrides): Promise<void>
+    initialize(_mpc: string, overrides?: CallOverrides): Promise<void>;
 
-    isAdmin(arg0: string, overrides?: CallOverrides): Promise<boolean>
+    isAdmin(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
-    isTransmitter(arg0: string, overrides?: CallOverrides): Promise<boolean>
+    isTransmitter(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
-    mpc(overrides?: CallOverrides): Promise<string>
+    mpc(overrides?: CallOverrides): Promise<string>;
 
-    newMPC(overrides?: CallOverrides): Promise<string>
+    newMPC(overrides?: CallOverrides): Promise<string>;
 
-    newMPCEffectiveTime(overrides?: CallOverrides): Promise<BigNumber>
+    newMPCEffectiveTime(overrides?: CallOverrides): Promise<BigNumber>;
 
-    oldMPC(overrides?: CallOverrides): Promise<string>
+    oldMPC(overrides?: CallOverrides): Promise<string>;
 
-    owner(overrides?: CallOverrides): Promise<string>
+    owner(overrides?: CallOverrides): Promise<string>;
 
     receiveRequestV2(
       _callData: BytesLike,
       _receiveSide: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     receiveRequestV2Signed(
       _callData: BytesLike,
       _receiveSide: string,
       signature: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
-    renounceOwnership(overrides?: CallOverrides): Promise<void>
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
     setAdminPermission(
       _user: string,
       _permission: boolean,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     setTransmitterStatus(
       _transmitter: string,
       _status: boolean,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     transferOwnership(
       newOwner: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     transmitRequestV2(
       _callData: BytesLike,
@@ -470,15 +473,15 @@ export interface Bridge extends BaseContract {
       _oppositeBridge: string,
       _chainId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     withdrawFee(
       token: string,
       to: string,
       amount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>
-  }
+    ): Promise<boolean>;
+  };
 
   filters: {
     "LogChangeMPC(address,address,uint256,uint256)"(
@@ -486,13 +489,13 @@ export interface Bridge extends BaseContract {
       newMPC?: string | null,
       effectiveTime?: BigNumberish | null,
       chainId?: null
-    ): LogChangeMPCEventFilter
+    ): LogChangeMPCEventFilter;
     LogChangeMPC(
       oldMPC?: string | null,
       newMPC?: string | null,
       effectiveTime?: BigNumberish | null,
       chainId?: null
-    ): LogChangeMPCEventFilter
+    ): LogChangeMPCEventFilter;
 
     "OracleRequest(address,bytes,address,address,uint256)"(
       bridge?: null,
@@ -500,109 +503,109 @@ export interface Bridge extends BaseContract {
       receiveSide?: null,
       oppositeBridge?: null,
       chainId?: null
-    ): OracleRequestEventFilter
+    ): OracleRequestEventFilter;
     OracleRequest(
       bridge?: null,
       callData?: null,
       receiveSide?: null,
       oppositeBridge?: null,
       chainId?: null
-    ): OracleRequestEventFilter
+    ): OracleRequestEventFilter;
 
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
       newOwner?: string | null
-    ): OwnershipTransferredEventFilter
+    ): OwnershipTransferredEventFilter;
     OwnershipTransferred(
       previousOwner?: string | null,
       newOwner?: string | null
-    ): OwnershipTransferredEventFilter
+    ): OwnershipTransferredEventFilter;
 
     "SetAdminPermission(address,bool)"(
       admin?: string | null,
       permission?: null
-    ): SetAdminPermissionEventFilter
+    ): SetAdminPermissionEventFilter;
     SetAdminPermission(
       admin?: string | null,
       permission?: null
-    ): SetAdminPermissionEventFilter
+    ): SetAdminPermissionEventFilter;
 
     "SetTransmitterStatus(address,bool)"(
       transmitter?: string | null,
       status?: null
-    ): SetTransmitterStatusEventFilter
+    ): SetTransmitterStatusEventFilter;
     SetTransmitterStatus(
       transmitter?: string | null,
       status?: null
-    ): SetTransmitterStatusEventFilter
-  }
+    ): SetTransmitterStatusEventFilter;
+  };
 
   estimateGas: {
     changeMPC(
       _newMPC: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     changeMPCSigned(
       _newMPC: string,
       signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    currentChainId(overrides?: CallOverrides): Promise<BigNumber>
+    currentChainId(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
       _mpc: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    isAdmin(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    isAdmin(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    isTransmitter(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    isTransmitter(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    mpc(overrides?: CallOverrides): Promise<BigNumber>
+    mpc(overrides?: CallOverrides): Promise<BigNumber>;
 
-    newMPC(overrides?: CallOverrides): Promise<BigNumber>
+    newMPC(overrides?: CallOverrides): Promise<BigNumber>;
 
-    newMPCEffectiveTime(overrides?: CallOverrides): Promise<BigNumber>
+    newMPCEffectiveTime(overrides?: CallOverrides): Promise<BigNumber>;
 
-    oldMPC(overrides?: CallOverrides): Promise<BigNumber>
+    oldMPC(overrides?: CallOverrides): Promise<BigNumber>;
 
-    owner(overrides?: CallOverrides): Promise<BigNumber>
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     receiveRequestV2(
       _callData: BytesLike,
       _receiveSide: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     receiveRequestV2Signed(
       _callData: BytesLike,
       _receiveSide: string,
       signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     setAdminPermission(
       _user: string,
       _permission: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     setTransmitterStatus(
       _transmitter: string,
       _status: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     transmitRequestV2(
       _callData: BytesLike,
@@ -610,90 +613,90 @@ export interface Bridge extends BaseContract {
       _oppositeBridge: string,
       _chainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     withdrawFee(
       token: string,
       to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     changeMPC(
       _newMPC: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     changeMPCSigned(
       _newMPC: string,
       signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    currentChainId(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    currentChainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
       _mpc: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     isAdmin(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     isTransmitter(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    mpc(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    mpc(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    newMPC(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    newMPC(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     newMPCEffectiveTime(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    oldMPC(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    oldMPC(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     receiveRequestV2(
       _callData: BytesLike,
       _receiveSide: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     receiveRequestV2Signed(
       _callData: BytesLike,
       _receiveSide: string,
       signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     setAdminPermission(
       _user: string,
       _permission: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     setTransmitterStatus(
       _transmitter: string,
       _status: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     transmitRequestV2(
       _callData: BytesLike,
@@ -701,13 +704,13 @@ export interface Bridge extends BaseContract {
       _oppositeBridge: string,
       _chainId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     withdrawFee(
       token: string,
       to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }

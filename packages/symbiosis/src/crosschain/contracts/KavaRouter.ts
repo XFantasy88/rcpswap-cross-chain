@@ -13,56 +13,56 @@ import {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers"
-import { FunctionFragment, Result } from "@ethersproject/abi"
-import { Listener, Provider } from "@ethersproject/providers"
-import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common"
+} from "ethers";
+import { FunctionFragment, Result } from "@ethersproject/abi";
+import { Listener, Provider } from "@ethersproject/providers";
+import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export declare namespace Router {
-  export type RouteStruct = { from: string; to: string; stable: boolean }
+  export type RouteStruct = { from: string; to: string; stable: boolean };
 
   export type RouteStructOutput = [string, string, boolean] & {
-    from: string
-    to: string
-    stable: boolean
-  }
+    from: string;
+    to: string;
+    stable: boolean;
+  };
 }
 
 export interface KavaRouterInterface extends utils.Interface {
-  contractName: "KavaRouter"
+  contractName: "KavaRouter";
   functions: {
-    "UNSAFE_swapExactTokensForTokens(uint256[],(address,address,bool)[],address,uint256)": FunctionFragment
-    "addLiquidity(address,address,bool,uint256,uint256,uint256,uint256,address,uint256)": FunctionFragment
-    "addLiquidityETH(address,bool,uint256,uint256,uint256,address,uint256)": FunctionFragment
-    "factory()": FunctionFragment
-    "getAmountOut(uint256,address,address)": FunctionFragment
-    "getAmountsOut(uint256,(address,address,bool)[])": FunctionFragment
-    "getReserves(address,address,bool)": FunctionFragment
-    "isPair(address)": FunctionFragment
-    "pairFor(address,address,bool)": FunctionFragment
-    "quoteAddLiquidity(address,address,bool,uint256,uint256)": FunctionFragment
-    "quoteRemoveLiquidity(address,address,bool,uint256)": FunctionFragment
-    "removeLiquidity(address,address,bool,uint256,uint256,uint256,address,uint256)": FunctionFragment
-    "removeLiquidityETH(address,bool,uint256,uint256,uint256,address,uint256)": FunctionFragment
-    "removeLiquidityETHSupportingFeeOnTransferTokens(address,bool,uint256,uint256,uint256,address,uint256)": FunctionFragment
-    "removeLiquidityETHWithPermit(address,bool,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment
-    "removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(address,bool,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment
-    "removeLiquidityWithPermit(address,address,bool,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment
-    "sortTokens(address,address)": FunctionFragment
-    "swapExactETHForTokens(uint256,(address,address,bool)[],address,uint256)": FunctionFragment
-    "swapExactETHForTokensSupportingFeeOnTransferTokens(uint256,(address,address,bool)[],address,uint256)": FunctionFragment
-    "swapExactTokensForETH(uint256,uint256,(address,address,bool)[],address,uint256)": FunctionFragment
-    "swapExactTokensForETHSupportingFeeOnTransferTokens(uint256,uint256,(address,address,bool)[],address,uint256)": FunctionFragment
-    "swapExactTokensForTokens(uint256,uint256,(address,address,bool)[],address,uint256)": FunctionFragment
-    "swapExactTokensForTokensSimple(uint256,uint256,address,address,bool,address,uint256)": FunctionFragment
-    "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,(address,address,bool)[],address,uint256)": FunctionFragment
-    "weth()": FunctionFragment
-  }
+    "UNSAFE_swapExactTokensForTokens(uint256[],(address,address,bool)[],address,uint256)": FunctionFragment;
+    "addLiquidity(address,address,bool,uint256,uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "addLiquidityETH(address,bool,uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "factory()": FunctionFragment;
+    "getAmountOut(uint256,address,address)": FunctionFragment;
+    "getAmountsOut(uint256,(address,address,bool)[])": FunctionFragment;
+    "getReserves(address,address,bool)": FunctionFragment;
+    "isPair(address)": FunctionFragment;
+    "pairFor(address,address,bool)": FunctionFragment;
+    "quoteAddLiquidity(address,address,bool,uint256,uint256)": FunctionFragment;
+    "quoteRemoveLiquidity(address,address,bool,uint256)": FunctionFragment;
+    "removeLiquidity(address,address,bool,uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "removeLiquidityETH(address,bool,uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "removeLiquidityETHSupportingFeeOnTransferTokens(address,bool,uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "removeLiquidityETHWithPermit(address,bool,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
+    "removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(address,bool,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
+    "removeLiquidityWithPermit(address,address,bool,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
+    "sortTokens(address,address)": FunctionFragment;
+    "swapExactETHForTokens(uint256,(address,address,bool)[],address,uint256)": FunctionFragment;
+    "swapExactETHForTokensSupportingFeeOnTransferTokens(uint256,(address,address,bool)[],address,uint256)": FunctionFragment;
+    "swapExactTokensForETH(uint256,uint256,(address,address,bool)[],address,uint256)": FunctionFragment;
+    "swapExactTokensForETHSupportingFeeOnTransferTokens(uint256,uint256,(address,address,bool)[],address,uint256)": FunctionFragment;
+    "swapExactTokensForTokens(uint256,uint256,(address,address,bool)[],address,uint256)": FunctionFragment;
+    "swapExactTokensForTokensSimple(uint256,uint256,address,address,bool,address,uint256)": FunctionFragment;
+    "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,(address,address,bool)[],address,uint256)": FunctionFragment;
+    "weth()": FunctionFragment;
+  };
 
   encodeFunctionData(
     functionFragment: "UNSAFE_swapExactTokensForTokens",
     values: [BigNumberish[], Router.RouteStruct[], string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "addLiquidity",
     values: [
@@ -76,7 +76,7 @@ export interface KavaRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "addLiquidityETH",
     values: [
@@ -88,33 +88,33 @@ export interface KavaRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
-  encodeFunctionData(functionFragment: "factory", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "factory", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getAmountOut",
     values: [BigNumberish, string, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "getAmountsOut",
     values: [BigNumberish, Router.RouteStruct[]]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "getReserves",
     values: [string, string, boolean]
-  ): string
-  encodeFunctionData(functionFragment: "isPair", values: [string]): string
+  ): string;
+  encodeFunctionData(functionFragment: "isPair", values: [string]): string;
   encodeFunctionData(
     functionFragment: "pairFor",
     values: [string, string, boolean]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "quoteAddLiquidity",
     values: [string, string, boolean, BigNumberish, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "quoteRemoveLiquidity",
     values: [string, string, boolean, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidity",
     values: [
@@ -127,7 +127,7 @@ export interface KavaRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidityETH",
     values: [
@@ -139,7 +139,7 @@ export interface KavaRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidityETHSupportingFeeOnTransferTokens",
     values: [
@@ -151,7 +151,7 @@ export interface KavaRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidityETHWithPermit",
     values: [
@@ -167,7 +167,7 @@ export interface KavaRouterInterface extends utils.Interface {
       BytesLike,
       BytesLike
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidityETHWithPermitSupportingFeeOnTransferTokens",
     values: [
@@ -183,7 +183,7 @@ export interface KavaRouterInterface extends utils.Interface {
       BytesLike,
       BytesLike
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidityWithPermit",
     values: [
@@ -200,19 +200,19 @@ export interface KavaRouterInterface extends utils.Interface {
       BytesLike,
       BytesLike
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "sortTokens",
     values: [string, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactETHForTokens",
     values: [BigNumberish, Router.RouteStruct[], string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactETHForTokensSupportingFeeOnTransferTokens",
     values: [BigNumberish, Router.RouteStruct[], string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactTokensForETH",
     values: [
@@ -222,7 +222,7 @@ export interface KavaRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactTokensForETHSupportingFeeOnTransferTokens",
     values: [
@@ -232,7 +232,7 @@ export interface KavaRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactTokensForTokens",
     values: [
@@ -242,7 +242,7 @@ export interface KavaRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactTokensForTokensSimple",
     values: [
@@ -254,7 +254,7 @@ export interface KavaRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactTokensForTokensSupportingFeeOnTransferTokens",
     values: [
@@ -264,125 +264,128 @@ export interface KavaRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
-  encodeFunctionData(functionFragment: "weth", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "weth", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "UNSAFE_swapExactTokensForTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "addLiquidity",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "addLiquidityETH",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getAmountOut",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getAmountsOut",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "getReserves", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "isPair", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "pairFor", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getReserves",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "isPair", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "pairFor", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "quoteAddLiquidity",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "quoteRemoveLiquidity",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidity",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidityETH",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidityETHSupportingFeeOnTransferTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidityETHWithPermit",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidityETHWithPermitSupportingFeeOnTransferTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidityWithPermit",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "sortTokens", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "sortTokens", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "swapExactETHForTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactETHForTokensSupportingFeeOnTransferTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactTokensForETH",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactTokensForETHSupportingFeeOnTransferTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactTokensForTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactTokensForTokensSimple",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactTokensForTokensSupportingFeeOnTransferTokens",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "weth", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "weth", data: BytesLike): Result;
 
-  events: {}
+  events: {};
 }
 
 export interface KavaRouter extends BaseContract {
-  contractName: "KavaRouter"
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  contractName: "KavaRouter";
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: KavaRouterInterface
+  interface: KavaRouterInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     UNSAFE_swapExactTokensForTokens(
@@ -391,7 +394,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     addLiquidity(
       tokenA: string,
@@ -404,7 +407,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     addLiquidityETH(
       token: string,
@@ -415,22 +418,22 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    factory(overrides?: CallOverrides): Promise<[string]>
+    factory(overrides?: CallOverrides): Promise<[string]>;
 
     getAmountOut(
       amountIn: BigNumberish,
       tokenIn: string,
       tokenOut: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, boolean] & { amount: BigNumber; stable: boolean }>
+    ): Promise<[BigNumber, boolean] & { amount: BigNumber; stable: boolean }>;
 
     getAmountsOut(
       amountIn: BigNumberish,
       routes: Router.RouteStruct[],
       overrides?: CallOverrides
-    ): Promise<[BigNumber[]] & { amounts: BigNumber[] }>
+    ): Promise<[BigNumber[]] & { amounts: BigNumber[] }>;
 
     getReserves(
       tokenA: string,
@@ -439,16 +442,16 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { reserveA: BigNumber; reserveB: BigNumber }
-    >
+    >;
 
-    isPair(pair: string, overrides?: CallOverrides): Promise<[boolean]>
+    isPair(pair: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     pairFor(
       tokenA: string,
       tokenB: string,
       stable: boolean,
       overrides?: CallOverrides
-    ): Promise<[string] & { pair: string }>
+    ): Promise<[string] & { pair: string }>;
 
     quoteAddLiquidity(
       tokenA: string,
@@ -459,11 +462,11 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
-        amountA: BigNumber
-        amountB: BigNumber
-        liquidity: BigNumber
+        amountA: BigNumber;
+        amountB: BigNumber;
+        liquidity: BigNumber;
       }
-    >
+    >;
 
     quoteRemoveLiquidity(
       tokenA: string,
@@ -473,7 +476,7 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountA: BigNumber; amountB: BigNumber }
-    >
+    >;
 
     removeLiquidity(
       tokenA: string,
@@ -485,7 +488,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     removeLiquidityETH(
       token: string,
@@ -496,7 +499,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     removeLiquidityETHSupportingFeeOnTransferTokens(
       token: string,
@@ -507,7 +510,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     removeLiquidityETHWithPermit(
       token: string,
@@ -522,7 +525,7 @@ export interface KavaRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
       token: string,
@@ -537,7 +540,7 @@ export interface KavaRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     removeLiquidityWithPermit(
       tokenA: string,
@@ -553,13 +556,13 @@ export interface KavaRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     sortTokens(
       tokenA: string,
       tokenB: string,
       overrides?: CallOverrides
-    ): Promise<[string, string] & { token0: string; token1: string }>
+    ): Promise<[string, string] & { token0: string; token1: string }>;
 
     swapExactETHForTokens(
       amountOutMin: BigNumberish,
@@ -567,7 +570,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactETHForTokensSupportingFeeOnTransferTokens(
       amountOutMin: BigNumberish,
@@ -575,7 +578,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactTokensForETH(
       amountIn: BigNumberish,
@@ -584,7 +587,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactTokensForETHSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -593,7 +596,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactTokensForTokens(
       amountIn: BigNumberish,
@@ -602,7 +605,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactTokensForTokensSimple(
       amountIn: BigNumberish,
@@ -613,7 +616,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactTokensForTokensSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -622,10 +625,10 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    weth(overrides?: CallOverrides): Promise<[string]>
-  }
+    weth(overrides?: CallOverrides): Promise<[string]>;
+  };
 
   UNSAFE_swapExactTokensForTokens(
     amounts: BigNumberish[],
@@ -633,7 +636,7 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   addLiquidity(
     tokenA: string,
@@ -646,7 +649,7 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   addLiquidityETH(
     token: string,
@@ -657,22 +660,22 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  factory(overrides?: CallOverrides): Promise<string>
+  factory(overrides?: CallOverrides): Promise<string>;
 
   getAmountOut(
     amountIn: BigNumberish,
     tokenIn: string,
     tokenOut: string,
     overrides?: CallOverrides
-  ): Promise<[BigNumber, boolean] & { amount: BigNumber; stable: boolean }>
+  ): Promise<[BigNumber, boolean] & { amount: BigNumber; stable: boolean }>;
 
   getAmountsOut(
     amountIn: BigNumberish,
     routes: Router.RouteStruct[],
     overrides?: CallOverrides
-  ): Promise<BigNumber[]>
+  ): Promise<BigNumber[]>;
 
   getReserves(
     tokenA: string,
@@ -681,16 +684,16 @@ export interface KavaRouter extends BaseContract {
     overrides?: CallOverrides
   ): Promise<
     [BigNumber, BigNumber] & { reserveA: BigNumber; reserveB: BigNumber }
-  >
+  >;
 
-  isPair(pair: string, overrides?: CallOverrides): Promise<boolean>
+  isPair(pair: string, overrides?: CallOverrides): Promise<boolean>;
 
   pairFor(
     tokenA: string,
     tokenB: string,
     stable: boolean,
     overrides?: CallOverrides
-  ): Promise<string>
+  ): Promise<string>;
 
   quoteAddLiquidity(
     tokenA: string,
@@ -701,11 +704,11 @@ export interface KavaRouter extends BaseContract {
     overrides?: CallOverrides
   ): Promise<
     [BigNumber, BigNumber, BigNumber] & {
-      amountA: BigNumber
-      amountB: BigNumber
-      liquidity: BigNumber
+      amountA: BigNumber;
+      amountB: BigNumber;
+      liquidity: BigNumber;
     }
-  >
+  >;
 
   quoteRemoveLiquidity(
     tokenA: string,
@@ -715,7 +718,7 @@ export interface KavaRouter extends BaseContract {
     overrides?: CallOverrides
   ): Promise<
     [BigNumber, BigNumber] & { amountA: BigNumber; amountB: BigNumber }
-  >
+  >;
 
   removeLiquidity(
     tokenA: string,
@@ -727,7 +730,7 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   removeLiquidityETH(
     token: string,
@@ -738,7 +741,7 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   removeLiquidityETHSupportingFeeOnTransferTokens(
     token: string,
@@ -749,7 +752,7 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   removeLiquidityETHWithPermit(
     token: string,
@@ -764,7 +767,7 @@ export interface KavaRouter extends BaseContract {
     r: BytesLike,
     s: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
     token: string,
@@ -779,7 +782,7 @@ export interface KavaRouter extends BaseContract {
     r: BytesLike,
     s: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   removeLiquidityWithPermit(
     tokenA: string,
@@ -795,13 +798,13 @@ export interface KavaRouter extends BaseContract {
     r: BytesLike,
     s: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   sortTokens(
     tokenA: string,
     tokenB: string,
     overrides?: CallOverrides
-  ): Promise<[string, string] & { token0: string; token1: string }>
+  ): Promise<[string, string] & { token0: string; token1: string }>;
 
   swapExactETHForTokens(
     amountOutMin: BigNumberish,
@@ -809,7 +812,7 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactETHForTokensSupportingFeeOnTransferTokens(
     amountOutMin: BigNumberish,
@@ -817,7 +820,7 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactTokensForETH(
     amountIn: BigNumberish,
@@ -826,7 +829,7 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactTokensForETHSupportingFeeOnTransferTokens(
     amountIn: BigNumberish,
@@ -835,7 +838,7 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactTokensForTokens(
     amountIn: BigNumberish,
@@ -844,7 +847,7 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactTokensForTokensSimple(
     amountIn: BigNumberish,
@@ -855,7 +858,7 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactTokensForTokensSupportingFeeOnTransferTokens(
     amountIn: BigNumberish,
@@ -864,9 +867,9 @@ export interface KavaRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  weth(overrides?: CallOverrides): Promise<string>
+  weth(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
     UNSAFE_swapExactTokensForTokens(
@@ -875,7 +878,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     addLiquidity(
       tokenA: string,
@@ -890,11 +893,11 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
-        amountA: BigNumber
-        amountB: BigNumber
-        liquidity: BigNumber
+        amountA: BigNumber;
+        amountB: BigNumber;
+        liquidity: BigNumber;
       }
-    >
+    >;
 
     addLiquidityETH(
       token: string,
@@ -907,26 +910,26 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
-        amountToken: BigNumber
-        amountETH: BigNumber
-        liquidity: BigNumber
+        amountToken: BigNumber;
+        amountETH: BigNumber;
+        liquidity: BigNumber;
       }
-    >
+    >;
 
-    factory(overrides?: CallOverrides): Promise<string>
+    factory(overrides?: CallOverrides): Promise<string>;
 
     getAmountOut(
       amountIn: BigNumberish,
       tokenIn: string,
       tokenOut: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber, boolean] & { amount: BigNumber; stable: boolean }>
+    ): Promise<[BigNumber, boolean] & { amount: BigNumber; stable: boolean }>;
 
     getAmountsOut(
       amountIn: BigNumberish,
       routes: Router.RouteStruct[],
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     getReserves(
       tokenA: string,
@@ -935,16 +938,16 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { reserveA: BigNumber; reserveB: BigNumber }
-    >
+    >;
 
-    isPair(pair: string, overrides?: CallOverrides): Promise<boolean>
+    isPair(pair: string, overrides?: CallOverrides): Promise<boolean>;
 
     pairFor(
       tokenA: string,
       tokenB: string,
       stable: boolean,
       overrides?: CallOverrides
-    ): Promise<string>
+    ): Promise<string>;
 
     quoteAddLiquidity(
       tokenA: string,
@@ -955,11 +958,11 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
-        amountA: BigNumber
-        amountB: BigNumber
-        liquidity: BigNumber
+        amountA: BigNumber;
+        amountB: BigNumber;
+        liquidity: BigNumber;
       }
-    >
+    >;
 
     quoteRemoveLiquidity(
       tokenA: string,
@@ -969,7 +972,7 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountA: BigNumber; amountB: BigNumber }
-    >
+    >;
 
     removeLiquidity(
       tokenA: string,
@@ -983,7 +986,7 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountA: BigNumber; amountB: BigNumber }
-    >
+    >;
 
     removeLiquidityETH(
       token: string,
@@ -996,7 +999,7 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountToken: BigNumber; amountETH: BigNumber }
-    >
+    >;
 
     removeLiquidityETHSupportingFeeOnTransferTokens(
       token: string,
@@ -1009,7 +1012,7 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountToken: BigNumber; amountETH: BigNumber }
-    >
+    >;
 
     removeLiquidityETHWithPermit(
       token: string,
@@ -1026,7 +1029,7 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountToken: BigNumber; amountETH: BigNumber }
-    >
+    >;
 
     removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
       token: string,
@@ -1043,7 +1046,7 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountToken: BigNumber; amountETH: BigNumber }
-    >
+    >;
 
     removeLiquidityWithPermit(
       tokenA: string,
@@ -1061,13 +1064,13 @@ export interface KavaRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountA: BigNumber; amountB: BigNumber }
-    >
+    >;
 
     sortTokens(
       tokenA: string,
       tokenB: string,
       overrides?: CallOverrides
-    ): Promise<[string, string] & { token0: string; token1: string }>
+    ): Promise<[string, string] & { token0: string; token1: string }>;
 
     swapExactETHForTokens(
       amountOutMin: BigNumberish,
@@ -1075,7 +1078,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     swapExactETHForTokensSupportingFeeOnTransferTokens(
       amountOutMin: BigNumberish,
@@ -1083,7 +1086,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     swapExactTokensForETH(
       amountIn: BigNumberish,
@@ -1092,7 +1095,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     swapExactTokensForETHSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -1101,7 +1104,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     swapExactTokensForTokens(
       amountIn: BigNumberish,
@@ -1110,7 +1113,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     swapExactTokensForTokensSimple(
       amountIn: BigNumberish,
@@ -1121,7 +1124,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     swapExactTokensForTokensSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -1130,12 +1133,12 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
-    weth(overrides?: CallOverrides): Promise<string>
-  }
+    weth(overrides?: CallOverrides): Promise<string>;
+  };
 
-  filters: {}
+  filters: {};
 
   estimateGas: {
     UNSAFE_swapExactTokensForTokens(
@@ -1144,7 +1147,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     addLiquidity(
       tokenA: string,
@@ -1157,7 +1160,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     addLiquidityETH(
       token: string,
@@ -1168,38 +1171,38 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    factory(overrides?: CallOverrides): Promise<BigNumber>
+    factory(overrides?: CallOverrides): Promise<BigNumber>;
 
     getAmountOut(
       amountIn: BigNumberish,
       tokenIn: string,
       tokenOut: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getAmountsOut(
       amountIn: BigNumberish,
       routes: Router.RouteStruct[],
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getReserves(
       tokenA: string,
       tokenB: string,
       stable: boolean,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    isPair(pair: string, overrides?: CallOverrides): Promise<BigNumber>
+    isPair(pair: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     pairFor(
       tokenA: string,
       tokenB: string,
       stable: boolean,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     quoteAddLiquidity(
       tokenA: string,
@@ -1208,7 +1211,7 @@ export interface KavaRouter extends BaseContract {
       amountADesired: BigNumberish,
       amountBDesired: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     quoteRemoveLiquidity(
       tokenA: string,
@@ -1216,7 +1219,7 @@ export interface KavaRouter extends BaseContract {
       stable: boolean,
       liquidity: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidity(
       tokenA: string,
@@ -1228,7 +1231,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityETH(
       token: string,
@@ -1239,7 +1242,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityETHSupportingFeeOnTransferTokens(
       token: string,
@@ -1250,7 +1253,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityETHWithPermit(
       token: string,
@@ -1265,7 +1268,7 @@ export interface KavaRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
       token: string,
@@ -1280,7 +1283,7 @@ export interface KavaRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityWithPermit(
       tokenA: string,
@@ -1296,13 +1299,13 @@ export interface KavaRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     sortTokens(
       tokenA: string,
       tokenB: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactETHForTokens(
       amountOutMin: BigNumberish,
@@ -1310,7 +1313,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactETHForTokensSupportingFeeOnTransferTokens(
       amountOutMin: BigNumberish,
@@ -1318,7 +1321,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactTokensForETH(
       amountIn: BigNumberish,
@@ -1327,7 +1330,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactTokensForETHSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -1336,7 +1339,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactTokensForTokens(
       amountIn: BigNumberish,
@@ -1345,7 +1348,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactTokensForTokensSimple(
       amountIn: BigNumberish,
@@ -1356,7 +1359,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactTokensForTokensSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -1365,10 +1368,10 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    weth(overrides?: CallOverrides): Promise<BigNumber>
-  }
+    weth(overrides?: CallOverrides): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     UNSAFE_swapExactTokensForTokens(
@@ -1377,7 +1380,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     addLiquidity(
       tokenA: string,
@@ -1390,7 +1393,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     addLiquidityETH(
       token: string,
@@ -1401,41 +1404,41 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    factory(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    factory(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getAmountOut(
       amountIn: BigNumberish,
       tokenIn: string,
       tokenOut: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getAmountsOut(
       amountIn: BigNumberish,
       routes: Router.RouteStruct[],
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getReserves(
       tokenA: string,
       tokenB: string,
       stable: boolean,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     isPair(
       pair: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     pairFor(
       tokenA: string,
       tokenB: string,
       stable: boolean,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     quoteAddLiquidity(
       tokenA: string,
@@ -1444,7 +1447,7 @@ export interface KavaRouter extends BaseContract {
       amountADesired: BigNumberish,
       amountBDesired: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     quoteRemoveLiquidity(
       tokenA: string,
@@ -1452,7 +1455,7 @@ export interface KavaRouter extends BaseContract {
       stable: boolean,
       liquidity: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidity(
       tokenA: string,
@@ -1464,7 +1467,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidityETH(
       token: string,
@@ -1475,7 +1478,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidityETHSupportingFeeOnTransferTokens(
       token: string,
@@ -1486,7 +1489,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidityETHWithPermit(
       token: string,
@@ -1501,7 +1504,7 @@ export interface KavaRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
       token: string,
@@ -1516,7 +1519,7 @@ export interface KavaRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidityWithPermit(
       tokenA: string,
@@ -1532,13 +1535,13 @@ export interface KavaRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     sortTokens(
       tokenA: string,
       tokenB: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactETHForTokens(
       amountOutMin: BigNumberish,
@@ -1546,7 +1549,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactETHForTokensSupportingFeeOnTransferTokens(
       amountOutMin: BigNumberish,
@@ -1554,7 +1557,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactTokensForETH(
       amountIn: BigNumberish,
@@ -1563,7 +1566,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactTokensForETHSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -1572,7 +1575,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactTokensForTokens(
       amountIn: BigNumberish,
@@ -1581,7 +1584,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactTokensForTokensSimple(
       amountIn: BigNumberish,
@@ -1592,7 +1595,7 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactTokensForTokensSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -1601,8 +1604,8 @@ export interface KavaRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    weth(overrides?: CallOverrides): Promise<PopulatedTransaction>
-  }
+    weth(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+  };
 }

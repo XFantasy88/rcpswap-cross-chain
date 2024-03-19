@@ -6,14 +6,15 @@ export enum ErrorCode {
   "AMOUNT_LESS_THAN_FEE",
   "NO_TRANSIT_TOKEN",
   "NO_TRANSIT_POOL",
+  "MIN_THORCHAIN_AMOUNT_IN",
 }
 
 export class Error {
-  public code: ErrorCode
-  public message?: string
+  public code: ErrorCode;
+  public message?: string;
 
   public constructor(message?: string, code?: ErrorCode) {
-    this.code = code || ErrorCode.DEFAULT
-    this.message = message
+    this.code = code || ErrorCode.DEFAULT;
+    this.message = message;
   }
 }

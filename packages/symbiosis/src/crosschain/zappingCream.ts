@@ -2,60 +2,60 @@ import {
   BaseSwapping,
   CrosschainSwapExactInResult,
   SwapExactInParams,
-} from "./baseSwapping"
-import { wrappedToken } from "../entities"
+} from "./baseSwapping";
+import { wrappedToken } from "../entities";
 import {
   CreamCErc20__factory,
   CreamComptroller__factory,
   Multicall,
   MulticallRouter,
-} from "./contracts"
-import { getMulticall } from "./multicall"
-import { ChainId } from "../constants"
+} from "./contracts";
+import { getMulticall } from "./multicall";
+import { ChainId } from "../constants";
 
 type Market = {
-  market: string
-  underlying: string
-  paused: boolean
-}
+  market: string;
+  underlying: string;
+  paused: boolean;
+};
 
 export class ZappingCream extends BaseSwapping {
-  protected multicallRouter!: MulticallRouter
-  protected userAddress!: string
+  protected multicallRouter!: MulticallRouter;
+  protected userAddress!: string;
 
-  private creamPoolAddress!: string
+  private creamPoolAddress!: string;
 
   public async getAllMarkets(chainId: ChainId): Promise<Market[]> {
-    const comptroller = this.symbiosis.creamComptroller(chainId)
-    const multicall = await getMulticall(comptroller.provider)
-    const markets = await comptroller.getAllMarkets()
+    const comptroller = this.symbiosis.creamComptroller(chainId);
+    const multicall = await getMulticall(comptroller.provider);
+    const markets = await comptroller.getAllMarkets();
     const marketsWithUnderlying = await this.reduceUnderlying(
       multicall,
       markets
-    )
+    );
     return this.reducePaused(
       multicall,
       comptroller.address,
       marketsWithUnderlying
-    )
+    );
   }
 
   private async reduceUnderlying(
     multicall: Multicall,
     markets: string[]
   ): Promise<Market[]> {
-    const creamCErc20Interface = CreamCErc20__factory.createInterface()
+    const creamCErc20Interface = CreamCErc20__factory.createInterface();
     const calls = markets.map((market) => {
       return {
         target: market,
         callData: creamCErc20Interface.encodeFunctionData("underlying"),
-      }
-    })
+      };
+    });
 
-    const aggregated = await multicall.callStatic.tryAggregate(false, calls)
+    const aggregated = await multicall.callStatic.tryAggregate(false, calls);
     return aggregated
       .map(([success, returnData], i): Market | undefined => {
-        if (!success || returnData === "0x") return
+        if (!success || returnData === "0x") return;
         return {
           market: markets[i],
           underlying: creamCErc20Interface
@@ -63,9 +63,9 @@ export class ZappingCream extends BaseSwapping {
             .toString()
             .toLowerCase(),
           paused: false,
-        }
+        };
       })
-      .filter((i) => i !== undefined) as Market[]
+      .filter((i) => i !== undefined) as Market[];
   }
 
   private async reducePaused(
@@ -73,7 +73,7 @@ export class ZappingCream extends BaseSwapping {
     target: string,
     markets: Market[]
   ): Promise<Market[]> {
-    const comptrollerInterface = CreamComptroller__factory.createInterface()
+    const comptrollerInterface = CreamComptroller__factory.createInterface();
 
     const calls = markets.map((marketWithUnderlying) => {
       return {
@@ -82,20 +82,20 @@ export class ZappingCream extends BaseSwapping {
           "mintGuardianPaused",
           [marketWithUnderlying.market]
         ),
-      }
-    })
-    const aggregated = await multicall.callStatic.tryAggregate(false, calls)
+      };
+    });
+    const aggregated = await multicall.callStatic.tryAggregate(false, calls);
     return aggregated
       .map(([success, returnData], i): Market | undefined => {
-        if (!success || returnData === "0x") return
+        if (!success || returnData === "0x") return;
         const paused = comptrollerInterface.decodeFunctionResult(
           "mintGuardianPaused",
           returnData
-        )[0]
+        )[0];
 
-        return { ...markets[i], paused }
+        return { ...markets[i], paused };
       })
-      .filter((i) => !!i) as Market[]
+      .filter((i) => !!i) as Market[];
   }
 
   public async exactIn({
@@ -106,30 +106,30 @@ export class ZappingCream extends BaseSwapping {
     slippage,
     deadline,
   }: SwapExactInParams): Promise<CrosschainSwapExactInResult> {
-    const wrappedTokenOut = wrappedToken(tokenOut)
-    const chainIdOut = wrappedTokenOut.chainId
+    const wrappedTokenOut = wrappedToken(tokenOut);
+    const chainIdOut = wrappedTokenOut.chainId;
 
-    this.multicallRouter = this.symbiosis.multicallRouter(chainIdOut)
-    this.userAddress = to
+    this.multicallRouter = this.symbiosis.multicallRouter(chainIdOut);
+    this.userAddress = to;
 
-    const markets = await this.getAllMarkets(chainIdOut)
+    const markets = await this.getAllMarkets(chainIdOut);
 
     const index = markets
       .map((i) => i.underlying)
-      .indexOf(wrappedTokenOut.address.toLowerCase())
+      .indexOf(wrappedTokenOut.address.toLowerCase());
     if (index === -1) {
       throw new Error(
         `Cream: cannot to find underlying token ${wrappedTokenOut.address} on chain ${wrappedTokenOut.chain?.name}`
-      )
+      );
     }
 
     if (markets[index].paused) {
       throw new Error(
         `Cream: market ${markets[index].market} on chain ${wrappedTokenOut.chain?.name} is paused`
-      )
+      );
     }
 
-    this.creamPoolAddress = markets[index].market
+    this.creamPoolAddress = markets[index].market;
 
     return this.doExactIn({
       tokenAmountIn,
@@ -138,77 +138,77 @@ export class ZappingCream extends BaseSwapping {
       to,
       slippage,
       deadline,
-    })
+    });
   }
 
   protected override tradeCTo(): string {
-    return this.multicallRouter.address
+    return this.multicallRouter.address;
   }
 
   protected override finalReceiveSide(): string {
-    return this.multicallRouter.address
+    return this.multicallRouter.address;
   }
 
   protected override finalCalldata(): string | [] {
-    const { callData } = this.buildMulticall()
-    return callData
+    const { callData } = this.buildMulticall();
+    return callData;
   }
 
   protected override finalOffset(): number {
-    return 36
+    return 36;
   }
 
   protected override extraSwapTokens(): string[] {
-    const { supplyAddress } = this.buildMulticall()
-    return [supplyAddress]
+    const { supplyAddress } = this.buildMulticall();
+    return [supplyAddress];
   }
 
   private buildMulticall() {
-    const callDatas = []
-    const receiveSides = []
-    const path = []
-    const offsets = []
+    const callDatas = [];
+    const receiveSides = [];
+    const path = [];
+    const offsets = [];
 
-    let amount
-    let supplyToken
+    let amount;
+    let supplyToken;
 
     if (this.tradeC) {
-      amount = this.tradeC.tokenAmountIn.raw.toString()
-      supplyToken = this.tradeC.amountOut.token
+      amount = this.tradeC.tokenAmountIn.raw.toString();
+      supplyToken = this.tradeC.amountOut.token;
 
-      callDatas.push(this.tradeC.callData)
-      receiveSides.push(this.tradeC.routerAddress)
-      path.push(this.tradeC.tokenAmountIn.token.address)
-      offsets.push(this.tradeC.callDataOffset!)
+      callDatas.push(this.tradeC.callData);
+      receiveSides.push(this.tradeC.routerAddress);
+      path.push(this.tradeC.tokenAmountIn.token.address);
+      offsets.push(this.tradeC.callDataOffset!);
     } else {
-      amount = this.transit.amountOut.raw.toString()
+      amount = this.transit.amountOut.raw.toString();
       if (this.transit.direction === "mint") {
-        supplyToken = this.transit.amountOut.token
+        supplyToken = this.transit.amountOut.token;
       } else {
-        supplyToken = this.transit.feeToken
+        supplyToken = this.transit.feeToken;
       }
     }
 
     const cream = this.symbiosis.creamCErc20ByAddress(
       this.creamPoolAddress,
       supplyToken.chainId
-    )
-    const supplyCalldata = cream.interface.encodeFunctionData("mint", ["0"]) // amount will be patched
+    );
+    const supplyCalldata = cream.interface.encodeFunctionData("mint", ["0"]); // amount will be patched
 
-    callDatas.push(supplyCalldata)
-    receiveSides.push(cream.address)
-    path.push(supplyToken.address)
-    path.push(cream.address)
-    offsets.push(36)
+    callDatas.push(supplyCalldata);
+    receiveSides.push(cream.address);
+    path.push(supplyToken.address);
+    path.push(cream.address);
+    offsets.push(36);
 
     const callData = this.multicallRouter.interface.encodeFunctionData(
       "multicall",
       [amount, callDatas, receiveSides, path, offsets, this.userAddress]
-    )
+    );
 
     return {
       callData,
       supplyAddress: cream.address,
-    }
+    };
   }
 }

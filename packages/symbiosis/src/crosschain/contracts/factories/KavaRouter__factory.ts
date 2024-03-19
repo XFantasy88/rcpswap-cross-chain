@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { KavaRouter, KavaRouterInterface } from "../KavaRouter"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { KavaRouter, KavaRouterInterface } from "../KavaRouter";
 
 const _abi = [
   {
@@ -1257,17 +1257,17 @@ const _abi = [
     type: "receive",
     stateMutability: "payable",
   },
-]
+];
 
 export class KavaRouter__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): KavaRouterInterface {
-    return new utils.Interface(_abi) as KavaRouterInterface
+    return new utils.Interface(_abi) as KavaRouterInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): KavaRouter {
-    return new Contract(address, _abi, signerOrProvider) as KavaRouter
+    return new Contract(address, _abi, signerOrProvider) as KavaRouter;
   }
 }

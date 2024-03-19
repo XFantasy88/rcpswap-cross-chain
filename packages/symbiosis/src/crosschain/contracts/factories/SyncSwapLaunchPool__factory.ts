@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
 import type {
   SyncSwapLaunchPool,
   SyncSwapLaunchPoolInterface,
-} from "../SyncSwapLaunchPool"
+} from "../SyncSwapLaunchPool";
 
 const _abi = [
   {
@@ -1115,17 +1115,17 @@ const _abi = [
     stateMutability: "view",
     type: "function",
   },
-]
+];
 
 export class SyncSwapLaunchPool__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): SyncSwapLaunchPoolInterface {
-    return new utils.Interface(_abi) as SyncSwapLaunchPoolInterface
+    return new utils.Interface(_abi) as SyncSwapLaunchPoolInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): SyncSwapLaunchPool {
-    return new Contract(address, _abi, signerOrProvider) as SyncSwapLaunchPool
+    return new Contract(address, _abi, signerOrProvider) as SyncSwapLaunchPool;
   }
 }

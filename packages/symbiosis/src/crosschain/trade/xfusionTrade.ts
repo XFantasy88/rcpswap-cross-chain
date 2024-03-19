@@ -1,43 +1,43 @@
-import { ChainId, ONE } from "../../constants"
-import { Fraction, Percent, Token, TokenAmount } from "../../entities"
-import { XFUSION_CHAINS } from "../constants"
-import { Router, DataFetcher } from "@rcpswap/router"
-import { XfusionRouter } from "../contracts"
-import { SymbiosisTrade } from "./symbiosisTrade"
-import { Native, Type, Token as RToken } from "rcpswap/currency"
-import { PoolCode } from "@rcpswap/router"
+import { ChainId, ONE } from "../../constants";
+import { Fraction, Percent, Token, TokenAmount } from "../../entities";
+import { XFUSION_CHAINS } from "../constants";
+import { Router, DataFetcher } from "@rcpswap/router";
+import { XfusionRouter } from "../contracts";
+import { SymbiosisTrade } from "./symbiosisTrade";
+import { Native, Type, Token as RToken } from "rcpswap/currency";
+import { PoolCode } from "@rcpswap/router";
 
-import { MultiRoute, RouteStatus } from "@rcpswap/tines"
-import { basisPointsToPercent } from "../utils"
-import { ROUTE_PROCESSOR_3_ADDRESS } from "rcpswap/config"
-import { PublicClient } from "viem"
+import { MultiRoute, RouteStatus } from "@rcpswap/tines";
+import { basisPointsToPercent } from "../utils";
+import { ROUTE_PROCESSOR_3_ADDRESS } from "rcpswap/config";
+import { PublicClient } from "viem";
 
 export class XfusionTrade implements SymbiosisTrade {
   static isAvailable(chainId: ChainId): boolean {
-    return XFUSION_CHAINS.includes(chainId)
+    return XFUSION_CHAINS.includes(chainId);
   }
 
-  tradeType = "dex" as const
+  tradeType = "dex" as const;
 
-  public tokenAmountIn: TokenAmount
+  public tokenAmountIn: TokenAmount;
 
-  public trade!: MultiRoute
-  public route!: Token[]
-  public amountOut!: TokenAmount
-  public amountOutMin!: TokenAmount
-  public callData!: string
-  public priceImpact!: Percent
-  public routerAddress!: string
-  public callDataOffset?: number
-  public maxDepth?: number
-  private poolsCodeMap?: Map<string, PoolCode>
+  public trade!: MultiRoute;
+  public route!: Token[];
+  public amountOut!: TokenAmount;
+  public amountOutMin!: TokenAmount;
+  public callData!: string;
+  public priceImpact!: Percent;
+  public routerAddress!: string;
+  public callDataOffset?: number;
+  public maxDepth?: number;
+  private poolsCodeMap?: Map<string, PoolCode>;
 
-  private readonly tokenOut: Token
-  private readonly to: string
-  private readonly slippage: number
-  private readonly inToken: Type
-  private readonly outToken: Type
-  private readonly router: XfusionRouter
+  private readonly tokenOut: Token;
+  private readonly to: string;
+  private readonly slippage: number;
+  private readonly inToken: Type;
+  private readonly outToken: Type;
+  private readonly router: XfusionRouter;
 
   constructor(
     tokenAmountIn: TokenAmount,
@@ -47,32 +47,32 @@ export class XfusionTrade implements SymbiosisTrade {
     router: XfusionRouter,
     maxDepth?: number
   ) {
-    this.tokenAmountIn = tokenAmountIn
-    this.tokenOut = tokenOut
-    this.to = to
-    this.slippage = slippage
-    this.router = router
-    this.routerAddress = router.address
-    this.maxDepth = maxDepth
+    this.tokenAmountIn = tokenAmountIn;
+    this.tokenOut = tokenOut;
+    this.to = to;
+    this.slippage = slippage;
+    this.router = router;
+    this.routerAddress = router.address;
+    this.maxDepth = maxDepth;
 
-    this.inToken = this.getToken(this.tokenAmountIn.token)
-    this.outToken = this.getToken(this.tokenOut)
+    this.inToken = this.getToken(this.tokenAmountIn.token);
+    this.outToken = this.getToken(this.tokenOut);
   }
 
   public async init() {
-    const dataFetcher = DataFetcher.onChain(ChainId.ARBITRUM_NOVA)
-    dataFetcher.startDataFetching()
-    await dataFetcher.fetchPoolsForToken(this.inToken, this.outToken)
-    dataFetcher.stopDataFetching()
+    const dataFetcher = DataFetcher.onChain(ChainId.ARBITRUM_NOVA);
+    dataFetcher.startDataFetching();
+    await dataFetcher.fetchPoolsForToken(this.inToken, this.outToken);
+    dataFetcher.stopDataFetching();
 
-    const gasPrice = await this.getGasPrice(dataFetcher.web3Client)
+    const gasPrice = await this.getGasPrice(dataFetcher.web3Client);
 
     const poolsCodeMap = await dataFetcher.getCurrentPoolCodeMap(
       this.inToken,
       this.outToken
-    )
+    );
 
-    this.poolsCodeMap = poolsCodeMap
+    this.poolsCodeMap = poolsCodeMap;
 
     const bestRoute = Router.findBestRoute(
       poolsCodeMap,
@@ -82,19 +82,19 @@ export class XfusionTrade implements SymbiosisTrade {
       this.outToken,
       Number(gasPrice.toString()),
       this.maxDepth ?? 100
-    )
+    );
 
     if (bestRoute.status === RouteStatus.NoWay) {
-      throw new Error("Cannot create trade")
+      throw new Error("Cannot create trade");
     }
 
-    this.trade = bestRoute
+    this.trade = bestRoute;
 
     this.priceImpact = new Percent(
       Math.floor((bestRoute.priceImpact ?? 0) * 10000).toString(),
       "10000"
-    )
-    this.route = [this.tokenAmountIn.token, this.tokenOut]
+    );
+    this.route = [this.tokenAmountIn.token, this.tokenOut];
 
     const amountOutMin = new TokenAmount(
       this.tokenOut,
@@ -102,49 +102,49 @@ export class XfusionTrade implements SymbiosisTrade {
         .add(basisPointsToPercent(this.slippage))
         .invert()
         .multiply(bestRoute.amountOutBI.toString()).quotient
-    )
+    );
 
     this.amountOut = new TokenAmount(
       this.tokenOut,
       BigInt(bestRoute.amountOutBI.toString())
-    )
+    );
 
-    this.amountOutMin = amountOutMin
+    this.amountOutMin = amountOutMin;
 
-    const { data, offset } = this.buildCallData()
+    const { data, offset } = this.buildCallData();
 
-    this.callData = data
-    this.callDataOffset = offset
+    this.callData = data;
+    this.callDataOffset = offset;
 
-    return this
+    return this;
   }
 
   private async getGasPrice(web3Client: PublicClient): Promise<bigint> {
     try {
-      return await web3Client.getGasPrice()
+      return await web3Client.getGasPrice();
     } catch (err) {
-      return 10000000n
+      return 10000000n;
     }
   }
 
   private getToken(token: Token): Type {
-    this.slippage
-    this.to
-    this.inToken
-    this.outToken
-    this.router
-    if (token.isNative) return Native.onChain(ChainId.ARBITRUM_NOVA)
+    this.slippage;
+    this.to;
+    this.inToken;
+    this.outToken;
+    this.router;
+    if (token.isNative) return Native.onChain(ChainId.ARBITRUM_NOVA);
     return new RToken({
       address: token.address,
       chainId: ChainId.ARBITRUM_NOVA,
       decimals: token.decimals,
       name: token.name,
       symbol: token.symbol,
-    })
+    });
   }
 
   private buildCallData(): { data: string; offset: number } {
-    if (!this.poolsCodeMap) return { data: "0x00", offset: 0 }
+    if (!this.poolsCodeMap) return { data: "0x00", offset: 0 };
     const args = Router.routeProcessor2Params(
       this.poolsCodeMap,
       this.trade,
@@ -152,7 +152,7 @@ export class XfusionTrade implements SymbiosisTrade {
       this.outToken,
       this.to as `0x${string}`,
       ROUTE_PROCESSOR_3_ADDRESS[ChainId.ARBITRUM_NOVA]
-    )
+    );
 
     return {
       data: this.router.interface.encodeFunctionData("processRoute", [
@@ -165,6 +165,6 @@ export class XfusionTrade implements SymbiosisTrade {
         args.routeCode,
       ]),
       offset: 68,
-    }
+    };
   }
 }

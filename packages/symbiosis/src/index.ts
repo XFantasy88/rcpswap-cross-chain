@@ -1,5 +1,5 @@
-import JSBI from "jsbi"
-export { JSBI }
+import JSBI from "jsbi";
+export { JSBI };
 
 export {
   type BigintIsh,
@@ -11,10 +11,10 @@ export {
   MINIMUM_LIQUIDITY,
   ZERO,
   type Icons,
-} from "./constants"
+} from "./constants";
 
-export * from "./errors"
-export * from "./entities"
-export * from "./router"
-export * from "./fetcher"
-export * from "./crosschain"
+export * from "./errors";
+export * from "./entities";
+export * from "./router";
+export * from "./fetcher";
+export * from "./crosschain";

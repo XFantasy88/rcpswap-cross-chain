@@ -1,65 +1,66 @@
-import { MaxUint256 } from "@ethersproject/constants"
+import { MaxUint256 } from "@ethersproject/constants";
 import {
   Log,
   TransactionReceipt,
   TransactionRequest,
   TransactionResponse,
-} from "@ethersproject/providers"
-import { BigNumber, Signer } from "ethers"
-import { Token, TokenAmount, wrappedToken } from "../entities"
-import type { Symbiosis } from "./symbiosis"
-import { BridgeDirection } from "./types"
+} from "@ethersproject/providers";
+import { BigNumber, Signer } from "ethers";
+import { Token, TokenAmount, wrappedToken } from "../entities";
+import type { Symbiosis } from "./symbiosis";
+
+import { BridgeDirection } from "./types";
 import {
   getExternalId,
   getInternalId,
   prepareTransactionRequest,
-} from "./utils"
-import { WaitForComplete } from "./waitForComplete"
-import { Error, ErrorCode } from "./error"
-import { Portal__factory, Synthesis__factory } from "./contracts"
-import { CROSS_CHAIN_ID } from "./constants"
+} from "./utils";
+import { WaitForComplete } from "./waitForComplete";
+import { Error, ErrorCode } from "./error";
+import { Portal__factory, Synthesis__factory } from "./contracts";
+import { CROSS_CHAIN_ID } from "./constants";
 
-export type RequestNetworkType = "evm"
+export type RequestNetworkType = "evm" | "tron";
 
 export type WaitForMined = Promise<{
-  receipt: TransactionReceipt
-  waitForComplete: () => Promise<Log>
-}>
+  receipt: TransactionReceipt;
+  waitForComplete: () => Promise<Log>;
+}>;
 
 export type Execute = Promise<{
-  response: TransactionResponse
-  waitForMined: () => WaitForMined
-}>
+  response: TransactionResponse;
+  waitForMined: () => WaitForMined;
+}>;
 
 export type BridgeExactInResult = {
-  fee: TokenAmount
-  tokenAmountOut: TokenAmount
+  fee: TokenAmount;
+  tokenAmountOut: TokenAmount;
 } & {
-  type: "evm"
-  execute: (signer: Signer) => Execute
-  transactionRequest: TransactionRequest
-}
+  type: "evm";
+  execute: (signer: Signer) => Execute;
+  transactionRequest: TransactionRequest;
+};
 
 export type BridgeExactInParams = {
-  tokenAmountIn: TokenAmount
-  tokenOut: Token
-  from: string
-  to: string
-}
+  tokenAmountIn: TokenAmount;
+  tokenOut: Token;
+  from: string;
+  to: string;
+};
 
 export class Bridging {
-  public tokenAmountIn: TokenAmount | undefined
-  public tokenOut: Token | undefined
-  public tokenAmountOut: TokenAmount | undefined
-  public direction!: BridgeDirection
-  public from!: string
-  public to!: string
-  public revertableAddress!: string
+  public tokenAmountIn: TokenAmount | undefined;
+  public tokenOut: Token | undefined;
+  public tokenAmountOut: TokenAmount | undefined;
+  public direction!: BridgeDirection;
+  public from!: string;
+  public to!: string;
+  public revertableAddress!: string;
 
-  private readonly symbiosis: Symbiosis
+  private readonly symbiosis: Symbiosis;
 
   public constructor(symbiosis: Symbiosis) {
-    this.symbiosis = symbiosis
+    this.symbiosis = symbiosis;
   }
 
   public async exactIn({
@@ -68,34 +69,34 @@ export class Bridging {
     tokenOut,
     to,
   }: BridgeExactInParams): Promise<BridgeExactInResult> {
-    this.symbiosis.validateSwapAmounts(tokenAmountIn)
+    this.symbiosis.validateSwapAmounts(tokenAmountIn);
 
-    this.tokenAmountIn = tokenAmountIn
-    this.tokenOut = tokenOut
-    this.from = from
-    this.to = to
-    this.direction = tokenAmountIn.token.isSynthetic ? "burn" : "mint"
+    this.tokenAmountIn = tokenAmountIn;
+    this.tokenOut = tokenOut;
+    this.from = from;
+    this.to = to;
+    this.direction = tokenAmountIn.token.isSynthetic ? "burn" : "mint";
 
-    this.revertableAddress = this.from
+    this.revertableAddress = this.from;
 
-    const fee = await this.getFee()
+    const fee = await this.getFee();
 
     const tokenAmountOut = new TokenAmount(
       this.tokenOut,
       this.tokenAmountIn.raw
-    )
+    );
     if (tokenAmountOut.lessThan(fee)) {
       throw new Error(
         `Amount ${tokenAmountOut.toSignificant()} ${
           tokenAmountOut.token.symbol
         } less than fee ${fee.toSignificant()} ${fee.token.symbol}`,
         ErrorCode.AMOUNT_LESS_THAN_FEE
-      )
+      );
     }
 
-    this.tokenAmountOut = tokenAmountOut.subtract(fee)
+    this.tokenAmountOut = tokenAmountOut.subtract(fee);
 
-    const transactionRequest = this.getEvmTransactionRequest(fee)
+    const transactionRequest = this.getEvmTransactionRequest(fee);
 
     return {
       execute: (signer: Signer) => this.execute(transactionRequest, signer),
@@ -103,19 +104,19 @@ export class Bridging {
       tokenAmountOut: this.tokenAmountOut,
       transactionRequest,
       type: "evm",
-    }
+    };
   }
 
   protected async getFee(): Promise<TokenAmount> {
     if (!this.tokenAmountIn || !this.tokenOut) {
-      throw new Error("Tokens are not set")
+      throw new Error("Tokens are not set");
     }
 
     if (this.direction === "mint") {
-      return await this.getMintFee()
+      return await this.getMintFee();
     }
 
-    return await this.getBurnFee()
+    return await this.getBurnFee();
   }
 
   protected async execute(
@@ -125,46 +126,46 @@ export class Bridging {
     const preparedTransactionRequest = await prepareTransactionRequest(
       transactionRequest,
       signer
-    )
+    );
 
-    const response = await signer.sendTransaction(preparedTransactionRequest)
+    const response = await signer.sendTransaction(preparedTransactionRequest);
 
     return {
       response,
       waitForMined: (confirmations = 1) =>
         this.waitForMined(confirmations, response),
-    }
+    };
   }
 
   protected async waitForMined(
     confirmations: number,
     response: TransactionResponse
   ): WaitForMined {
-    const receipt = await response.wait(confirmations)
+    const receipt = await response.wait(confirmations);
 
     return {
       receipt,
       waitForComplete: () => this.waitForComplete(receipt),
-    }
+    };
   }
 
   protected getEvmTransactionRequest(fee: TokenAmount): TransactionRequest {
     if (!this.tokenAmountIn || !this.tokenOut) {
-      throw new Error("Tokens are not set")
+      throw new Error("Tokens are not set");
     }
 
-    const { chainId } = this.tokenAmountIn.token
+    const { chainId } = this.tokenAmountIn.token;
 
     // burn
     if (this.direction === "burn") {
-      const synthesis = this.symbiosis.synthesis(chainId)
+      const synthesis = this.symbiosis.synthesis(chainId);
 
       const portalAddress = this.symbiosis.chainConfig(
         this.tokenOut.chainId
-      ).portal
+      ).portal;
       const bridgeAddress = this.symbiosis.chainConfig(
         this.tokenOut.chainId
-      ).bridge
+      ).bridge;
 
       return {
         chainId,
@@ -180,10 +181,10 @@ export class Bridging {
           this.tokenOut.chainId,
           this.symbiosis.clientId,
         ]),
-      }
+      };
     }
 
-    const portal = this.symbiosis.portal(chainId)
+    const portal = this.symbiosis.portal(chainId);
 
     if (this.tokenAmountIn.token.isNative) {
       return {
@@ -199,7 +200,7 @@ export class Bridging {
           this.symbiosis.clientId,
         ]),
         value: BigNumber.from(this.tokenAmountIn.raw.toString()),
-      }
+      };
     }
 
     return {
@@ -216,36 +217,36 @@ export class Bridging {
         this.tokenOut.chainId,
         this.symbiosis.clientId,
       ]),
-    }
+    };
   }
 
   private async getMintFee(): Promise<TokenAmount> {
     if (!this.tokenAmountIn || !this.tokenOut) {
-      throw new Error("Tokens are not set")
+      throw new Error("Tokens are not set");
     }
 
-    const chainIdIn = this.tokenAmountIn.token.chainId
-    const chainIdOut = this.tokenOut.chainId
+    const chainIdIn = this.tokenAmountIn.token.chainId;
+    const chainIdOut = this.tokenOut.chainId;
 
-    const portalAddress = this.symbiosis.chainConfig(chainIdIn).portal
-    const synthesisAddress = this.symbiosis.chainConfig(chainIdOut).synthesis
+    const portalAddress = this.symbiosis.chainConfig(chainIdIn).portal;
+    const synthesisAddress = this.symbiosis.chainConfig(chainIdOut).synthesis;
 
-    const synthesisInterface = Synthesis__factory.createInterface()
+    const synthesisInterface = Synthesis__factory.createInterface();
 
     const internalId = getInternalId({
       contractAddress: portalAddress,
       requestCount: MaxUint256,
       chainId: chainIdIn,
-    })
+    });
 
     const externalId = getExternalId({
       internalId,
       contractAddress: synthesisAddress,
       revertableAddress: this.revertableAddress,
       chainId: chainIdOut,
-    })
+    });
 
-    const token = wrappedToken(this.tokenAmountIn.token)
+    const token = wrappedToken(this.tokenAmountIn.token);
 
     const calldata = synthesisInterface.encodeFunctionData(
       "mintSyntheticToken",
@@ -258,43 +259,43 @@ export class Bridging {
         this.tokenAmountIn.raw.toString(), // _amount,
         this.to, // _chain2address
       ]
-    )
+    );
 
-    const fee = await this.symbiosis.getBridgeFee({
+    const { price: fee } = await this.symbiosis.getBridgeFee({
       receiveSide: synthesisAddress,
       calldata,
       chainIdFrom: this.tokenAmountIn.token.chainId,
       chainIdTo: this.tokenOut.chainId,
-    })
+    });
 
-    return new TokenAmount(this.tokenOut, fee.toString())
+    return new TokenAmount(this.tokenOut, fee);
   }
 
   private async getBurnFee(): Promise<TokenAmount> {
     if (!this.tokenAmountIn || !this.tokenOut) {
-      throw new Error("Tokens are not set")
+      throw new Error("Tokens are not set");
     }
 
-    const chainIdIn = this.tokenAmountIn.token.chainId
-    const chainIdOut = this.tokenOut.chainId
+    const chainIdIn = this.tokenAmountIn.token.chainId;
+    const chainIdOut = this.tokenOut.chainId;
 
-    const synthesis = this.symbiosis.synthesis(chainIdIn)
-    const portalAddress = this.symbiosis.chainConfig(chainIdOut).portal
+    const synthesis = this.symbiosis.synthesis(chainIdIn);
+    const portalAddress = this.symbiosis.chainConfig(chainIdOut).portal;
 
     const internalId = getInternalId({
       contractAddress: synthesis.address,
       requestCount: MaxUint256,
       chainId: chainIdIn,
-    })
+    });
 
     const externalId = getExternalId({
       internalId,
       contractAddress: portalAddress,
       revertableAddress: this.revertableAddress,
       chainId: chainIdOut,
-    })
+    });
 
-    const portalInterface = Portal__factory.createInterface()
+    const portalInterface = Portal__factory.createInterface();
     const calldata = portalInterface.encodeFunctionData("unsynthesize", [
       "1", // _stableBridgingFee,
       externalId, // externalID,
@@ -302,21 +303,21 @@ export class Bridging {
       this.tokenOut.address, // rtoken,
       this.tokenAmountIn.raw.toString(), // _amount,
       this.to, // _chain2address
-    ])
+    ]);
 
-    const fee = await this.symbiosis.getBridgeFee({
+    const { price: fee } = await this.symbiosis.getBridgeFee({
       receiveSide: portalAddress,
       calldata,
       chainIdFrom: chainIdIn,
       chainIdTo: chainIdOut,
-    })
+    });
 
-    return new TokenAmount(this.tokenOut, fee.toString())
+    return new TokenAmount(this.tokenOut, fee);
   }
 
   async waitForComplete(receipt: TransactionReceipt): Promise<Log> {
     if (!this.tokenAmountIn || !this.tokenOut) {
-      throw new Error("Tokens are not set")
+      throw new Error("Tokens are not set");
     }
 
     return new WaitForComplete({
@@ -325,6 +326,6 @@ export class Bridging {
       symbiosis: this.symbiosis,
       revertableAddress: this.revertableAddress,
       chainIdIn: this.tokenAmountIn.token.chainId,
-    }).waitForComplete(receipt)
+    }).waitForComplete(receipt);
   }
 }

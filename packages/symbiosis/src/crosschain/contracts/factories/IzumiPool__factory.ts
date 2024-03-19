@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { IzumiPool, IzumiPoolInterface } from "../IzumiPool"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { IzumiPool, IzumiPoolInterface } from "../IzumiPool";
 
 const _abi = [
   {
@@ -1411,17 +1411,17 @@ const _abi = [
     stateMutability: "view",
     type: "function",
   },
-]
+];
 
 export class IzumiPool__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): IzumiPoolInterface {
-    return new utils.Interface(_abi) as IzumiPoolInterface
+    return new utils.Interface(_abi) as IzumiPoolInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): IzumiPool {
-    return new Contract(address, _abi, signerOrProvider) as IzumiPool
+    return new Contract(address, _abi, signerOrProvider) as IzumiPool;
   }
 }

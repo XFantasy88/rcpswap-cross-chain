@@ -13,41 +13,41 @@ import {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers"
-import { FunctionFragment, Result } from "@ethersproject/abi"
-import { Listener, Provider } from "@ethersproject/providers"
-import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common"
+} from "ethers";
+import { FunctionFragment, Result } from "@ethersproject/abi";
+import { Listener, Provider } from "@ethersproject/providers";
+import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface AvaxRouterInterface extends utils.Interface {
-  contractName: "AvaxRouter"
+  contractName: "AvaxRouter";
   functions: {
-    "WAVAX()": FunctionFragment
-    "addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256)": FunctionFragment
-    "addLiquidityAVAX(address,uint256,uint256,uint256,address,uint256)": FunctionFragment
-    "factory()": FunctionFragment
-    "getAmountIn(uint256,uint256,uint256)": FunctionFragment
-    "getAmountOut(uint256,uint256,uint256)": FunctionFragment
-    "getAmountsIn(uint256,address[])": FunctionFragment
-    "getAmountsOut(uint256,address[])": FunctionFragment
-    "quote(uint256,uint256,uint256)": FunctionFragment
-    "removeLiquidity(address,address,uint256,uint256,uint256,address,uint256)": FunctionFragment
-    "removeLiquidityAVAX(address,uint256,uint256,uint256,address,uint256)": FunctionFragment
-    "removeLiquidityAVAXSupportingFeeOnTransferTokens(address,uint256,uint256,uint256,address,uint256)": FunctionFragment
-    "removeLiquidityAVAXWithPermit(address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment
-    "removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens(address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment
-    "removeLiquidityWithPermit(address,address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment
-    "swapAVAXForExactTokens(uint256,address[],address,uint256)": FunctionFragment
-    "swapExactAVAXForTokens(uint256,address[],address,uint256)": FunctionFragment
-    "swapExactAVAXForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256)": FunctionFragment
-    "swapExactTokensForAVAX(uint256,uint256,address[],address,uint256)": FunctionFragment
-    "swapExactTokensForAVAXSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)": FunctionFragment
-    "swapExactTokensForTokens(uint256,uint256,address[],address,uint256)": FunctionFragment
-    "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)": FunctionFragment
-    "swapTokensForExactAVAX(uint256,uint256,address[],address,uint256)": FunctionFragment
-    "swapTokensForExactTokens(uint256,uint256,address[],address,uint256)": FunctionFragment
-  }
+    "WAVAX()": FunctionFragment;
+    "addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "addLiquidityAVAX(address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "factory()": FunctionFragment;
+    "getAmountIn(uint256,uint256,uint256)": FunctionFragment;
+    "getAmountOut(uint256,uint256,uint256)": FunctionFragment;
+    "getAmountsIn(uint256,address[])": FunctionFragment;
+    "getAmountsOut(uint256,address[])": FunctionFragment;
+    "quote(uint256,uint256,uint256)": FunctionFragment;
+    "removeLiquidity(address,address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "removeLiquidityAVAX(address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "removeLiquidityAVAXSupportingFeeOnTransferTokens(address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "removeLiquidityAVAXWithPermit(address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
+    "removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens(address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
+    "removeLiquidityWithPermit(address,address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
+    "swapAVAXForExactTokens(uint256,address[],address,uint256)": FunctionFragment;
+    "swapExactAVAXForTokens(uint256,address[],address,uint256)": FunctionFragment;
+    "swapExactAVAXForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256)": FunctionFragment;
+    "swapExactTokensForAVAX(uint256,uint256,address[],address,uint256)": FunctionFragment;
+    "swapExactTokensForAVAXSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)": FunctionFragment;
+    "swapExactTokensForTokens(uint256,uint256,address[],address,uint256)": FunctionFragment;
+    "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)": FunctionFragment;
+    "swapTokensForExactAVAX(uint256,uint256,address[],address,uint256)": FunctionFragment;
+    "swapTokensForExactTokens(uint256,uint256,address[],address,uint256)": FunctionFragment;
+  };
 
-  encodeFunctionData(functionFragment: "WAVAX", values?: undefined): string
+  encodeFunctionData(functionFragment: "WAVAX", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "addLiquidity",
     values: [
@@ -60,7 +60,7 @@ export interface AvaxRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "addLiquidityAVAX",
     values: [
@@ -71,28 +71,28 @@ export interface AvaxRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
-  encodeFunctionData(functionFragment: "factory", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "factory", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getAmountIn",
     values: [BigNumberish, BigNumberish, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "getAmountOut",
     values: [BigNumberish, BigNumberish, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "getAmountsIn",
     values: [BigNumberish, string[]]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "getAmountsOut",
     values: [BigNumberish, string[]]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "quote",
     values: [BigNumberish, BigNumberish, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidity",
     values: [
@@ -104,7 +104,7 @@ export interface AvaxRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidityAVAX",
     values: [
@@ -115,7 +115,7 @@ export interface AvaxRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidityAVAXSupportingFeeOnTransferTokens",
     values: [
@@ -126,7 +126,7 @@ export interface AvaxRouterInterface extends utils.Interface {
       string,
       BigNumberish
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidityAVAXWithPermit",
     values: [
@@ -141,7 +141,7 @@ export interface AvaxRouterInterface extends utils.Interface {
       BytesLike,
       BytesLike
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens",
     values: [
@@ -156,7 +156,7 @@ export interface AvaxRouterInterface extends utils.Interface {
       BytesLike,
       BytesLike
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "removeLiquidityWithPermit",
     values: [
@@ -172,161 +172,164 @@ export interface AvaxRouterInterface extends utils.Interface {
       BytesLike,
       BytesLike
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapAVAXForExactTokens",
     values: [BigNumberish, string[], string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactAVAXForTokens",
     values: [BigNumberish, string[], string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactAVAXForTokensSupportingFeeOnTransferTokens",
     values: [BigNumberish, string[], string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactTokensForAVAX",
     values: [BigNumberish, BigNumberish, string[], string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactTokensForAVAXSupportingFeeOnTransferTokens",
     values: [BigNumberish, BigNumberish, string[], string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactTokensForTokens",
     values: [BigNumberish, BigNumberish, string[], string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapExactTokensForTokensSupportingFeeOnTransferTokens",
     values: [BigNumberish, BigNumberish, string[], string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapTokensForExactAVAX",
     values: [BigNumberish, BigNumberish, string[], string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "swapTokensForExactTokens",
     values: [BigNumberish, BigNumberish, string[], string, BigNumberish]
-  ): string
+  ): string;
 
-  decodeFunctionResult(functionFragment: "WAVAX", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "WAVAX", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "addLiquidity",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "addLiquidityAVAX",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "getAmountIn", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getAmountIn",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getAmountOut",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getAmountsIn",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getAmountsOut",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "quote", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "quote", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidity",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidityAVAX",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidityAVAXSupportingFeeOnTransferTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidityAVAXWithPermit",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidityWithPermit",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapAVAXForExactTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactAVAXForTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactAVAXForTokensSupportingFeeOnTransferTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactTokensForAVAX",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactTokensForAVAXSupportingFeeOnTransferTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactTokensForTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapExactTokensForTokensSupportingFeeOnTransferTokens",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapTokensForExactAVAX",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "swapTokensForExactTokens",
     data: BytesLike
-  ): Result
+  ): Result;
 
-  events: {}
+  events: {};
 }
 
 export interface AvaxRouter extends BaseContract {
-  contractName: "AvaxRouter"
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  contractName: "AvaxRouter";
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: AvaxRouterInterface
+  interface: AvaxRouterInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
-    WAVAX(overrides?: CallOverrides): Promise<[string]>
+    WAVAX(overrides?: CallOverrides): Promise<[string]>;
 
     addLiquidity(
       tokenA: string,
@@ -338,7 +341,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     addLiquidityAVAX(
       token: string,
@@ -348,42 +351,42 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    factory(overrides?: CallOverrides): Promise<[string]>
+    factory(overrides?: CallOverrides): Promise<[string]>;
 
     getAmountIn(
       amountOut: BigNumberish,
       reserveIn: BigNumberish,
       reserveOut: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[BigNumber] & { amountIn: BigNumber }>
+    ): Promise<[BigNumber] & { amountIn: BigNumber }>;
 
     getAmountOut(
       amountIn: BigNumberish,
       reserveIn: BigNumberish,
       reserveOut: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[BigNumber] & { amountOut: BigNumber }>
+    ): Promise<[BigNumber] & { amountOut: BigNumber }>;
 
     getAmountsIn(
       amountOut: BigNumberish,
       path: string[],
       overrides?: CallOverrides
-    ): Promise<[BigNumber[]] & { amounts: BigNumber[] }>
+    ): Promise<[BigNumber[]] & { amounts: BigNumber[] }>;
 
     getAmountsOut(
       amountIn: BigNumberish,
       path: string[],
       overrides?: CallOverrides
-    ): Promise<[BigNumber[]] & { amounts: BigNumber[] }>
+    ): Promise<[BigNumber[]] & { amounts: BigNumber[] }>;
 
     quote(
       amountA: BigNumberish,
       reserveA: BigNumberish,
       reserveB: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[BigNumber] & { amountB: BigNumber }>
+    ): Promise<[BigNumber] & { amountB: BigNumber }>;
 
     removeLiquidity(
       tokenA: string,
@@ -394,7 +397,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     removeLiquidityAVAX(
       token: string,
@@ -404,7 +407,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     removeLiquidityAVAXSupportingFeeOnTransferTokens(
       token: string,
@@ -414,7 +417,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     removeLiquidityAVAXWithPermit(
       token: string,
@@ -428,7 +431,7 @@ export interface AvaxRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens(
       token: string,
@@ -442,7 +445,7 @@ export interface AvaxRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     removeLiquidityWithPermit(
       tokenA: string,
@@ -457,7 +460,7 @@ export interface AvaxRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapAVAXForExactTokens(
       amountOut: BigNumberish,
@@ -465,7 +468,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactAVAXForTokens(
       amountOutMin: BigNumberish,
@@ -473,7 +476,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactAVAXForTokensSupportingFeeOnTransferTokens(
       amountOutMin: BigNumberish,
@@ -481,7 +484,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactTokensForAVAX(
       amountIn: BigNumberish,
@@ -490,7 +493,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactTokensForAVAXSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -499,7 +502,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactTokensForTokens(
       amountIn: BigNumberish,
@@ -508,7 +511,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapExactTokensForTokensSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -517,7 +520,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapTokensForExactAVAX(
       amountOut: BigNumberish,
@@ -526,7 +529,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     swapTokensForExactTokens(
       amountOut: BigNumberish,
@@ -535,10 +538,10 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
-  }
+    ): Promise<ContractTransaction>;
+  };
 
-  WAVAX(overrides?: CallOverrides): Promise<string>
+  WAVAX(overrides?: CallOverrides): Promise<string>;
 
   addLiquidity(
     tokenA: string,
@@ -550,7 +553,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   addLiquidityAVAX(
     token: string,
@@ -560,42 +563,42 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  factory(overrides?: CallOverrides): Promise<string>
+  factory(overrides?: CallOverrides): Promise<string>;
 
   getAmountIn(
     amountOut: BigNumberish,
     reserveIn: BigNumberish,
     reserveOut: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<BigNumber>
+  ): Promise<BigNumber>;
 
   getAmountOut(
     amountIn: BigNumberish,
     reserveIn: BigNumberish,
     reserveOut: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<BigNumber>
+  ): Promise<BigNumber>;
 
   getAmountsIn(
     amountOut: BigNumberish,
     path: string[],
     overrides?: CallOverrides
-  ): Promise<BigNumber[]>
+  ): Promise<BigNumber[]>;
 
   getAmountsOut(
     amountIn: BigNumberish,
     path: string[],
     overrides?: CallOverrides
-  ): Promise<BigNumber[]>
+  ): Promise<BigNumber[]>;
 
   quote(
     amountA: BigNumberish,
     reserveA: BigNumberish,
     reserveB: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<BigNumber>
+  ): Promise<BigNumber>;
 
   removeLiquidity(
     tokenA: string,
@@ -606,7 +609,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   removeLiquidityAVAX(
     token: string,
@@ -616,7 +619,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   removeLiquidityAVAXSupportingFeeOnTransferTokens(
     token: string,
@@ -626,7 +629,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   removeLiquidityAVAXWithPermit(
     token: string,
@@ -640,7 +643,7 @@ export interface AvaxRouter extends BaseContract {
     r: BytesLike,
     s: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens(
     token: string,
@@ -654,7 +657,7 @@ export interface AvaxRouter extends BaseContract {
     r: BytesLike,
     s: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   removeLiquidityWithPermit(
     tokenA: string,
@@ -669,7 +672,7 @@ export interface AvaxRouter extends BaseContract {
     r: BytesLike,
     s: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapAVAXForExactTokens(
     amountOut: BigNumberish,
@@ -677,7 +680,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactAVAXForTokens(
     amountOutMin: BigNumberish,
@@ -685,7 +688,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactAVAXForTokensSupportingFeeOnTransferTokens(
     amountOutMin: BigNumberish,
@@ -693,7 +696,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactTokensForAVAX(
     amountIn: BigNumberish,
@@ -702,7 +705,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactTokensForAVAXSupportingFeeOnTransferTokens(
     amountIn: BigNumberish,
@@ -711,7 +714,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactTokensForTokens(
     amountIn: BigNumberish,
@@ -720,7 +723,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapExactTokensForTokensSupportingFeeOnTransferTokens(
     amountIn: BigNumberish,
@@ -729,7 +732,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapTokensForExactAVAX(
     amountOut: BigNumberish,
@@ -738,7 +741,7 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   swapTokensForExactTokens(
     amountOut: BigNumberish,
@@ -747,10 +750,10 @@ export interface AvaxRouter extends BaseContract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    WAVAX(overrides?: CallOverrides): Promise<string>
+    WAVAX(overrides?: CallOverrides): Promise<string>;
 
     addLiquidity(
       tokenA: string,
@@ -764,11 +767,11 @@ export interface AvaxRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
-        amountA: BigNumber
-        amountB: BigNumber
-        liquidity: BigNumber
+        amountA: BigNumber;
+        amountB: BigNumber;
+        liquidity: BigNumber;
       }
-    >
+    >;
 
     addLiquidityAVAX(
       token: string,
@@ -780,46 +783,46 @@ export interface AvaxRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
-        amountToken: BigNumber
-        amountAVAX: BigNumber
-        liquidity: BigNumber
+        amountToken: BigNumber;
+        amountAVAX: BigNumber;
+        liquidity: BigNumber;
       }
-    >
+    >;
 
-    factory(overrides?: CallOverrides): Promise<string>
+    factory(overrides?: CallOverrides): Promise<string>;
 
     getAmountIn(
       amountOut: BigNumberish,
       reserveIn: BigNumberish,
       reserveOut: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getAmountOut(
       amountIn: BigNumberish,
       reserveIn: BigNumberish,
       reserveOut: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getAmountsIn(
       amountOut: BigNumberish,
       path: string[],
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     getAmountsOut(
       amountIn: BigNumberish,
       path: string[],
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     quote(
       amountA: BigNumberish,
       reserveA: BigNumberish,
       reserveB: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidity(
       tokenA: string,
@@ -832,7 +835,7 @@ export interface AvaxRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountA: BigNumber; amountB: BigNumber }
-    >
+    >;
 
     removeLiquidityAVAX(
       token: string,
@@ -844,7 +847,7 @@ export interface AvaxRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountToken: BigNumber; amountAVAX: BigNumber }
-    >
+    >;
 
     removeLiquidityAVAXSupportingFeeOnTransferTokens(
       token: string,
@@ -854,7 +857,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityAVAXWithPermit(
       token: string,
@@ -870,7 +873,7 @@ export interface AvaxRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountToken: BigNumber; amountAVAX: BigNumber }
-    >
+    >;
 
     removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens(
       token: string,
@@ -884,7 +887,7 @@ export interface AvaxRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityWithPermit(
       tokenA: string,
@@ -901,7 +904,7 @@ export interface AvaxRouter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { amountA: BigNumber; amountB: BigNumber }
-    >
+    >;
 
     swapAVAXForExactTokens(
       amountOut: BigNumberish,
@@ -909,7 +912,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     swapExactAVAXForTokens(
       amountOutMin: BigNumberish,
@@ -917,7 +920,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     swapExactAVAXForTokensSupportingFeeOnTransferTokens(
       amountOutMin: BigNumberish,
@@ -925,7 +928,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     swapExactTokensForAVAX(
       amountIn: BigNumberish,
@@ -934,7 +937,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     swapExactTokensForAVAXSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -943,7 +946,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     swapExactTokensForTokens(
       amountIn: BigNumberish,
@@ -952,7 +955,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     swapExactTokensForTokensSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -961,7 +964,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     swapTokensForExactAVAX(
       amountOut: BigNumberish,
@@ -970,7 +973,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
+    ): Promise<BigNumber[]>;
 
     swapTokensForExactTokens(
       amountOut: BigNumberish,
@@ -979,13 +982,13 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>
-  }
+    ): Promise<BigNumber[]>;
+  };
 
-  filters: {}
+  filters: {};
 
   estimateGas: {
-    WAVAX(overrides?: CallOverrides): Promise<BigNumber>
+    WAVAX(overrides?: CallOverrides): Promise<BigNumber>;
 
     addLiquidity(
       tokenA: string,
@@ -997,7 +1000,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     addLiquidityAVAX(
       token: string,
@@ -1007,42 +1010,42 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    factory(overrides?: CallOverrides): Promise<BigNumber>
+    factory(overrides?: CallOverrides): Promise<BigNumber>;
 
     getAmountIn(
       amountOut: BigNumberish,
       reserveIn: BigNumberish,
       reserveOut: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getAmountOut(
       amountIn: BigNumberish,
       reserveIn: BigNumberish,
       reserveOut: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getAmountsIn(
       amountOut: BigNumberish,
       path: string[],
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getAmountsOut(
       amountIn: BigNumberish,
       path: string[],
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     quote(
       amountA: BigNumberish,
       reserveA: BigNumberish,
       reserveB: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidity(
       tokenA: string,
@@ -1053,7 +1056,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityAVAX(
       token: string,
@@ -1063,7 +1066,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityAVAXSupportingFeeOnTransferTokens(
       token: string,
@@ -1073,7 +1076,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityAVAXWithPermit(
       token: string,
@@ -1087,7 +1090,7 @@ export interface AvaxRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens(
       token: string,
@@ -1101,7 +1104,7 @@ export interface AvaxRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     removeLiquidityWithPermit(
       tokenA: string,
@@ -1116,7 +1119,7 @@ export interface AvaxRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapAVAXForExactTokens(
       amountOut: BigNumberish,
@@ -1124,7 +1127,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactAVAXForTokens(
       amountOutMin: BigNumberish,
@@ -1132,7 +1135,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactAVAXForTokensSupportingFeeOnTransferTokens(
       amountOutMin: BigNumberish,
@@ -1140,7 +1143,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactTokensForAVAX(
       amountIn: BigNumberish,
@@ -1149,7 +1152,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactTokensForAVAXSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -1158,7 +1161,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactTokensForTokens(
       amountIn: BigNumberish,
@@ -1167,7 +1170,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapExactTokensForTokensSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -1176,7 +1179,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapTokensForExactAVAX(
       amountOut: BigNumberish,
@@ -1185,7 +1188,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     swapTokensForExactTokens(
       amountOut: BigNumberish,
@@ -1194,11 +1197,11 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
-    WAVAX(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    WAVAX(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     addLiquidity(
       tokenA: string,
@@ -1210,7 +1213,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     addLiquidityAVAX(
       token: string,
@@ -1220,42 +1223,42 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    factory(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    factory(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getAmountIn(
       amountOut: BigNumberish,
       reserveIn: BigNumberish,
       reserveOut: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getAmountOut(
       amountIn: BigNumberish,
       reserveIn: BigNumberish,
       reserveOut: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getAmountsIn(
       amountOut: BigNumberish,
       path: string[],
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getAmountsOut(
       amountIn: BigNumberish,
       path: string[],
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     quote(
       amountA: BigNumberish,
       reserveA: BigNumberish,
       reserveB: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidity(
       tokenA: string,
@@ -1266,7 +1269,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidityAVAX(
       token: string,
@@ -1276,7 +1279,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidityAVAXSupportingFeeOnTransferTokens(
       token: string,
@@ -1286,7 +1289,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidityAVAXWithPermit(
       token: string,
@@ -1300,7 +1303,7 @@ export interface AvaxRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens(
       token: string,
@@ -1314,7 +1317,7 @@ export interface AvaxRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     removeLiquidityWithPermit(
       tokenA: string,
@@ -1329,7 +1332,7 @@ export interface AvaxRouter extends BaseContract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapAVAXForExactTokens(
       amountOut: BigNumberish,
@@ -1337,7 +1340,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactAVAXForTokens(
       amountOutMin: BigNumberish,
@@ -1345,7 +1348,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactAVAXForTokensSupportingFeeOnTransferTokens(
       amountOutMin: BigNumberish,
@@ -1353,7 +1356,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactTokensForAVAX(
       amountIn: BigNumberish,
@@ -1362,7 +1365,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactTokensForAVAXSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -1371,7 +1374,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactTokensForTokens(
       amountIn: BigNumberish,
@@ -1380,7 +1383,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapExactTokensForTokensSupportingFeeOnTransferTokens(
       amountIn: BigNumberish,
@@ -1389,7 +1392,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapTokensForExactAVAX(
       amountOut: BigNumberish,
@@ -1398,7 +1401,7 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     swapTokensForExactTokens(
       amountOut: BigNumberish,
@@ -1407,6 +1410,6 @@ export interface AvaxRouter extends BaseContract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }

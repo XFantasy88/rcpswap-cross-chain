@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { AdaRouter, AdaRouterInterface } from "../AdaRouter"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { AdaRouter, AdaRouterInterface } from "../AdaRouter";
 
 const _abi = [
   {
@@ -978,17 +978,17 @@ const _abi = [
     type: "receive",
     stateMutability: "payable",
   },
-]
+];
 
 export class AdaRouter__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): AdaRouterInterface {
-    return new utils.Interface(_abi) as AdaRouterInterface
+    return new utils.Interface(_abi) as AdaRouterInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): AdaRouter {
-    return new Contract(address, _abi, signerOrProvider) as AdaRouter
+    return new Contract(address, _abi, signerOrProvider) as AdaRouter;
   }
 }

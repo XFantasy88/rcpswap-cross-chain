@@ -1,7 +1,7 @@
-import { Rounding, _100 } from "../../constants"
-import { Fraction } from "./fraction"
+import { Rounding, _100 } from "../../constants";
+import { Fraction } from "./fraction";
 
-const _100_PERCENT = new Fraction(_100)
+const _100_PERCENT = new Fraction(_100);
 
 export class Percent extends Fraction {
   public override toSignificant(
@@ -13,7 +13,7 @@ export class Percent extends Fraction {
       significantDigits,
       format,
       rounding
-    )
+    );
   }
 
   public override toFixed(
@@ -21,6 +21,6 @@ export class Percent extends Fraction {
     format?: object,
     rounding?: Rounding
   ): string {
-    return this.multiply(_100_PERCENT).toFixed(decimalPlaces, format, rounding)
+    return this.multiply(_100_PERCENT).toFixed(decimalPlaces, format, rounding);
   }
 }

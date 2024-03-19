@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { CreamCErc20, CreamCErc20Interface } from "../CreamCErc20"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { CreamCErc20, CreamCErc20Interface } from "../CreamCErc20";
 
 const _abi = [
   {
@@ -1791,17 +1791,17 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-]
+];
 
 export class CreamCErc20__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): CreamCErc20Interface {
-    return new utils.Interface(_abi) as CreamCErc20Interface
+    return new utils.Interface(_abi) as CreamCErc20Interface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): CreamCErc20 {
-    return new Contract(address, _abi, signerOrProvider) as CreamCErc20
+    return new Contract(address, _abi, signerOrProvider) as CreamCErc20;
   }
 }

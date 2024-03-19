@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { BenqiQiErc20, BenqiQiErc20Interface } from "../BenqiQiErc20"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { BenqiQiErc20, BenqiQiErc20Interface } from "../BenqiQiErc20";
 
 const _abi = [
   {
@@ -1539,17 +1539,17 @@ const _abi = [
     stateMutability: "view",
     type: "function",
   },
-]
+];
 
 export class BenqiQiErc20__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): BenqiQiErc20Interface {
-    return new utils.Interface(_abi) as BenqiQiErc20Interface
+    return new utils.Interface(_abi) as BenqiQiErc20Interface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): BenqiQiErc20 {
-    return new Contract(address, _abi, signerOrProvider) as BenqiQiErc20
+    return new Contract(address, _abi, signerOrProvider) as BenqiQiErc20;
   }
 }

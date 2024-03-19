@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { OneInchOracle, OneInchOracleInterface } from "../OneInchOracle"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { OneInchOracle, OneInchOracleInterface } from "../OneInchOracle";
 
 const _abi = [
   {
@@ -339,17 +339,17 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-]
+];
 
 export class OneInchOracle__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): OneInchOracleInterface {
-    return new utils.Interface(_abi) as OneInchOracleInterface
+    return new utils.Interface(_abi) as OneInchOracleInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): OneInchOracle {
-    return new Contract(address, _abi, signerOrProvider) as OneInchOracle
+    return new Contract(address, _abi, signerOrProvider) as OneInchOracle;
   }
 }

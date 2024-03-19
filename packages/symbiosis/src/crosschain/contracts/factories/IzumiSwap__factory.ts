@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers"
-import { Provider } from "@ethersproject/providers"
-import type { IzumiSwap, IzumiSwapInterface } from "../IzumiSwap"
+import { Contract, Signer, utils } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import type { IzumiSwap, IzumiSwapInterface } from "../IzumiSwap";
 
 const _abi = [
   {
@@ -537,17 +537,17 @@ const _abi = [
     stateMutability: "payable",
     type: "receive",
   },
-]
+];
 
 export class IzumiSwap__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): IzumiSwapInterface {
-    return new utils.Interface(_abi) as IzumiSwapInterface
+    return new utils.Interface(_abi) as IzumiSwapInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
   ): IzumiSwap {
-    return new Contract(address, _abi, signerOrProvider) as IzumiSwap
+    return new Contract(address, _abi, signerOrProvider) as IzumiSwap;
   }
 }

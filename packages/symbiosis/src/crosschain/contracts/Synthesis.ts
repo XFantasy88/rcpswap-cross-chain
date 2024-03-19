@@ -12,28 +12,28 @@ import {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers"
-import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi"
-import { Listener, Provider } from "@ethersproject/providers"
-import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common"
+} from "ethers";
+import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
+import { Listener, Provider } from "@ethersproject/providers";
+import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export declare namespace MetaRouteStructs {
   export type MetaBurnTransactionStruct = {
-    stableBridgingFee: BigNumberish
-    amount: BigNumberish
-    crossChainID: BytesLike
-    syntCaller: string
-    finalReceiveSide: string
-    sToken: string
-    finalCallData: BytesLike
-    finalOffset: BigNumberish
-    chain2address: string
-    receiveSide: string
-    oppositeBridge: string
-    revertableAddress: string
-    chainID: BigNumberish
-    clientID: BytesLike
-  }
+    stableBridgingFee: BigNumberish;
+    amount: BigNumberish;
+    crossChainID: BytesLike;
+    syntCaller: string;
+    finalReceiveSide: string;
+    sToken: string;
+    finalCallData: BytesLike;
+    finalOffset: BigNumberish;
+    chain2address: string;
+    receiveSide: string;
+    oppositeBridge: string;
+    revertableAddress: string;
+    chainID: BigNumberish;
+    clientID: BytesLike;
+  };
 
   export type MetaBurnTransactionStructOutput = [
     BigNumber,
@@ -51,37 +51,37 @@ export declare namespace MetaRouteStructs {
     BigNumber,
     string
   ] & {
-    stableBridgingFee: BigNumber
-    amount: BigNumber
-    crossChainID: string
-    syntCaller: string
-    finalReceiveSide: string
-    sToken: string
-    finalCallData: string
-    finalOffset: BigNumber
-    chain2address: string
-    receiveSide: string
-    oppositeBridge: string
-    revertableAddress: string
-    chainID: BigNumber
-    clientID: string
-  }
+    stableBridgingFee: BigNumber;
+    amount: BigNumber;
+    crossChainID: string;
+    syntCaller: string;
+    finalReceiveSide: string;
+    sToken: string;
+    finalCallData: string;
+    finalOffset: BigNumber;
+    chain2address: string;
+    receiveSide: string;
+    oppositeBridge: string;
+    revertableAddress: string;
+    chainID: BigNumber;
+    clientID: string;
+  };
 
   export type MetaMintTransactionStruct = {
-    stableBridgingFee: BigNumberish
-    amount: BigNumberish
-    crossChainID: BytesLike
-    externalID: BytesLike
-    tokenReal: string
-    chainID: BigNumberish
-    to: string
-    swapTokens: string[]
-    secondDexRouter: string
-    secondSwapCalldata: BytesLike
-    finalReceiveSide: string
-    finalCalldata: BytesLike
-    finalOffset: BigNumberish
-  }
+    stableBridgingFee: BigNumberish;
+    amount: BigNumberish;
+    crossChainID: BytesLike;
+    externalID: BytesLike;
+    tokenReal: string;
+    chainID: BigNumberish;
+    to: string;
+    swapTokens: string[];
+    secondDexRouter: string;
+    secondSwapCalldata: BytesLike;
+    finalReceiveSide: string;
+    finalCalldata: BytesLike;
+    finalOffset: BigNumberish;
+  };
 
   export type MetaMintTransactionStructOutput = [
     BigNumber,
@@ -98,56 +98,56 @@ export declare namespace MetaRouteStructs {
     string,
     BigNumber
   ] & {
-    stableBridgingFee: BigNumber
-    amount: BigNumber
-    crossChainID: string
-    externalID: string
-    tokenReal: string
-    chainID: BigNumber
-    to: string
-    swapTokens: string[]
-    secondDexRouter: string
-    secondSwapCalldata: string
-    finalReceiveSide: string
-    finalCalldata: string
-    finalOffset: BigNumber
-  }
+    stableBridgingFee: BigNumber;
+    amount: BigNumber;
+    crossChainID: string;
+    externalID: string;
+    tokenReal: string;
+    chainID: BigNumber;
+    to: string;
+    swapTokens: string[];
+    secondDexRouter: string;
+    secondSwapCalldata: string;
+    finalReceiveSide: string;
+    finalCalldata: string;
+    finalOffset: BigNumber;
+  };
 }
 
 export interface SynthesisInterface extends utils.Interface {
-  contractName: "Synthesis"
+  contractName: "Synthesis";
   functions: {
-    "bridge()": FunctionFragment
-    "burnSyntheticToken(uint256,address,uint256,address,address,address,address,uint256,bytes32)": FunctionFragment
-    "fabric()": FunctionFragment
-    "initialize(address,address,address)": FunctionFragment
-    "isTrustedForwarder(address)": FunctionFragment
-    "metaBurnSyntheticToken((uint256,uint256,bytes32,address,address,address,bytes,uint256,address,address,address,address,uint256,bytes32))": FunctionFragment
-    "metaMintSyntheticToken((uint256,uint256,bytes32,bytes32,address,uint256,address,address[],address,bytes,address,bytes,uint256))": FunctionFragment
-    "metaRouter()": FunctionFragment
-    "mintSyntheticToken(uint256,bytes32,bytes32,address,uint256,uint256,address)": FunctionFragment
-    "owner()": FunctionFragment
-    "pause()": FunctionFragment
-    "paused()": FunctionFragment
-    "renounceOwnership()": FunctionFragment
-    "requestCount()": FunctionFragment
-    "requests(bytes32)": FunctionFragment
-    "revertBurn(uint256,bytes32)": FunctionFragment
-    "revertBurnAndBurn(uint256,bytes32,address,address,uint256,address)": FunctionFragment
-    "revertMetaBurn(uint256,bytes32,address,bytes,address,address,bytes)": FunctionFragment
-    "revertSynthesizeRequest(uint256,bytes32,address,address,uint256,bytes32)": FunctionFragment
-    "revertSynthesizeRequestByBridge(uint256,bytes32,address,address,uint256,address,bytes32)": FunctionFragment
-    "setFabric(address)": FunctionFragment
-    "setMetaRouter(address)": FunctionFragment
-    "setTokenThreshold(address,uint256)": FunctionFragment
-    "synthesizeStates(bytes32)": FunctionFragment
-    "tokenThreshold(address)": FunctionFragment
-    "transferOwnership(address)": FunctionFragment
-    "unpause()": FunctionFragment
-    "versionRecipient()": FunctionFragment
-  }
+    "bridge()": FunctionFragment;
+    "burnSyntheticToken(uint256,address,uint256,address,address,address,address,uint256,bytes32)": FunctionFragment;
+    "fabric()": FunctionFragment;
+    "initialize(address,address,address)": FunctionFragment;
+    "isTrustedForwarder(address)": FunctionFragment;
+    "metaBurnSyntheticToken((uint256,uint256,bytes32,address,address,address,bytes,uint256,address,address,address,address,uint256,bytes32))": FunctionFragment;
+    "metaMintSyntheticToken((uint256,uint256,bytes32,bytes32,address,uint256,address,address[],address,bytes,address,bytes,uint256))": FunctionFragment;
+    "metaRouter()": FunctionFragment;
+    "mintSyntheticToken(uint256,bytes32,bytes32,address,uint256,uint256,address)": FunctionFragment;
+    "owner()": FunctionFragment;
+    "pause()": FunctionFragment;
+    "paused()": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "requestCount()": FunctionFragment;
+    "requests(bytes32)": FunctionFragment;
+    "revertBurn(uint256,bytes32)": FunctionFragment;
+    "revertBurnAndBurn(uint256,bytes32,address,address,uint256,address)": FunctionFragment;
+    "revertMetaBurn(uint256,bytes32,address,bytes,address,address,bytes)": FunctionFragment;
+    "revertSynthesizeRequest(uint256,bytes32,address,address,uint256,bytes32)": FunctionFragment;
+    "revertSynthesizeRequestByBridge(uint256,bytes32,address,address,uint256,address,bytes32)": FunctionFragment;
+    "setFabric(address)": FunctionFragment;
+    "setMetaRouter(address)": FunctionFragment;
+    "setTokenThreshold(address,uint256)": FunctionFragment;
+    "synthesizeStates(bytes32)": FunctionFragment;
+    "tokenThreshold(address)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+    "unpause()": FunctionFragment;
+    "versionRecipient()": FunctionFragment;
+  };
 
-  encodeFunctionData(functionFragment: "bridge", values?: undefined): string
+  encodeFunctionData(functionFragment: "bridge", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "burnSyntheticToken",
     values: [
@@ -161,25 +161,28 @@ export interface SynthesisInterface extends utils.Interface {
       BigNumberish,
       BytesLike
     ]
-  ): string
-  encodeFunctionData(functionFragment: "fabric", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "fabric", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [string, string, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "isTrustedForwarder",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "metaBurnSyntheticToken",
     values: [MetaRouteStructs.MetaBurnTransactionStruct]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "metaMintSyntheticToken",
     values: [MetaRouteStructs.MetaMintTransactionStruct]
-  ): string
-  encodeFunctionData(functionFragment: "metaRouter", values?: undefined): string
+  ): string;
+  encodeFunctionData(
+    functionFragment: "metaRouter",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "mintSyntheticToken",
     values: [
@@ -191,27 +194,27 @@ export interface SynthesisInterface extends utils.Interface {
       BigNumberish,
       string
     ]
-  ): string
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string
-  encodeFunctionData(functionFragment: "pause", values?: undefined): string
-  encodeFunctionData(functionFragment: "paused", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
+  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "requestCount",
     values?: undefined
-  ): string
-  encodeFunctionData(functionFragment: "requests", values: [BytesLike]): string
+  ): string;
+  encodeFunctionData(functionFragment: "requests", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "revertBurn",
     values: [BigNumberish, BytesLike]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "revertBurnAndBurn",
     values: [BigNumberish, BytesLike, string, string, BigNumberish, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "revertMetaBurn",
     values: [
@@ -223,11 +226,11 @@ export interface SynthesisInterface extends utils.Interface {
       string,
       BytesLike
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "revertSynthesizeRequest",
     values: [BigNumberish, BytesLike, string, string, BigNumberish, BytesLike]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "revertSynthesizeRequestByBridge",
     values: [
@@ -239,261 +242,261 @@ export interface SynthesisInterface extends utils.Interface {
       string,
       BytesLike
     ]
-  ): string
-  encodeFunctionData(functionFragment: "setFabric", values: [string]): string
+  ): string;
+  encodeFunctionData(functionFragment: "setFabric", values: [string]): string;
   encodeFunctionData(
     functionFragment: "setMetaRouter",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "setTokenThreshold",
     values: [string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "synthesizeStates",
     values: [BytesLike]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "tokenThreshold",
     values: [string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
-  ): string
-  encodeFunctionData(functionFragment: "unpause", values?: undefined): string
+  ): string;
+  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "versionRecipient",
     values?: undefined
-  ): string
+  ): string;
 
-  decodeFunctionResult(functionFragment: "bridge", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "bridge", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "burnSyntheticToken",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "fabric", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "fabric", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isTrustedForwarder",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "metaBurnSyntheticToken",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "metaMintSyntheticToken",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "metaRouter", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "metaRouter", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "mintSyntheticToken",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "requestCount",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "requests", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "revertBurn", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "requests", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "revertBurn", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "revertBurnAndBurn",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "revertMetaBurn",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "revertSynthesizeRequest",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "revertSynthesizeRequestByBridge",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "setFabric", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "setFabric", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setMetaRouter",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "setTokenThreshold",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "synthesizeStates",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "tokenThreshold",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "versionRecipient",
     data: BytesLike
-  ): Result
+  ): Result;
 
   events: {
-    "BurnRequest(bytes32,address,uint256,address,address,uint256,address)": EventFragment
-    "ClientIdLog(bytes32,bytes32)": EventFragment
-    "OwnershipTransferred(address,address)": EventFragment
-    "Paused(address)": EventFragment
-    "RevertBurnCompleted(bytes32,address,uint256,uint256,address)": EventFragment
-    "RevertSynthesizeRequest(bytes32,address)": EventFragment
-    "SetFabric(address)": EventFragment
-    "SetMetaRouter(address)": EventFragment
-    "SetTokenThreshold(address,uint256)": EventFragment
-    "SynthesizeCompleted(bytes32,address,bytes32,uint256,uint256,address)": EventFragment
-    "Unpaused(address)": EventFragment
-  }
+    "BurnRequest(bytes32,address,uint256,address,address,uint256,address)": EventFragment;
+    "ClientIdLog(bytes32,bytes32)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
+    "Paused(address)": EventFragment;
+    "RevertBurnCompleted(bytes32,address,uint256,uint256,address)": EventFragment;
+    "RevertSynthesizeRequest(bytes32,address)": EventFragment;
+    "SetFabric(address)": EventFragment;
+    "SetMetaRouter(address)": EventFragment;
+    "SetTokenThreshold(address,uint256)": EventFragment;
+    "SynthesizeCompleted(bytes32,address,bytes32,uint256,uint256,address)": EventFragment;
+    "Unpaused(address)": EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: "BurnRequest"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "ClientIdLog"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "RevertBurnCompleted"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "RevertSynthesizeRequest"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "SetFabric"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "SetMetaRouter"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "SetTokenThreshold"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "SynthesizeCompleted"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "BurnRequest"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ClientIdLog"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RevertBurnCompleted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RevertSynthesizeRequest"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SetFabric"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SetMetaRouter"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SetTokenThreshold"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SynthesizeCompleted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
 }
 
 export type BurnRequestEvent = TypedEvent<
   [string, string, BigNumber, string, string, BigNumber, string],
   {
-    id: string
-    from: string
-    chainID: BigNumber
-    revertableAddress: string
-    to: string
-    amount: BigNumber
-    token: string
+    id: string;
+    from: string;
+    chainID: BigNumber;
+    revertableAddress: string;
+    to: string;
+    amount: BigNumber;
+    token: string;
   }
->
+>;
 
-export type BurnRequestEventFilter = TypedEventFilter<BurnRequestEvent>
+export type BurnRequestEventFilter = TypedEventFilter<BurnRequestEvent>;
 
 export type ClientIdLogEvent = TypedEvent<
   [string, string],
   { requestId: string; clientId: string }
->
+>;
 
-export type ClientIdLogEventFilter = TypedEventFilter<ClientIdLogEvent>
+export type ClientIdLogEventFilter = TypedEventFilter<ClientIdLogEvent>;
 
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string],
   { previousOwner: string; newOwner: string }
->
+>;
 
 export type OwnershipTransferredEventFilter =
-  TypedEventFilter<OwnershipTransferredEvent>
+  TypedEventFilter<OwnershipTransferredEvent>;
 
-export type PausedEvent = TypedEvent<[string], { account: string }>
+export type PausedEvent = TypedEvent<[string], { account: string }>;
 
-export type PausedEventFilter = TypedEventFilter<PausedEvent>
+export type PausedEventFilter = TypedEventFilter<PausedEvent>;
 
 export type RevertBurnCompletedEvent = TypedEvent<
   [string, string, BigNumber, BigNumber, string],
   {
-    id: string
-    to: string
-    amount: BigNumber
-    bridgingFee: BigNumber
-    token: string
+    id: string;
+    to: string;
+    amount: BigNumber;
+    bridgingFee: BigNumber;
+    token: string;
   }
->
+>;
 
 export type RevertBurnCompletedEventFilter =
-  TypedEventFilter<RevertBurnCompletedEvent>
+  TypedEventFilter<RevertBurnCompletedEvent>;
 
 export type RevertSynthesizeRequestEvent = TypedEvent<
   [string, string],
   { id: string; to: string }
->
+>;
 
 export type RevertSynthesizeRequestEventFilter =
-  TypedEventFilter<RevertSynthesizeRequestEvent>
+  TypedEventFilter<RevertSynthesizeRequestEvent>;
 
-export type SetFabricEvent = TypedEvent<[string], { fabric: string }>
+export type SetFabricEvent = TypedEvent<[string], { fabric: string }>;
 
-export type SetFabricEventFilter = TypedEventFilter<SetFabricEvent>
+export type SetFabricEventFilter = TypedEventFilter<SetFabricEvent>;
 
-export type SetMetaRouterEvent = TypedEvent<[string], { metaRouter: string }>
+export type SetMetaRouterEvent = TypedEvent<[string], { metaRouter: string }>;
 
-export type SetMetaRouterEventFilter = TypedEventFilter<SetMetaRouterEvent>
+export type SetMetaRouterEventFilter = TypedEventFilter<SetMetaRouterEvent>;
 
 export type SetTokenThresholdEvent = TypedEvent<
   [string, BigNumber],
   { token: string; threshold: BigNumber }
->
+>;
 
 export type SetTokenThresholdEventFilter =
-  TypedEventFilter<SetTokenThresholdEvent>
+  TypedEventFilter<SetTokenThresholdEvent>;
 
 export type SynthesizeCompletedEvent = TypedEvent<
   [string, string, string, BigNumber, BigNumber, string],
   {
-    id: string
-    to: string
-    crossChainID: string
-    amount: BigNumber
-    bridgingFee: BigNumber
-    token: string
+    id: string;
+    to: string;
+    crossChainID: string;
+    amount: BigNumber;
+    bridgingFee: BigNumber;
+    token: string;
   }
->
+>;
 
 export type SynthesizeCompletedEventFilter =
-  TypedEventFilter<SynthesizeCompletedEvent>
+  TypedEventFilter<SynthesizeCompletedEvent>;
 
-export type UnpausedEvent = TypedEvent<[string], { account: string }>
+export type UnpausedEvent = TypedEvent<[string], { account: string }>;
 
-export type UnpausedEventFilter = TypedEventFilter<UnpausedEvent>
+export type UnpausedEventFilter = TypedEventFilter<UnpausedEvent>;
 
 export interface Synthesis extends BaseContract {
-  contractName: "Synthesis"
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  contractName: "Synthesis";
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: SynthesisInterface
+  interface: SynthesisInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
-    bridge(overrides?: CallOverrides): Promise<[string]>
+    bridge(overrides?: CallOverrides): Promise<[string]>;
 
     burnSyntheticToken(
       _stableBridgingFee: BigNumberish,
@@ -506,33 +509,33 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _clientID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    fabric(overrides?: CallOverrides): Promise<[string]>
+    fabric(overrides?: CallOverrides): Promise<[string]>;
 
     initialize(
       _bridge: string,
       _trustedForwarder: string,
       _metaRouter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     isTrustedForwarder(
       forwarder: string,
       overrides?: CallOverrides
-    ): Promise<[boolean]>
+    ): Promise<[boolean]>;
 
     metaBurnSyntheticToken(
       _metaBurnTransaction: MetaRouteStructs.MetaBurnTransactionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     metaMintSyntheticToken(
       _metaMintTransaction: MetaRouteStructs.MetaMintTransactionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    metaRouter(overrides?: CallOverrides): Promise<[string]>
+    metaRouter(overrides?: CallOverrides): Promise<[string]>;
 
     mintSyntheticToken(
       _stableBridgingFee: BigNumberish,
@@ -543,41 +546,41 @@ export interface Synthesis extends BaseContract {
       _amount: BigNumberish,
       _to: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    owner(overrides?: CallOverrides): Promise<[string]>
+    owner(overrides?: CallOverrides): Promise<[string]>;
 
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    paused(overrides?: CallOverrides): Promise<[boolean]>
+    paused(overrides?: CallOverrides): Promise<[boolean]>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    requestCount(overrides?: CallOverrides): Promise<[BigNumber]>
+    requestCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     requests(
       arg0: BytesLike,
       overrides?: CallOverrides
     ): Promise<
       [string, string, BigNumber, string, string, number] & {
-        recipient: string
-        chain2address: string
-        amount: BigNumber
-        token: string
-        stoken: string
-        state: number
+        recipient: string;
+        chain2address: string;
+        amount: BigNumber;
+        token: string;
+        stoken: string;
+        state: number;
       }
-    >
+    >;
 
     revertBurn(
       _stableBridgingFee: BigNumberish,
       _externalID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     revertBurnAndBurn(
       _stableBridgingFee: BigNumberish,
@@ -587,7 +590,7 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _revertableAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     revertMetaBurn(
       _stableBridgingFee: BigNumberish,
@@ -598,7 +601,7 @@ export interface Synthesis extends BaseContract {
       _burnToken: string,
       _burnCalldata: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     revertSynthesizeRequest(
       _stableBridgingFee: BigNumberish,
@@ -608,7 +611,7 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _clientID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     revertSynthesizeRequestByBridge(
       _stableBridgingFee: BigNumberish,
@@ -619,47 +622,47 @@ export interface Synthesis extends BaseContract {
       _sender: string,
       _clientID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     setFabric(
       _fabric: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     setMetaRouter(
       _metaRouter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     setTokenThreshold(
       _token: string,
       _threshold: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     synthesizeStates(
       arg0: BytesLike,
       overrides?: CallOverrides
-    ): Promise<[number]>
+    ): Promise<[number]>;
 
     tokenThreshold(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>
+    ): Promise<[BigNumber]>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     unpause(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    versionRecipient(overrides?: CallOverrides): Promise<[string]>
-  }
+    versionRecipient(overrides?: CallOverrides): Promise<[string]>;
+  };
 
-  bridge(overrides?: CallOverrides): Promise<string>
+  bridge(overrides?: CallOverrides): Promise<string>;
 
   burnSyntheticToken(
     _stableBridgingFee: BigNumberish,
@@ -672,33 +675,33 @@ export interface Synthesis extends BaseContract {
     _chainID: BigNumberish,
     _clientID: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  fabric(overrides?: CallOverrides): Promise<string>
+  fabric(overrides?: CallOverrides): Promise<string>;
 
   initialize(
     _bridge: string,
     _trustedForwarder: string,
     _metaRouter: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   isTrustedForwarder(
     forwarder: string,
     overrides?: CallOverrides
-  ): Promise<boolean>
+  ): Promise<boolean>;
 
   metaBurnSyntheticToken(
     _metaBurnTransaction: MetaRouteStructs.MetaBurnTransactionStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   metaMintSyntheticToken(
     _metaMintTransaction: MetaRouteStructs.MetaMintTransactionStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  metaRouter(overrides?: CallOverrides): Promise<string>
+  metaRouter(overrides?: CallOverrides): Promise<string>;
 
   mintSyntheticToken(
     _stableBridgingFee: BigNumberish,
@@ -709,41 +712,41 @@ export interface Synthesis extends BaseContract {
     _amount: BigNumberish,
     _to: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  owner(overrides?: CallOverrides): Promise<string>
+  owner(overrides?: CallOverrides): Promise<string>;
 
   pause(
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  paused(overrides?: CallOverrides): Promise<boolean>
+  paused(overrides?: CallOverrides): Promise<boolean>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  requestCount(overrides?: CallOverrides): Promise<BigNumber>
+  requestCount(overrides?: CallOverrides): Promise<BigNumber>;
 
   requests(
     arg0: BytesLike,
     overrides?: CallOverrides
   ): Promise<
     [string, string, BigNumber, string, string, number] & {
-      recipient: string
-      chain2address: string
-      amount: BigNumber
-      token: string
-      stoken: string
-      state: number
+      recipient: string;
+      chain2address: string;
+      amount: BigNumber;
+      token: string;
+      stoken: string;
+      state: number;
     }
-  >
+  >;
 
   revertBurn(
     _stableBridgingFee: BigNumberish,
     _externalID: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   revertBurnAndBurn(
     _stableBridgingFee: BigNumberish,
@@ -753,7 +756,7 @@ export interface Synthesis extends BaseContract {
     _chainID: BigNumberish,
     _revertableAddress: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   revertMetaBurn(
     _stableBridgingFee: BigNumberish,
@@ -764,7 +767,7 @@ export interface Synthesis extends BaseContract {
     _burnToken: string,
     _burnCalldata: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   revertSynthesizeRequest(
     _stableBridgingFee: BigNumberish,
@@ -774,7 +777,7 @@ export interface Synthesis extends BaseContract {
     _chainID: BigNumberish,
     _clientID: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   revertSynthesizeRequestByBridge(
     _stableBridgingFee: BigNumberish,
@@ -785,41 +788,41 @@ export interface Synthesis extends BaseContract {
     _sender: string,
     _clientID: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   setFabric(
     _fabric: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   setMetaRouter(
     _metaRouter: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   setTokenThreshold(
     _token: string,
     _threshold: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  synthesizeStates(arg0: BytesLike, overrides?: CallOverrides): Promise<number>
+  synthesizeStates(arg0: BytesLike, overrides?: CallOverrides): Promise<number>;
 
-  tokenThreshold(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+  tokenThreshold(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   transferOwnership(
     newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   unpause(
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  versionRecipient(overrides?: CallOverrides): Promise<string>
+  versionRecipient(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    bridge(overrides?: CallOverrides): Promise<string>
+    bridge(overrides?: CallOverrides): Promise<string>;
 
     burnSyntheticToken(
       _stableBridgingFee: BigNumberish,
@@ -832,33 +835,33 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _clientID: BytesLike,
       overrides?: CallOverrides
-    ): Promise<string>
+    ): Promise<string>;
 
-    fabric(overrides?: CallOverrides): Promise<string>
+    fabric(overrides?: CallOverrides): Promise<string>;
 
     initialize(
       _bridge: string,
       _trustedForwarder: string,
       _metaRouter: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     isTrustedForwarder(
       forwarder: string,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     metaBurnSyntheticToken(
       _metaBurnTransaction: MetaRouteStructs.MetaBurnTransactionStruct,
       overrides?: CallOverrides
-    ): Promise<string>
+    ): Promise<string>;
 
     metaMintSyntheticToken(
       _metaMintTransaction: MetaRouteStructs.MetaMintTransactionStruct,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
-    metaRouter(overrides?: CallOverrides): Promise<string>
+    metaRouter(overrides?: CallOverrides): Promise<string>;
 
     mintSyntheticToken(
       _stableBridgingFee: BigNumberish,
@@ -869,37 +872,37 @@ export interface Synthesis extends BaseContract {
       _amount: BigNumberish,
       _to: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
-    owner(overrides?: CallOverrides): Promise<string>
+    owner(overrides?: CallOverrides): Promise<string>;
 
-    pause(overrides?: CallOverrides): Promise<void>
+    pause(overrides?: CallOverrides): Promise<void>;
 
-    paused(overrides?: CallOverrides): Promise<boolean>
+    paused(overrides?: CallOverrides): Promise<boolean>;
 
-    renounceOwnership(overrides?: CallOverrides): Promise<void>
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
-    requestCount(overrides?: CallOverrides): Promise<BigNumber>
+    requestCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     requests(
       arg0: BytesLike,
       overrides?: CallOverrides
     ): Promise<
       [string, string, BigNumber, string, string, number] & {
-        recipient: string
-        chain2address: string
-        amount: BigNumber
-        token: string
-        stoken: string
-        state: number
+        recipient: string;
+        chain2address: string;
+        amount: BigNumber;
+        token: string;
+        stoken: string;
+        state: number;
       }
-    >
+    >;
 
     revertBurn(
       _stableBridgingFee: BigNumberish,
       _externalID: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     revertBurnAndBurn(
       _stableBridgingFee: BigNumberish,
@@ -909,7 +912,7 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _revertableAddress: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     revertMetaBurn(
       _stableBridgingFee: BigNumberish,
@@ -920,7 +923,7 @@ export interface Synthesis extends BaseContract {
       _burnToken: string,
       _burnCalldata: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     revertSynthesizeRequest(
       _stableBridgingFee: BigNumberish,
@@ -930,7 +933,7 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _clientID: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     revertSynthesizeRequestByBridge(
       _stableBridgingFee: BigNumberish,
@@ -941,34 +944,37 @@ export interface Synthesis extends BaseContract {
       _sender: string,
       _clientID: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
-    setFabric(_fabric: string, overrides?: CallOverrides): Promise<void>
+    setFabric(_fabric: string, overrides?: CallOverrides): Promise<void>;
 
-    setMetaRouter(_metaRouter: string, overrides?: CallOverrides): Promise<void>
+    setMetaRouter(
+      _metaRouter: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     setTokenThreshold(
       _token: string,
       _threshold: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     synthesizeStates(
       arg0: BytesLike,
       overrides?: CallOverrides
-    ): Promise<number>
+    ): Promise<number>;
 
-    tokenThreshold(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    tokenThreshold(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
-    unpause(overrides?: CallOverrides): Promise<void>
+    unpause(overrides?: CallOverrides): Promise<void>;
 
-    versionRecipient(overrides?: CallOverrides): Promise<string>
-  }
+    versionRecipient(overrides?: CallOverrides): Promise<string>;
+  };
 
   filters: {
     "BurnRequest(bytes32,address,uint256,address,address,uint256,address)"(
@@ -979,7 +985,7 @@ export interface Synthesis extends BaseContract {
       to?: null,
       amount?: null,
       token?: null
-    ): BurnRequestEventFilter
+    ): BurnRequestEventFilter;
     BurnRequest(
       id?: null,
       from?: string | null,
@@ -988,28 +994,28 @@ export interface Synthesis extends BaseContract {
       to?: null,
       amount?: null,
       token?: null
-    ): BurnRequestEventFilter
+    ): BurnRequestEventFilter;
 
     "ClientIdLog(bytes32,bytes32)"(
       requestId?: null,
       clientId?: BytesLike | null
-    ): ClientIdLogEventFilter
+    ): ClientIdLogEventFilter;
     ClientIdLog(
       requestId?: null,
       clientId?: BytesLike | null
-    ): ClientIdLogEventFilter
+    ): ClientIdLogEventFilter;
 
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
       newOwner?: string | null
-    ): OwnershipTransferredEventFilter
+    ): OwnershipTransferredEventFilter;
     OwnershipTransferred(
       previousOwner?: string | null,
       newOwner?: string | null
-    ): OwnershipTransferredEventFilter
+    ): OwnershipTransferredEventFilter;
 
-    "Paused(address)"(account?: null): PausedEventFilter
-    Paused(account?: null): PausedEventFilter
+    "Paused(address)"(account?: null): PausedEventFilter;
+    Paused(account?: null): PausedEventFilter;
 
     "RevertBurnCompleted(bytes32,address,uint256,uint256,address)"(
       id?: BytesLike | null,
@@ -1017,38 +1023,38 @@ export interface Synthesis extends BaseContract {
       amount?: null,
       bridgingFee?: null,
       token?: null
-    ): RevertBurnCompletedEventFilter
+    ): RevertBurnCompletedEventFilter;
     RevertBurnCompleted(
       id?: BytesLike | null,
       to?: string | null,
       amount?: null,
       bridgingFee?: null,
       token?: null
-    ): RevertBurnCompletedEventFilter
+    ): RevertBurnCompletedEventFilter;
 
     "RevertSynthesizeRequest(bytes32,address)"(
       id?: BytesLike | null,
       to?: string | null
-    ): RevertSynthesizeRequestEventFilter
+    ): RevertSynthesizeRequestEventFilter;
     RevertSynthesizeRequest(
       id?: BytesLike | null,
       to?: string | null
-    ): RevertSynthesizeRequestEventFilter
+    ): RevertSynthesizeRequestEventFilter;
 
-    "SetFabric(address)"(fabric?: null): SetFabricEventFilter
-    SetFabric(fabric?: null): SetFabricEventFilter
+    "SetFabric(address)"(fabric?: null): SetFabricEventFilter;
+    SetFabric(fabric?: null): SetFabricEventFilter;
 
-    "SetMetaRouter(address)"(metaRouter?: null): SetMetaRouterEventFilter
-    SetMetaRouter(metaRouter?: null): SetMetaRouterEventFilter
+    "SetMetaRouter(address)"(metaRouter?: null): SetMetaRouterEventFilter;
+    SetMetaRouter(metaRouter?: null): SetMetaRouterEventFilter;
 
     "SetTokenThreshold(address,uint256)"(
       token?: null,
       threshold?: null
-    ): SetTokenThresholdEventFilter
+    ): SetTokenThresholdEventFilter;
     SetTokenThreshold(
       token?: null,
       threshold?: null
-    ): SetTokenThresholdEventFilter
+    ): SetTokenThresholdEventFilter;
 
     "SynthesizeCompleted(bytes32,address,bytes32,uint256,uint256,address)"(
       id?: BytesLike | null,
@@ -1057,7 +1063,7 @@ export interface Synthesis extends BaseContract {
       amount?: null,
       bridgingFee?: null,
       token?: null
-    ): SynthesizeCompletedEventFilter
+    ): SynthesizeCompletedEventFilter;
     SynthesizeCompleted(
       id?: BytesLike | null,
       to?: string | null,
@@ -1065,14 +1071,14 @@ export interface Synthesis extends BaseContract {
       amount?: null,
       bridgingFee?: null,
       token?: null
-    ): SynthesizeCompletedEventFilter
+    ): SynthesizeCompletedEventFilter;
 
-    "Unpaused(address)"(account?: null): UnpausedEventFilter
-    Unpaused(account?: null): UnpausedEventFilter
-  }
+    "Unpaused(address)"(account?: null): UnpausedEventFilter;
+    Unpaused(account?: null): UnpausedEventFilter;
+  };
 
   estimateGas: {
-    bridge(overrides?: CallOverrides): Promise<BigNumber>
+    bridge(overrides?: CallOverrides): Promise<BigNumber>;
 
     burnSyntheticToken(
       _stableBridgingFee: BigNumberish,
@@ -1085,33 +1091,33 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _clientID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    fabric(overrides?: CallOverrides): Promise<BigNumber>
+    fabric(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
       _bridge: string,
       _trustedForwarder: string,
       _metaRouter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     isTrustedForwarder(
       forwarder: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     metaBurnSyntheticToken(
       _metaBurnTransaction: MetaRouteStructs.MetaBurnTransactionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     metaMintSyntheticToken(
       _metaMintTransaction: MetaRouteStructs.MetaMintTransactionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    metaRouter(overrides?: CallOverrides): Promise<BigNumber>
+    metaRouter(overrides?: CallOverrides): Promise<BigNumber>;
 
     mintSyntheticToken(
       _stableBridgingFee: BigNumberish,
@@ -1122,29 +1128,29 @@ export interface Synthesis extends BaseContract {
       _amount: BigNumberish,
       _to: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    owner(overrides?: CallOverrides): Promise<BigNumber>
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    paused(overrides?: CallOverrides): Promise<BigNumber>
+    paused(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    requestCount(overrides?: CallOverrides): Promise<BigNumber>
+    requestCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    requests(arg0: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
+    requests(arg0: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
     revertBurn(
       _stableBridgingFee: BigNumberish,
       _externalID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     revertBurnAndBurn(
       _stableBridgingFee: BigNumberish,
@@ -1154,7 +1160,7 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _revertableAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     revertMetaBurn(
       _stableBridgingFee: BigNumberish,
@@ -1165,7 +1171,7 @@ export interface Synthesis extends BaseContract {
       _burnToken: string,
       _burnCalldata: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     revertSynthesizeRequest(
       _stableBridgingFee: BigNumberish,
@@ -1175,7 +1181,7 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _clientID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     revertSynthesizeRequestByBridge(
       _stableBridgingFee: BigNumberish,
@@ -1186,45 +1192,45 @@ export interface Synthesis extends BaseContract {
       _sender: string,
       _clientID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     setFabric(
       _fabric: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     setMetaRouter(
       _metaRouter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     setTokenThreshold(
       _token: string,
       _threshold: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     synthesizeStates(
       arg0: BytesLike,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    tokenThreshold(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    tokenThreshold(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     unpause(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    versionRecipient(overrides?: CallOverrides): Promise<BigNumber>
-  }
+    versionRecipient(overrides?: CallOverrides): Promise<BigNumber>;
+  };
 
   populateTransaction: {
-    bridge(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    bridge(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     burnSyntheticToken(
       _stableBridgingFee: BigNumberish,
@@ -1237,33 +1243,33 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _clientID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    fabric(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    fabric(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
       _bridge: string,
       _trustedForwarder: string,
       _metaRouter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     isTrustedForwarder(
       forwarder: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     metaBurnSyntheticToken(
       _metaBurnTransaction: MetaRouteStructs.MetaBurnTransactionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     metaMintSyntheticToken(
       _metaMintTransaction: MetaRouteStructs.MetaMintTransactionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    metaRouter(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    metaRouter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     mintSyntheticToken(
       _stableBridgingFee: BigNumberish,
@@ -1274,32 +1280,32 @@ export interface Synthesis extends BaseContract {
       _amount: BigNumberish,
       _to: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    paused(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    requestCount(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    requestCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     requests(
       arg0: BytesLike,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     revertBurn(
       _stableBridgingFee: BigNumberish,
       _externalID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     revertBurnAndBurn(
       _stableBridgingFee: BigNumberish,
@@ -1309,7 +1315,7 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _revertableAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     revertMetaBurn(
       _stableBridgingFee: BigNumberish,
@@ -1320,7 +1326,7 @@ export interface Synthesis extends BaseContract {
       _burnToken: string,
       _burnCalldata: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     revertSynthesizeRequest(
       _stableBridgingFee: BigNumberish,
@@ -1330,7 +1336,7 @@ export interface Synthesis extends BaseContract {
       _chainID: BigNumberish,
       _clientID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     revertSynthesizeRequestByBridge(
       _stableBridgingFee: BigNumberish,
@@ -1341,43 +1347,43 @@ export interface Synthesis extends BaseContract {
       _sender: string,
       _clientID: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     setFabric(
       _fabric: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     setMetaRouter(
       _metaRouter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     setTokenThreshold(
       _token: string,
       _threshold: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     synthesizeStates(
       arg0: BytesLike,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     tokenThreshold(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     unpause(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    versionRecipient(overrides?: CallOverrides): Promise<PopulatedTransaction>
-  }
+    versionRecipient(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+  };
 }

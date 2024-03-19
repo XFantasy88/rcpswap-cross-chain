@@ -1,4 +1,4 @@
-import { Config } from "../types"
+import { Config } from "../types";
 
 export const config: Config = {
   advisor: {
@@ -9,4 +9,4 @@ export const config: Config = {
     default: "0x1b5D6DDF6086Bb06616f58274F894099c31e9DB5",
   },
   chains: [],
-}
+};

@@ -13,187 +13,190 @@ import {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers"
-import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi"
-import { Listener, Provider } from "@ethersproject/providers"
-import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common"
+} from "ethers";
+import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
+import { Listener, Provider } from "@ethersproject/providers";
+import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export declare namespace THORChainRouter {
-  export type CoinStruct = { asset: string; amount: BigNumberish }
+  export type CoinStruct = { asset: string; amount: BigNumberish };
 
   export type CoinStructOutput = [string, BigNumber] & {
-    asset: string
-    amount: BigNumber
-  }
+    asset: string;
+    amount: BigNumber;
+  };
 }
 
 export interface ThorRouterInterface extends utils.Interface {
-  contractName: "ThorRouter"
+  contractName: "ThorRouter";
   functions: {
-    "RUNE()": FunctionFragment
-    "deposit(address,address,uint256,string)": FunctionFragment
-    "depositWithExpiry(address,address,uint256,string,uint256)": FunctionFragment
-    "returnVaultAssets(address,address,(address,uint256)[],string)": FunctionFragment
-    "transferAllowance(address,address,address,uint256,string)": FunctionFragment
-    "transferOut(address,address,uint256,string)": FunctionFragment
-    "transferOutAndCall(address,address,address,uint256,string)": FunctionFragment
-    "vaultAllowance(address,address)": FunctionFragment
-  }
+    "RUNE()": FunctionFragment;
+    "deposit(address,address,uint256,string)": FunctionFragment;
+    "depositWithExpiry(address,address,uint256,string,uint256)": FunctionFragment;
+    "returnVaultAssets(address,address,(address,uint256)[],string)": FunctionFragment;
+    "transferAllowance(address,address,address,uint256,string)": FunctionFragment;
+    "transferOut(address,address,uint256,string)": FunctionFragment;
+    "transferOutAndCall(address,address,address,uint256,string)": FunctionFragment;
+    "vaultAllowance(address,address)": FunctionFragment;
+  };
 
-  encodeFunctionData(functionFragment: "RUNE", values?: undefined): string
+  encodeFunctionData(functionFragment: "RUNE", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "deposit",
     values: [string, string, BigNumberish, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "depositWithExpiry",
     values: [string, string, BigNumberish, string, BigNumberish]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "returnVaultAssets",
     values: [string, string, THORChainRouter.CoinStruct[], string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "transferAllowance",
     values: [string, string, string, BigNumberish, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "transferOut",
     values: [string, string, BigNumberish, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "transferOutAndCall",
     values: [string, string, string, BigNumberish, string]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: "vaultAllowance",
     values: [string, string]
-  ): string
+  ): string;
 
-  decodeFunctionResult(functionFragment: "RUNE", data: BytesLike): Result
-  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "RUNE", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "depositWithExpiry",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "returnVaultAssets",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferAllowance",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: "transferOut", data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOut",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferOutAndCall",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
     functionFragment: "vaultAllowance",
     data: BytesLike
-  ): Result
+  ): Result;
 
   events: {
-    "Deposit(address,address,uint256,string)": EventFragment
-    "TransferAllowance(address,address,address,uint256,string)": EventFragment
-    "TransferOut(address,address,address,uint256,string)": EventFragment
-    "TransferOutAndCall(address,address,uint256,address,address,uint256,string)": EventFragment
-    "VaultTransfer(address,address,tuple[],string)": EventFragment
-  }
+    "Deposit(address,address,uint256,string)": EventFragment;
+    "TransferAllowance(address,address,address,uint256,string)": EventFragment;
+    "TransferOut(address,address,address,uint256,string)": EventFragment;
+    "TransferOutAndCall(address,address,uint256,address,address,uint256,string)": EventFragment;
+    "VaultTransfer(address,address,tuple[],string)": EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "TransferAllowance"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "TransferOut"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "TransferOutAndCall"): EventFragment
-  getEvent(nameOrSignatureOrTopic: "VaultTransfer"): EventFragment
+  getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TransferAllowance"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TransferOut"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TransferOutAndCall"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VaultTransfer"): EventFragment;
 }
 
 export type DepositEvent = TypedEvent<
   [string, string, BigNumber, string],
   { to: string; asset: string; amount: BigNumber; memo: string }
->
+>;
 
-export type DepositEventFilter = TypedEventFilter<DepositEvent>
+export type DepositEventFilter = TypedEventFilter<DepositEvent>;
 
 export type TransferAllowanceEvent = TypedEvent<
   [string, string, string, BigNumber, string],
   {
-    oldVault: string
-    newVault: string
-    asset: string
-    amount: BigNumber
-    memo: string
+    oldVault: string;
+    newVault: string;
+    asset: string;
+    amount: BigNumber;
+    memo: string;
   }
->
+>;
 
 export type TransferAllowanceEventFilter =
-  TypedEventFilter<TransferAllowanceEvent>
+  TypedEventFilter<TransferAllowanceEvent>;
 
 export type TransferOutEvent = TypedEvent<
   [string, string, string, BigNumber, string],
   { vault: string; to: string; asset: string; amount: BigNumber; memo: string }
->
+>;
 
-export type TransferOutEventFilter = TypedEventFilter<TransferOutEvent>
+export type TransferOutEventFilter = TypedEventFilter<TransferOutEvent>;
 
 export type TransferOutAndCallEvent = TypedEvent<
   [string, string, BigNumber, string, string, BigNumber, string],
   {
-    vault: string
-    target: string
-    amount: BigNumber
-    finalAsset: string
-    to: string
-    amountOutMin: BigNumber
-    memo: string
+    vault: string;
+    target: string;
+    amount: BigNumber;
+    finalAsset: string;
+    to: string;
+    amountOutMin: BigNumber;
+    memo: string;
   }
->
+>;
 
 export type TransferOutAndCallEventFilter =
-  TypedEventFilter<TransferOutAndCallEvent>
+  TypedEventFilter<TransferOutAndCallEvent>;
 
 export type VaultTransferEvent = TypedEvent<
   [string, string, THORChainRouter.CoinStructOutput[], string],
   {
-    oldVault: string
-    newVault: string
-    coins: THORChainRouter.CoinStructOutput[]
-    memo: string
+    oldVault: string;
+    newVault: string;
+    coins: THORChainRouter.CoinStructOutput[];
+    memo: string;
   }
->
+>;
 
-export type VaultTransferEventFilter = TypedEventFilter<VaultTransferEvent>
+export type VaultTransferEventFilter = TypedEventFilter<VaultTransferEvent>;
 
 export interface ThorRouter extends BaseContract {
-  contractName: "ThorRouter"
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  contractName: "ThorRouter";
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: ThorRouterInterface
+  interface: ThorRouterInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
-    RUNE(overrides?: CallOverrides): Promise<[string]>
+    RUNE(overrides?: CallOverrides): Promise<[string]>;
 
     deposit(
       vault: string,
@@ -201,7 +204,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     depositWithExpiry(
       vault: string,
@@ -210,7 +213,7 @@ export interface ThorRouter extends BaseContract {
       memo: string,
       expiration: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     returnVaultAssets(
       router: string,
@@ -218,7 +221,7 @@ export interface ThorRouter extends BaseContract {
       coins: THORChainRouter.CoinStruct[],
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     transferAllowance(
       router: string,
@@ -227,7 +230,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     transferOut(
       to: string,
@@ -235,7 +238,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     transferOutAndCall(
       aggregator: string,
@@ -244,16 +247,16 @@ export interface ThorRouter extends BaseContract {
       amountOutMin: BigNumberish,
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     vaultAllowance(
       vault: string,
       token: string,
       overrides?: CallOverrides
-    ): Promise<[BigNumber] & { amount: BigNumber }>
-  }
+    ): Promise<[BigNumber] & { amount: BigNumber }>;
+  };
 
-  RUNE(overrides?: CallOverrides): Promise<string>
+  RUNE(overrides?: CallOverrides): Promise<string>;
 
   deposit(
     vault: string,
@@ -261,7 +264,7 @@ export interface ThorRouter extends BaseContract {
     amount: BigNumberish,
     memo: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   depositWithExpiry(
     vault: string,
@@ -270,7 +273,7 @@ export interface ThorRouter extends BaseContract {
     memo: string,
     expiration: BigNumberish,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   returnVaultAssets(
     router: string,
@@ -278,7 +281,7 @@ export interface ThorRouter extends BaseContract {
     coins: THORChainRouter.CoinStruct[],
     memo: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   transferAllowance(
     router: string,
@@ -287,7 +290,7 @@ export interface ThorRouter extends BaseContract {
     amount: BigNumberish,
     memo: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   transferOut(
     to: string,
@@ -295,7 +298,7 @@ export interface ThorRouter extends BaseContract {
     amount: BigNumberish,
     memo: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   transferOutAndCall(
     aggregator: string,
@@ -304,16 +307,16 @@ export interface ThorRouter extends BaseContract {
     amountOutMin: BigNumberish,
     memo: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   vaultAllowance(
     vault: string,
     token: string,
     overrides?: CallOverrides
-  ): Promise<BigNumber>
+  ): Promise<BigNumber>;
 
   callStatic: {
-    RUNE(overrides?: CallOverrides): Promise<string>
+    RUNE(overrides?: CallOverrides): Promise<string>;
 
     deposit(
       vault: string,
@@ -321,7 +324,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     depositWithExpiry(
       vault: string,
@@ -330,7 +333,7 @@ export interface ThorRouter extends BaseContract {
       memo: string,
       expiration: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     returnVaultAssets(
       router: string,
@@ -338,7 +341,7 @@ export interface ThorRouter extends BaseContract {
       coins: THORChainRouter.CoinStruct[],
       memo: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     transferAllowance(
       router: string,
@@ -347,7 +350,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     transferOut(
       to: string,
@@ -355,7 +358,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     transferOutAndCall(
       aggregator: string,
@@ -364,14 +367,14 @@ export interface ThorRouter extends BaseContract {
       amountOutMin: BigNumberish,
       memo: string,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     vaultAllowance(
       vault: string,
       token: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   filters: {
     "Deposit(address,address,uint256,string)"(
@@ -379,13 +382,13 @@ export interface ThorRouter extends BaseContract {
       asset?: string | null,
       amount?: null,
       memo?: null
-    ): DepositEventFilter
+    ): DepositEventFilter;
     Deposit(
       to?: string | null,
       asset?: string | null,
       amount?: null,
       memo?: null
-    ): DepositEventFilter
+    ): DepositEventFilter;
 
     "TransferAllowance(address,address,address,uint256,string)"(
       oldVault?: string | null,
@@ -393,14 +396,14 @@ export interface ThorRouter extends BaseContract {
       asset?: null,
       amount?: null,
       memo?: null
-    ): TransferAllowanceEventFilter
+    ): TransferAllowanceEventFilter;
     TransferAllowance(
       oldVault?: string | null,
       newVault?: string | null,
       asset?: null,
       amount?: null,
       memo?: null
-    ): TransferAllowanceEventFilter
+    ): TransferAllowanceEventFilter;
 
     "TransferOut(address,address,address,uint256,string)"(
       vault?: string | null,
@@ -408,14 +411,14 @@ export interface ThorRouter extends BaseContract {
       asset?: null,
       amount?: null,
       memo?: null
-    ): TransferOutEventFilter
+    ): TransferOutEventFilter;
     TransferOut(
       vault?: string | null,
       to?: string | null,
       asset?: null,
       amount?: null,
       memo?: null
-    ): TransferOutEventFilter
+    ): TransferOutEventFilter;
 
     "TransferOutAndCall(address,address,uint256,address,address,uint256,string)"(
       vault?: string | null,
@@ -425,7 +428,7 @@ export interface ThorRouter extends BaseContract {
       to?: null,
       amountOutMin?: null,
       memo?: null
-    ): TransferOutAndCallEventFilter
+    ): TransferOutAndCallEventFilter;
     TransferOutAndCall(
       vault?: string | null,
       target?: null,
@@ -434,24 +437,24 @@ export interface ThorRouter extends BaseContract {
       to?: null,
       amountOutMin?: null,
       memo?: null
-    ): TransferOutAndCallEventFilter
+    ): TransferOutAndCallEventFilter;
 
     "VaultTransfer(address,address,tuple[],string)"(
       oldVault?: string | null,
       newVault?: string | null,
       coins?: null,
       memo?: null
-    ): VaultTransferEventFilter
+    ): VaultTransferEventFilter;
     VaultTransfer(
       oldVault?: string | null,
       newVault?: string | null,
       coins?: null,
       memo?: null
-    ): VaultTransferEventFilter
-  }
+    ): VaultTransferEventFilter;
+  };
 
   estimateGas: {
-    RUNE(overrides?: CallOverrides): Promise<BigNumber>
+    RUNE(overrides?: CallOverrides): Promise<BigNumber>;
 
     deposit(
       vault: string,
@@ -459,7 +462,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     depositWithExpiry(
       vault: string,
@@ -468,7 +471,7 @@ export interface ThorRouter extends BaseContract {
       memo: string,
       expiration: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     returnVaultAssets(
       router: string,
@@ -476,7 +479,7 @@ export interface ThorRouter extends BaseContract {
       coins: THORChainRouter.CoinStruct[],
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     transferAllowance(
       router: string,
@@ -485,7 +488,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     transferOut(
       to: string,
@@ -493,7 +496,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     transferOutAndCall(
       aggregator: string,
@@ -502,17 +505,17 @@ export interface ThorRouter extends BaseContract {
       amountOutMin: BigNumberish,
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     vaultAllowance(
       vault: string,
       token: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
-    RUNE(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    RUNE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     deposit(
       vault: string,
@@ -520,7 +523,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     depositWithExpiry(
       vault: string,
@@ -529,7 +532,7 @@ export interface ThorRouter extends BaseContract {
       memo: string,
       expiration: BigNumberish,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     returnVaultAssets(
       router: string,
@@ -537,7 +540,7 @@ export interface ThorRouter extends BaseContract {
       coins: THORChainRouter.CoinStruct[],
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     transferAllowance(
       router: string,
@@ -546,7 +549,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     transferOut(
       to: string,
@@ -554,7 +557,7 @@ export interface ThorRouter extends BaseContract {
       amount: BigNumberish,
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     transferOutAndCall(
       aggregator: string,
@@ -563,12 +566,12 @@ export interface ThorRouter extends BaseContract {
       amountOutMin: BigNumberish,
       memo: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     vaultAllowance(
       vault: string,
       token: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }

@@ -1,24 +1,22 @@
-import { utils } from "ethers"
-import { Token, TokenAmount, wrappedToken } from "../entities"
+import { Token, TokenAmount, wrappedToken } from "../entities";
 import type {
   CrosschainSwapExactInResult,
   SwapExactInParams,
-} from "./baseSwapping"
-import { ErrorCode } from "./error"
-import type { Swapping } from "./swapping"
-import type { Symbiosis } from "./symbiosis"
-import type { OmniPoolConfig } from "./types"
-import JSBI from "jsbi"
+} from "./baseSwapping";
+import type { Swapping } from "./swapping";
+import type { Symbiosis } from "./symbiosis";
+import type { OmniPoolConfig } from "./types";
+import { Error, ErrorCode } from "./error";
 
-type WaitForCompleteArgs = Parameters<typeof Swapping.prototype.waitForComplete>
-
-const SOCKET_IO_PARTNER_ID = utils.formatBytes32String("socket-io")
+type WaitForCompleteArgs = Parameters<
+  typeof Swapping.prototype.waitForComplete
+>;
 
 // Swapping wrapper what select best omni pool for swapping
 export class BestPoolSwapping {
-  constructor(public symbiosis: Symbiosis) {}
+  constructor(private symbiosis: Symbiosis) {}
 
-  public swapping?: Swapping
+  public swapping?: Swapping;
 
   async exactIn({
     tokenAmountIn,
@@ -28,64 +26,60 @@ export class BestPoolSwapping {
     slippage,
     deadline,
     oneInchProtocols,
-    maxDepth,
-  }: SwapExactInParams) {
-    const { omniPools } = this.symbiosis.config
-
-    const feeTokenAmount = new TokenAmount(
-      tokenAmountIn.token,
-      JSBI.divide(tokenAmountIn.raw, JSBI.BigInt("100"))
-    )
+  }: SwapExactInParams): Promise<CrosschainSwapExactInResult> {
+    const { omniPools } = this.symbiosis.config;
 
     const exactInParams: SwapExactInParams = {
-      tokenAmountIn: tokenAmountIn.subtract(feeTokenAmount),
+      tokenAmountIn,
       tokenOut,
       from,
       to,
       slippage,
       deadline,
       oneInchProtocols,
-      maxDepth,
-    }
+    };
 
     const optimalOmniPool = this.getOptimalOmniPool(
       tokenAmountIn.token,
       tokenOut
-    )
+    );
 
     if (optimalOmniPool) {
-      const action = this.symbiosis.newSwapping(optimalOmniPool)
-      const actionResult = await action.exactIn(exactInParams)
+      try {
+        const action = this.symbiosis.newSwapping(optimalOmniPool);
+        const actionResult = await action.exactIn(exactInParams);
 
-      this.swapping = action
-      return actionResult
+        this.swapping = action;
+        return actionResult;
+      } catch (e) {
+        console.error(e);
+        // continue
+      }
     }
 
     const results = await Promise.allSettled(
       omniPools.map(async (omniPoolConfig) => {
-        const action = this.symbiosis.newSwapping(omniPoolConfig)
+        const action = this.symbiosis.newSwapping(omniPoolConfig);
 
-        const actionResult = await action.exactIn(exactInParams)
+        const actionResult = await action.exactIn(exactInParams);
 
-        return { action, actionResult }
+        return { action, actionResult };
       })
-    )
+    );
 
-    let swapping: Swapping | undefined
-    let actionResult: CrosschainSwapExactInResult | undefined
-    let actionError: ErrorCode | undefined
+    let swapping: Swapping | undefined;
+    let actionResult: CrosschainSwapExactInResult | undefined;
+    const errors: Error[] = [];
 
     for (const item of results) {
       if (item.status !== "fulfilled") {
-        if (!actionError || item.reason.code !== ErrorCode.NO_TRANSIT_TOKEN) {
-          actionError = item.reason
-        }
+        errors.push(item.reason);
 
-        console.error("error: ", item)
-        continue
+        console.error("error: ", item);
+        continue;
       }
 
-      const { value } = item
+      const { value } = item;
 
       if (
         actionResult &&
@@ -93,84 +87,104 @@ export class BestPoolSwapping {
           value.actionResult.tokenAmountOut
         )
       ) {
-        continue
+        continue;
       }
 
-      swapping = value.action
-      actionResult = value.actionResult
+      swapping = value.action;
+      actionResult = value.actionResult;
     }
 
     if (!actionResult || !swapping) {
-      throw actionError
+      const uniqueCodes = errors
+        .map((i) => i.code)
+        .reduce((acc, i) => {
+          if (!acc.includes(i)) {
+            acc.push(i);
+          }
+          return acc;
+        }, [] as ErrorCode[]);
+
+      // if all errors are same return first of them
+      if (uniqueCodes.length === 1) {
+        throw errors[0];
+      }
+      // skip no transit token error (no chains pair)
+      const otherErrors = errors.filter((e) => {
+        return e.code !== ErrorCode.NO_TRANSIT_TOKEN;
+      });
+
+      if (otherErrors.length > 0) {
+        throw otherErrors[0];
+      }
+      throw errors[0];
     }
 
-    this.swapping = swapping
-    return actionResult
+    this.swapping = swapping;
+    return actionResult;
   }
 
   // Need to backward compatibility to Swapping
   public get amountInUsd(): TokenAmount | undefined {
     if (!this.swapping) {
-      return undefined
+      return undefined;
     }
 
-    return this.swapping.amountInUsd
+    return this.swapping.amountInUsd;
   }
 
   // Need to backward compatibility to Swapping
   async waitForComplete(...args: WaitForCompleteArgs) {
     if (!this.swapping) {
-      throw new Error("Swapping is not started")
+      throw new Error("Swapping is not started");
     }
 
-    return this.swapping.waitForComplete(...args)
+    return this.swapping.waitForComplete(...args);
   }
 
   private getOptimalOmniPool(
     tokenIn: Token,
     tokenOut: Token
   ): OmniPoolConfig | undefined {
-    if (this.symbiosis.clientId !== SOCKET_IO_PARTNER_ID) {
-      return undefined
-    }
-
-    const { omniPools } = this.symbiosis.config
+    const { omniPools } = this.symbiosis.config;
 
     const swapWithoutTrades = omniPools.find((omniPoolConfig) => {
       try {
         const transitTokenIn = this.symbiosis.transitToken(
           tokenIn.chainId,
           omniPoolConfig
-        )
+        );
         const transitTokenOut = this.symbiosis.transitToken(
           tokenOut.chainId,
           omniPoolConfig
-        )
+        );
 
         return (
           transitTokenIn.equals(wrappedToken(tokenIn)) &&
           transitTokenOut.equals(wrappedToken(tokenOut))
-        )
+        );
       } catch {
-        return false
+        return false;
       }
-    })
+    });
 
     if (swapWithoutTrades) {
-      return swapWithoutTrades
+      return swapWithoutTrades;
     }
 
     return omniPools.find((omniPoolConfig) => {
       try {
+        // error will be thrown if there is no transit token
+        this.symbiosis.transitToken(tokenIn.chainId, omniPoolConfig);
+
         const transitTokenOut = this.symbiosis.transitToken(
           tokenOut.chainId,
           omniPoolConfig
-        )
+        );
 
-        return transitTokenOut.equals(wrappedToken(tokenOut))
+        return transitTokenOut.equals(wrappedToken(tokenOut));
       } catch {
-        return false
+        return false;
       }
-    })
+    });
   }
 }
