@@ -1,6 +1,6 @@
 import invariant from "tiny-invariant";
 
-import { ChainId, TradeType } from "./constants";
+import { TradeType } from "./constants";
 import { validateAndParseAddress } from "./utils";
 import { Percent, TokenAmount, Trade } from "./entities";
 
