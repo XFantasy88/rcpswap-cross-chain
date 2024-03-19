@@ -1,4 +1,3 @@
-import { AddressZero } from "@ethersproject/constants";
 import JSBI from "jsbi";
 import { ChainId } from "../constants";
 import { Percent, Token, WETH } from "../entities";

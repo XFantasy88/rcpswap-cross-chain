@@ -1,4 +1,3 @@
-import { utils } from "ethers";
 import { ChainId } from "../../constants";
 import { Percent, Token, TokenAmount } from "../../entities";
 import { DataProvider } from "../dataProvider";
@@ -39,7 +38,7 @@ class TradeNotInitializedError extends Error {
   }
 }
 
-const OPEN_OCEAN_CLIENT_ID = utils.formatBytes32String("openocean");
+// const OPEN_OCEAN_CLIENT_ID = utils.formatBytes32String("openocean");
 
 type TradeType =
   | OneInchTrade
@@ -73,7 +72,6 @@ export class AggregatorTrade implements SymbiosisTrade {
       to,
       tokenAmountIn,
       tokenOut,
-      clientId,
       ttl,
     } = this.params;
 

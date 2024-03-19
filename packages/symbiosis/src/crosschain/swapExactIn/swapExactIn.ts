@@ -8,7 +8,6 @@ import { onchainSwap } from "./onchainSwap";
 import { SwapExactInParams, SwapExactInResult } from "./types";
 import { isUnwrapSupported, unwrap } from "./unwrap";
 import { isWrapSupported, wrap } from "./wrap";
-import { ChainId } from "../../constants";
 
 // Universal stateless function that allows swap tokens on same chain or crosschain
 export async function swapExactIn(

@@ -76,7 +76,6 @@ import {
   swapExactIn,
   SwapExactInResult,
 } from "./swapExactIn";
-import { delay } from "../utils";
 
 export type ConfigName = "dev" | "testnet" | "mainnet" | "teleport";
 

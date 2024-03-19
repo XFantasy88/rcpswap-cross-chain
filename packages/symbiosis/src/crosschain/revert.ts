@@ -390,7 +390,7 @@ export class RevertPending {
   private getRevertSynthesizeTransactionRequestV2(
     fee: TokenAmount
   ): TransactionRequest {
-    const { internalId, chainIdFrom, revertableAddress } = this.request;
+    const { internalId, chainIdFrom } = this.request;
     const portal = this.symbiosis.portal(chainIdFrom);
 
     const params = {
