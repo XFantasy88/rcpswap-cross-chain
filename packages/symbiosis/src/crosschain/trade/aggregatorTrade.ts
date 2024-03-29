@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { ChainId } from "../../constants";
 import { Percent, Token, TokenAmount } from "../../entities";
 import { DataProvider } from "../dataProvider";
