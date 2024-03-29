@@ -20,7 +20,13 @@ type ChainTokensList = {
   readonly [chainId in ChainId]?: Token[];
 };
 
-export const XFUSION_CHAINS: ChainId[] = [ChainId.ARBITRUM_NOVA];
+export const XFUSION_CHAINS: ChainId[] = [
+  ChainId.ARBITRUM_NOVA,
+  ChainId.ARBITRUM_MAINNET,
+  ChainId.AVAX_MAINNET,
+  ChainId.BSC_MAINNET,
+  ChainId.MATIC_MAINNET,
+];
 
 export const ONE_INCH_CHAINS: ChainId[] = [
   ChainId.BSC_MAINNET,

@@ -1,4 +1,4 @@
-import { ChainId } from "rcpswap/chain"
+import { ChainId } from "rcpswap/chain";
 import {
   ARB,
   BRICK,
@@ -13,10 +13,10 @@ import {
   WBTC,
   WETH9,
   WNATIVE,
-} from "rcpswap/currency"
+} from "rcpswap/currency";
 
 export const BASES_TO_CHECK_TRADES_AGAINST: {
-  readonly [chainId: number]: Token[]
+  readonly [chainId: number]: Token[];
 } = {
   [ChainId.BSC]: [
     WNATIVE[ChainId.BSC],
@@ -81,4 +81,4 @@ export const BASES_TO_CHECK_TRADES_AGAINST: {
       name: "Dai Stablecoin",
     }),
   ],
-}
+};

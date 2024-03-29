@@ -76,24 +76,24 @@ export class AggregatorTrade implements SymbiosisTrade {
     } = this.params;
 
     const aggregators: Promise<TradeType>[] = [];
-    if (OneInchTrade.isAvailable(tokenAmountIn.token.chainId)) {
-      const oracle = symbiosis.oneInchOracle(
-        this.params.tokenAmountIn.token.chainId
-      );
-      const oneInchTrade = new OneInchTrade(
-        this.params.symbiosis,
-        tokenAmountIn,
-        tokenOut,
-        from,
-        to,
-        slippage,
-        oracle,
-        dataProvider,
-        this.params.oneInchProtocols
-      );
+    // if (OneInchTrade.isAvailable(tokenAmountIn.token.chainId)) {
+    //   const oracle = symbiosis.oneInchOracle(
+    //     this.params.tokenAmountIn.token.chainId
+    //   );
+    //   const oneInchTrade = new OneInchTrade(
+    //     this.params.symbiosis,
+    //     tokenAmountIn,
+    //     tokenOut,
+    //     from,
+    //     to,
+    //     slippage,
+    //     oracle,
+    //     dataProvider,
+    //     this.params.oneInchProtocols
+    //   );
 
-      aggregators.push(oneInchTrade.init());
-    }
+    //   aggregators.push(oneInchTrade.init());
+    // }
 
     // if (OpenOceanTrade.isAvailable(tokenAmountIn.token.chainId)) {
     //   const openOceanTrade = new OpenOceanTrade({
@@ -117,17 +117,17 @@ export class AggregatorTrade implements SymbiosisTrade {
     //   aggregators.push(Promise.race(promises));
     // }
 
-    if (IzumiTrade.isSupported(tokenAmountIn.token.chainId)) {
-      const izumiTrade = new IzumiTrade({
-        symbiosis,
-        tokenAmountIn,
-        tokenOut,
-        slippage,
-        ttl,
-        to,
-      });
-      aggregators.push(izumiTrade.init());
-    }
+    // if (IzumiTrade.isSupported(tokenAmountIn.token.chainId)) {
+    //   const izumiTrade = new IzumiTrade({
+    //     symbiosis,
+    //     tokenAmountIn,
+    //     tokenOut,
+    //     slippage,
+    //     ttl,
+    //     to,
+    //   });
+    //   aggregators.push(izumiTrade.init());
+    // }
 
     if (XfusionTrade.isAvailable(tokenAmountIn.token.chainId)) {
       this.trade = await this.buildXfusionTrade();
