@@ -58,8 +58,12 @@ export class XfusionTrade implements SymbiosisTrade {
     // @ts-ignore
     this.chain = tokenAmountIn.token.chain as ChainId;
 
+    console.log(this.chain);
+
     this.inToken = this.getToken(this.tokenAmountIn.token);
+    console.log(this.inToken);
     this.outToken = this.getToken(this.tokenOut);
+    console.log(this.outToken);
   }
 
   public async init() {
@@ -70,8 +74,6 @@ export class XfusionTrade implements SymbiosisTrade {
     dataFetcher.stopDataFetching();
 
     const gasPrice = await this.getGasPrice(dataFetcher.web3Client);
-
-    console.log(this.chain, gasPrice);
 
     const poolsCodeMap = await dataFetcher.getCurrentPoolCodeMap(
       this.inToken,
