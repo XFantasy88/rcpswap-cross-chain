@@ -71,6 +71,8 @@ export class XfusionTrade implements SymbiosisTrade {
 
     const gasPrice = await this.getGasPrice(dataFetcher.web3Client);
 
+    console.log(this.chain, gasPrice);
+
     const poolsCodeMap = await dataFetcher.getCurrentPoolCodeMap(
       this.inToken,
       this.outToken
@@ -88,6 +90,8 @@ export class XfusionTrade implements SymbiosisTrade {
       Number(gasPrice.toString()),
       this.maxDepth ?? 100
     );
+
+    console.log(bestRoute);
 
     if (bestRoute.status === RouteStatus.NoWay) {
       throw new Error("Cannot create trade");
