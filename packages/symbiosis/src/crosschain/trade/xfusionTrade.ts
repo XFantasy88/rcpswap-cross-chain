@@ -55,15 +55,11 @@ export class XfusionTrade implements SymbiosisTrade {
     this.router = router;
     this.routerAddress = router.address;
     this.maxDepth = maxDepth;
-    // @ts-ignore
-    this.chain = tokenAmountIn.token.chain as ChainId;
 
-    console.log(this.chain);
+    this.chain = tokenAmountIn.token.chain.id;
 
     this.inToken = this.getToken(this.tokenAmountIn.token);
-    console.log(this.inToken);
     this.outToken = this.getToken(this.tokenOut);
-    console.log(this.outToken);
   }
 
   public async init() {
