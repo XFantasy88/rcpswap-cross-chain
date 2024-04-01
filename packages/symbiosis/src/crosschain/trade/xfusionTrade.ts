@@ -38,6 +38,7 @@ export class XfusionTrade implements SymbiosisTrade {
   private readonly inToken: Type;
   private readonly outToken: Type;
   private readonly router: XfusionRouter;
+  private readonly chain: ChainId;
 
   constructor(
     tokenAmountIn: TokenAmount,
@@ -54,13 +55,16 @@ export class XfusionTrade implements SymbiosisTrade {
     this.router = router;
     this.routerAddress = router.address;
     this.maxDepth = maxDepth;
+    // @ts-ignore
+    this.chain = tokenAmountIn.token.chain as ChainId;
 
     this.inToken = this.getToken(this.tokenAmountIn.token);
     this.outToken = this.getToken(this.tokenOut);
   }
 
   public async init() {
-    const dataFetcher = DataFetcher.onChain(ChainId.ARBITRUM_NOVA);
+    //@ts-ignore
+    const dataFetcher = DataFetcher.onChain(this.chain);
     dataFetcher.startDataFetching();
     await dataFetcher.fetchPoolsForToken(this.inToken, this.outToken);
     dataFetcher.stopDataFetching();
@@ -76,15 +80,14 @@ export class XfusionTrade implements SymbiosisTrade {
 
     const bestRoute = Router.findBestRoute(
       poolsCodeMap,
-      ChainId.ARBITRUM_NOVA,
+      //@ts-ignore
+      this.chain,
       this.inToken,
       BigInt(this.tokenAmountIn.raw.toString()),
       this.outToken,
       Number(gasPrice.toString()),
       this.maxDepth ?? 100
     );
-
-    console.log(bestRoute)
 
     if (bestRoute.status === RouteStatus.NoWay) {
       throw new Error("Cannot create trade");
@@ -135,10 +138,11 @@ export class XfusionTrade implements SymbiosisTrade {
     this.inToken;
     this.outToken;
     this.router;
-    if (token.isNative) return Native.onChain(ChainId.ARBITRUM_NOVA);
+    //@ts-ignore
+    if (token.isNative) return Native.onChain(this.chain);
     return new RToken({
       address: token.address,
-      chainId: ChainId.ARBITRUM_NOVA,
+      chainId: this.chain,
       decimals: token.decimals,
       name: token.name,
       symbol: token.symbol,
@@ -153,7 +157,7 @@ export class XfusionTrade implements SymbiosisTrade {
       this.inToken,
       this.outToken,
       this.to as `0x${string}`,
-      ROUTE_PROCESSOR_3_ADDRESS[ChainId.ARBITRUM_NOVA]
+      ROUTE_PROCESSOR_3_ADDRESS[this.chain]
     );
 
     return {
