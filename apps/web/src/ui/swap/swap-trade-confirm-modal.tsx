@@ -416,6 +416,7 @@ export default function SwapTradeConfirmModal() {
       }
     },
     onError: (error) => {
+      console.log(error)
       setSwapErrorMessage(
         error instanceof TransactionExecutionError
           ? "User rejected the transaction."
