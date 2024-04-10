@@ -47,12 +47,7 @@ export async function unwrap(
     callData,
   });
 
-  let approveTo: string;
-  if (payload.transactionType === "tron") {
-    approveTo = payload.transactionRequest.contract_address;
-  } else {
-    approveTo = payload.transactionRequest.to as string;
-  }
+  let approveTo = payload.transactionRequest.to as string;
   return {
     kind: "unwrap",
     route: [params.inTokenAmount.token, params.outToken],

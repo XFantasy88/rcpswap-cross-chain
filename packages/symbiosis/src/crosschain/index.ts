@@ -5,7 +5,6 @@ export * from "./error";
 export * from "./utils";
 export * from "./constants";
 export * from "./multicall";
-export * from "./zapping";
 export * from "./waitForComplete";
 export * from "./revertRequest";
 export * from "./revert";
@@ -17,8 +16,6 @@ export {
   getTradePriceImpact,
   IzumiTrade,
 } from "./trade";
-export * from "./zappingSyncSwapLaunchPool";
 export * from "./bestPoolSwapping";
 export * from "./baseSwapping";
-
 export type { SwapExactInResult } from "./swapExactIn";

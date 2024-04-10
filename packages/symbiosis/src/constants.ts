@@ -71,7 +71,7 @@ export const INIT_CODE_HASH = {
   [ChainId.ARBITRUM_MAINNET]:
     "0x8336ef61546f16041265cbd61fb71f00434b515a1f3dba059227802ec4a4be4f", // arbSwap
   [ChainId.ARBITRUM_NOVA]:
-    "0x70b19cf85a176c6b86e2d324be179104bdc8fafee13d548ae07d28b9f53cbc71",
+    "0x70b19cf85a176c6b86e2d324be179104bdc8fafee13d548ae07d28b9f53cbc71", // arbSwap
 };
 
 export const MINIMUM_LIQUIDITY = JSBI.BigInt(1000);

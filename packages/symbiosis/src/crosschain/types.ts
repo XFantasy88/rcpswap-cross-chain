@@ -40,12 +40,20 @@ export type OmniPoolConfig = {
   chainId: ChainId;
   address: string;
   oracle: string;
+  generalPurpose: boolean;
+};
+
+export type AmountLimit = {
+  chainId: ChainId;
+  address: string;
+  value: string;
 };
 
 export type Config = {
   advisor: AdvisorConfig;
   omniPools: OmniPoolConfig[];
   revertableAddress: Partial<Record<ChainId, string>> & { default: string };
+  limits?: AmountLimit[];
   chains: ChainConfig[];
 };
 
@@ -55,6 +63,7 @@ export type OverrideChainConfig = {
 };
 export type OverrideConfig = {
   chains?: OverrideChainConfig[];
+  limits?: AmountLimit[];
   makeOneInchRequest?: MakeOneInchRequestFn;
   fetch?: typeof fetch;
 };

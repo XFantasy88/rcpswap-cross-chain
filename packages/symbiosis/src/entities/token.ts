@@ -117,6 +117,7 @@ export const WETH = {
         "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/info/logo.png",
     },
   }),
+
   [ChainId.AVAX_MAINNET]: new Token({
     chainId: ChainId.AVAX_MAINNET,
     address: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",

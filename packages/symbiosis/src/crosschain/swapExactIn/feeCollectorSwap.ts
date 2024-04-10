@@ -1,5 +1,5 @@
 import { AddressZero } from "@ethersproject/constants";
-import { BigNumber, BytesLike, utils } from "ethers";
+import { BigNumber, BytesLike } from "ethers";
 import { ChainId } from "../../constants";
 import { TokenAmount } from "../../entities";
 import { onchainSwap } from "./onchainSwap";
@@ -7,6 +7,7 @@ import { SwapExactInParams, SwapExactInResult } from "./types";
 import { FeeCollector__factory } from "../contracts";
 import { preparePayload } from "./preparePayload";
 import { getFunctionSelector } from "../tron";
+import { Error, ErrorCode } from "../error";
 
 const FEE_COLLECTOR_ADDRESES: Partial<Record<ChainId, string>> = {
   [ChainId.BSC_MAINNET]: "0x0425841529882628880fBD228AC90606e0c2e09A",
@@ -50,9 +51,13 @@ export async function feeCollectorSwap(
   let inTokenAmount = params.inTokenAmount;
   if (inTokenAmount.token.isNative) {
     const feeTokenAmount = new TokenAmount(inTokenAmount.token, fee.toString());
-    if (inTokenAmount.lessThan(feeTokenAmount)) {
+    if (
+      inTokenAmount.lessThan(feeTokenAmount) ||
+      inTokenAmount.equalTo(feeTokenAmount)
+    ) {
       throw new Error(
-        `Amount is too low. Min amount: ${feeTokenAmount.toSignificant()}`
+        `Amount is too low. Min amount: ${feeTokenAmount.toSignificant()}`,
+        ErrorCode.AMOUNT_LESS_THAN_FEE
       );
     }
 
@@ -69,18 +74,10 @@ export async function feeCollectorSwap(
   let value: string;
   let callData: BytesLike;
   let routerAddress: string;
-  if (result.transactionType === "tron") {
-    value = result.transactionRequest.call_value.toString();
-    const method = utils
-      .id(result.transactionRequest.function_selector)
-      .slice(0, 10);
-    callData = method + result.transactionRequest.raw_parameter;
-    routerAddress = result.transactionRequest.contract_address;
-  } else {
-    value = result.transactionRequest.value?.toString() as string;
-    callData = result.transactionRequest.data as BytesLike;
-    routerAddress = result.transactionRequest.to as string;
-  }
+
+  value = result.transactionRequest.value?.toString() as string;
+  callData = result.transactionRequest.data as BytesLike;
+  routerAddress = result.transactionRequest.to as string;
 
   if (inTokenAmount.token.isNative) {
     /**

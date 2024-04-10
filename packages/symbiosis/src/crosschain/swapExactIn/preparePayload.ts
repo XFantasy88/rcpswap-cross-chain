@@ -17,6 +17,8 @@ export function preparePayload({
   toAddress,
   callData,
   value = "0",
+  //@ts-ignore
+  functionSelector,
 }: PreparePayloadParams): SwapExactInTransactionPayload {
   return {
     transactionType: "evm",

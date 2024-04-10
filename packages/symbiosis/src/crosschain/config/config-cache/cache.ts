@@ -2,7 +2,6 @@ import type { ConfigName } from "../../symbiosis";
 import mainnet from "./mainnet.json";
 import testnet from "./testnet.json";
 import dev from "./dev.json";
-import teleport from "./teleport.json";
 import { Error, ErrorCode } from "../../error";
 import { ConfigCacheData, Id, OmniPoolInfo, TokenInfo } from "./builder";
 import { ChainId } from "../../../constants";
@@ -20,8 +19,6 @@ export class ConfigCache {
       this.data = testnet;
     } else if (configName === "dev") {
       this.data = dev;
-    } else if (configName === "teleport") {
-      this.data = teleport;
     } else {
       throw new Error("Unknown config name");
     }
@@ -134,9 +131,7 @@ export class ConfigCache {
     });
   }
 
-  // PRIVATE
-
-  private getTokenInfoById(id: Id): TokenInfo {
+  public getTokenInfoById(id: Id): TokenInfo {
     const tokenInfo = this.data.tokens.find((i) => i.id === id);
 
     if (!tokenInfo) {
@@ -145,6 +140,8 @@ export class ConfigCache {
 
     return tokenInfo;
   }
+
+  // --- PRIVATE ---
 
   private getTokenInfoByToken(token: Token): TokenInfo {
     const found = this.data.tokens.find((i) => {

@@ -23,15 +23,11 @@ interface OpenOceanQuote {
 }
 
 const OPEN_OCEAN_NETWORKS: Partial<Record<ChainId, string>> = {
-  // 1inch supported chains
-  // [ChainId.ETH_MAINNET]: 'eth',
-  // [ChainId.BSC_MAINNET]: 'bsc',
-  // [ChainId.MATIC_MAINNET]: 'polygon',
-  // [ChainId.AVAX_MAINNET]: 'avax',
-  // [ChainId.ARBITRUM_MAINNET]: 'arbitrum',
-  // [ChainId.OPTIMISM_MAINNET]: 'optimism',
-  // [ChainId.ZKSYNC_MAINNET]: 'zksync',
-  // [ChainId.BASE_MAINNET]: 'base',
+  // ---  1inch supported chains
+  [ChainId.BSC_MAINNET]: "bsc",
+  [ChainId.MATIC_MAINNET]: "polygon",
+  [ChainId.AVAX_MAINNET]: "avax",
+  [ChainId.ARBITRUM_MAINNET]: "arbitrum",
 };
 
 const BASE_URL = "https://open-api.openocean.finance/v3";

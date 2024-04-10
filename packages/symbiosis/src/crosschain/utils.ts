@@ -235,8 +235,6 @@ export async function getLogWithTimeout({
   });
 }
 
-// const TELOS_MPC_ADDRESS = "0xDcB7d65b15436CE9B608864ACcff75871C6556FC";
-
 // Sets the necessary parameters for send transaction
 export async function prepareTransactionRequest(
   transactionRequest: TransactionRequest,

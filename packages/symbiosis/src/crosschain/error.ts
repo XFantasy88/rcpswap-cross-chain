@@ -1,12 +1,11 @@
 export enum ErrorCode {
   "DEFAULT",
-  "NO_ROUTE",
-  "AMOUNT_TOO_LOW",
-  "AMOUNT_TOO_HIGH",
+  "NO_REPRESENTATION_FOUND",
   "AMOUNT_LESS_THAN_FEE",
   "NO_TRANSIT_TOKEN",
-  "NO_TRANSIT_POOL",
   "MIN_THORCHAIN_AMOUNT_IN",
+  "ADVISOR_ERROR",
+  "AMOUNT_TOO_HIGH",
 }
 
 export class Error {

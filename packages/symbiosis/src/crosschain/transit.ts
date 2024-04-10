@@ -41,18 +41,12 @@ export class Transit {
   public async init(): Promise<Transit> {
     this.feeToken = this.getFeeToken();
 
-    if (this.isV2()) {
-      this.symbiosis.validateSwapAmounts(this.amountIn);
-    }
-
     this.trade = await this.buildTrade();
 
     this.amountOut = this.getTradeAmountOut(this.trade.amountOut);
     this.amountOutMin = this.getTradeAmountOut(this.trade.amountOutMin);
     this.route = this.trade.route;
     this.priceImpact = this.trade.priceImpact;
-
-    this.symbiosis.validateSwapAmounts(this.getBridgeAmountIn());
 
     return this;
   }
@@ -80,7 +74,7 @@ export class Transit {
     if (!this.fee) {
       return amountOut;
     }
-    if (amountOut.lessThan(this.fee)) {
+    if (amountOut.lessThan(this.fee) || amountOut.equalTo(this.fee)) {
       throw new Error(
         `Amount ${amountOut.toSignificant()} ${
           amountOut.token.symbol
@@ -142,7 +136,7 @@ export class Transit {
       return amountOut;
     }
 
-    if (amountOut.lessThan(this.fee)) {
+    if (amountOut.lessThan(this.fee) || amountOut.equalTo(this.fee)) {
       throw new Error(
         `Amount ${amountOut.toSignificant()} ${
           amountOut.token.symbol
@@ -170,7 +164,7 @@ export class Transit {
     if (!rep) {
       throw new Error(
         `Representation of ${this.transitTokenIn.chainId}:${this.transitTokenIn.symbol} in chain ${transitTokenOutChainId} not found`,
-        ErrorCode.NO_ROUTE
+        ErrorCode.NO_REPRESENTATION_FOUND
       );
     }
     return rep;
@@ -191,7 +185,7 @@ export class Transit {
     if (!rep) {
       throw new Error(
         `Representation of ${this.transitTokenOut.symbol} in chain ${transitTokenInChainId} not found`,
-        ErrorCode.NO_ROUTE
+        ErrorCode.NO_REPRESENTATION_FOUND
       );
     }
     return rep;

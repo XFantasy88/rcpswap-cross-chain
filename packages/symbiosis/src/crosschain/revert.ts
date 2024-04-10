@@ -18,7 +18,6 @@ import { WaitForComplete } from "./waitForComplete";
 import { OmniTrade } from "./trade";
 import { OmniPoolConfig } from "./types";
 import { PendingRequest } from "./revertRequest";
-
 import { CROSS_CHAIN_ID } from "./constants";
 
 type RevertBase = {
@@ -42,14 +41,10 @@ export class RevertPending {
   private omniPoolConfig: OmniPoolConfig;
 
   constructor(private symbiosis: Symbiosis, private request: PendingRequest) {
-    const omniPoolConfig = symbiosis.getOmniPoolByToken(
-      this.request.fromTokenAmount.token
-    );
+    const token = this.request.fromTokenAmount.token;
+    const omniPoolConfig = symbiosis.getOmniPoolByToken(token);
     if (!omniPoolConfig) {
-      throw new Error(
-        "No omni pool found for token",
-        ErrorCode.NO_TRANSIT_POOL
-      );
+      throw new Error(`Cannot find omni pool config by token ${token.address}`);
     }
 
     this.omniPoolConfig = omniPoolConfig;
@@ -242,7 +237,7 @@ export class RevertPending {
 
     const metarouter = this.symbiosis.metaRouter(this.omniPoolConfig.chainId);
 
-    let revertableAddress: string = from;
+    let revertableAddress = from;
 
     const calldata = synthesis.interface.encodeFunctionData(
       "metaBurnSyntheticToken",
@@ -350,7 +345,10 @@ export class RevertPending {
     });
 
     const feeTokenAmount = new TokenAmount(feeToken, fee);
-    if (this.request.originalFromTokenAmount.lessThan(feeTokenAmount)) {
+    if (
+      this.request.originalFromTokenAmount.lessThan(feeTokenAmount) ||
+      this.request.originalFromTokenAmount.equalTo(feeTokenAmount)
+    ) {
       throw new Error(
         `Amount ${this.request.fromTokenAmount.toSignificant()} ${
           this.request.fromTokenAmount.token.symbol

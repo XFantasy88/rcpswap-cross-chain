@@ -40,8 +40,6 @@ class TradeNotInitializedError extends Error {
   }
 }
 
-// const OPEN_OCEAN_CLIENT_ID = utils.formatBytes32String("openocean");
-
 type TradeType =
   | OneInchTrade
   | OpenOceanTrade
@@ -74,6 +72,7 @@ export class AggregatorTrade implements SymbiosisTrade {
       to,
       tokenAmountIn,
       tokenOut,
+      clientId,
       ttl,
     } = this.params;
 
@@ -132,8 +131,8 @@ export class AggregatorTrade implements SymbiosisTrade {
     // }
 
     if (XfusionTrade.isAvailable(tokenAmountIn.token.chainId)) {
-      this.trade = await this.buildXfusionTrade();
-      return this;
+      const xfusionTrade = await this.buildXfusionTrade();
+      aggregators.push(xfusionTrade.init());
     }
 
     if (UniV3Trade.isSupported(tokenAmountIn.token.chainId)) {

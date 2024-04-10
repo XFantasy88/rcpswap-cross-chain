@@ -15,11 +15,6 @@ export const CHAINS_PRIORITY = [
   ChainId.ARBITRUM_NOVA,
 ];
 
-// a list of tokens by chain
-type ChainTokensList = {
-  readonly [chainId in ChainId]?: Token[];
-};
-
 export const XFUSION_CHAINS: ChainId[] = [
   ChainId.ARBITRUM_NOVA,
   ChainId.ARBITRUM_MAINNET,
@@ -27,6 +22,11 @@ export const XFUSION_CHAINS: ChainId[] = [
   ChainId.BSC_MAINNET,
   ChainId.MATIC_MAINNET,
 ];
+
+// a list of tokens by chain
+type ChainTokensList = {
+  readonly [chainId in ChainId]?: Token[];
+};
 
 export const ONE_INCH_CHAINS: ChainId[] = [
   ChainId.BSC_MAINNET,
@@ -260,6 +260,7 @@ export const MULTICALL_ADDRESSES: { [chainId in ChainId]?: string } = {
   [ChainId.BSC_MAINNET]: "0xfF6FD90A470Aaa0c1B8A54681746b07AcdFedc9B",
   [ChainId.MATIC_MAINNET]: "0x275617327c958bD06b5D6b871E7f491D76113dd8",
   [ChainId.AVAX_MAINNET]: "0x29b6603d17b9d8f021ecb8845b6fd06e1adf89de",
+
   [ChainId.BOBA_BNB]: "0x31cCe73DA4365342bd081F6a748AAdb7c7a49b7E",
   [ChainId.ARBITRUM_MAINNET]: "0x80c7dd17b01855a6d2347444a0fcc36136a314de",
   [ChainId.ARBITRUM_NOVA]: "0xcA11bde05977b3631167028862bE2a173976CA11",

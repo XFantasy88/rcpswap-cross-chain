@@ -27,8 +27,8 @@ import {
   getAllPairCombinations,
 } from "../utils";
 import { SymbiosisTrade } from "./symbiosisTrade";
-import { AddressZero } from "@ethersproject/constants/lib/addresses";
 import { getFunctionSelector } from "../tron";
+import { AddressZero } from "@ethersproject/constants/lib/addresses";
 
 export class UniLikeTrade implements SymbiosisTrade {
   tradeType = "dex" as const;

@@ -3,7 +3,7 @@ import { getExternalId, getLogWithTimeout } from "./utils";
 
 import { ChainId } from "../constants";
 import type { Symbiosis } from "./symbiosis";
-import { fetch } from "@whatwg-node/fetch";
+import fetch from "isomorphic-unfetch";
 import { delay } from "../utils";
 
 type BridgeRequestType =

@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { ChainId, ONE } from "../../constants";
 import { Fraction, Percent, Token, TokenAmount } from "../../entities";
 import { XFUSION_CHAINS } from "../constants";
@@ -21,6 +23,7 @@ export class XfusionTrade implements SymbiosisTrade {
 
   public tokenAmountIn: TokenAmount;
 
+  public chain!: ChainId;
   public trade!: MultiRoute;
   public route!: Token[];
   public amountOut!: TokenAmount;
@@ -38,7 +41,6 @@ export class XfusionTrade implements SymbiosisTrade {
   private readonly inToken: Type;
   private readonly outToken: Type;
   private readonly router: XfusionRouter;
-  private readonly chain: ChainId;
 
   constructor(
     tokenAmountIn: TokenAmount,
@@ -56,15 +58,14 @@ export class XfusionTrade implements SymbiosisTrade {
     this.routerAddress = router.address;
     this.maxDepth = maxDepth;
 
-    this.chain = tokenAmountIn.token.chain.id;
+    this.chain = this.tokenAmountIn.token.chain.id;
 
     this.inToken = this.getToken(this.tokenAmountIn.token);
     this.outToken = this.getToken(this.tokenOut);
   }
 
   public async init() {
-    //@ts-ignore
-    const dataFetcher = DataFetcher.onChain(this.chain);
+    const dataFetcher = DataFetcher.onChain(this.chain as unknown);
     dataFetcher.startDataFetching();
     await dataFetcher.fetchPoolsForToken(this.inToken, this.outToken);
     dataFetcher.stopDataFetching();
@@ -80,7 +81,6 @@ export class XfusionTrade implements SymbiosisTrade {
 
     const bestRoute = Router.findBestRoute(
       poolsCodeMap,
-      //@ts-ignore
       this.chain,
       this.inToken,
       BigInt(this.tokenAmountIn.raw.toString()),
@@ -88,8 +88,6 @@ export class XfusionTrade implements SymbiosisTrade {
       Number(gasPrice.toString()),
       this.maxDepth ?? 100
     );
-
-    console.log(bestRoute);
 
     if (bestRoute.status === RouteStatus.NoWay) {
       throw new Error("Cannot create trade");
@@ -140,7 +138,6 @@ export class XfusionTrade implements SymbiosisTrade {
     this.inToken;
     this.outToken;
     this.router;
-    //@ts-ignore
     if (token.isNative) return Native.onChain(this.chain);
     return new RToken({
       address: token.address,

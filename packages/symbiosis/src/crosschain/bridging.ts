@@ -69,8 +69,6 @@ export class Bridging {
     tokenOut,
     to,
   }: BridgeExactInParams): Promise<BridgeExactInResult> {
-    this.symbiosis.validateSwapAmounts(tokenAmountIn);
-
     this.tokenAmountIn = tokenAmountIn;
     this.tokenOut = tokenOut;
     this.from = from;
@@ -85,7 +83,7 @@ export class Bridging {
       this.tokenOut,
       this.tokenAmountIn.raw
     );
-    if (tokenAmountOut.lessThan(fee)) {
+    if (tokenAmountOut.lessThan(fee) || tokenAmountIn.equalTo(fee)) {
       throw new Error(
         `Amount ${tokenAmountOut.toSignificant()} ${
           tokenAmountOut.token.symbol

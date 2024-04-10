@@ -45,12 +45,8 @@ export async function bridge(
     transactionRequest: result.transactionRequest,
   } as SwapExactInTransactionPayload;
 
-  let approveTo: string;
-  if (payload.transactionType === "tron") {
-    approveTo = payload.transactionRequest.contract_address;
-  } else {
-    approveTo = payload.transactionRequest.to as string;
-  }
+  let approveTo = payload.transactionRequest.to as string;
+
   return {
     kind: "bridge",
     route: [inTokenAmount.token, outToken],

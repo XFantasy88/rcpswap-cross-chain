@@ -3,7 +3,6 @@ import { Percent, Token, TokenAmount } from "../../entities";
 import { Symbiosis } from "../symbiosis";
 import { SymbiosisTradeType } from "../trade";
 import { OneInchProtocols } from "../trade/oneInchTrade";
-import { TronTransactionData } from "../tron";
 
 export interface SwapExactInParams {
   symbiosis: Symbiosis;
@@ -16,15 +15,10 @@ export interface SwapExactInParams {
   oneInchProtocols?: OneInchProtocols;
 }
 
-export type SwapExactInTransactionPayload =
-  | {
-      transactionType: "evm";
-      transactionRequest: TransactionRequest;
-    }
-  | {
-      transactionType: "tron";
-      transactionRequest: TronTransactionData;
-    };
+export type SwapExactInTransactionPayload = {
+  transactionType: "evm";
+  transactionRequest: TransactionRequest;
+};
 
 export type SwapExactInResult = {
   kind: "onchain-swap" | "crosschain-swap" | "wrap" | "unwrap" | "bridge";

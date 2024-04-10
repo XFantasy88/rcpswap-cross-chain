@@ -23,7 +23,6 @@ import { Token } from "../../../entities";
 import { config as mainnet } from "../mainnet";
 import { config as testnet } from "../testnet";
 import { config as dev } from "../dev";
-import { config as teleport } from "../teleport";
 import type { ConfigName } from "../../symbiosis";
 import { BigNumberish } from "ethers";
 import { BigNumber } from "@ethersproject/bignumber";
@@ -31,7 +30,6 @@ import { Contract } from "@ethersproject/contracts";
 import ERC20 from "../../../abis/ERC20.json";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// const fs = require("fs");
 
 export type Id = number;
 
@@ -73,8 +71,6 @@ export class Builder {
       this.config = testnet;
     } else if (configName === "dev") {
       this.config = dev;
-    } else if (configName === "teleport") {
-      this.config = teleport;
     } else {
       throw new Error("Unknown config name");
     }
@@ -99,15 +95,6 @@ export class Builder {
       tokens,
       thresholds,
     } as ConfigCacheData);
-    // fs.writeFile(
-    //   `./src/crosschain/config/cache/${this.configName}.json`,
-    //   jsonData,
-    //   function (err: any) {
-    //     if (err) {
-    //       console.log(err);
-    //     }
-    //   }
-    // );
   }
 
   // === private ===

@@ -1,9 +1,9 @@
-import { StaticJsonRpcProvider, Log } from "@ethersproject/providers";
-import { BigNumber, Signer, utils } from "ethers";
+import { Log, StaticJsonRpcProvider } from "@ethersproject/providers";
+import { Signer, utils } from "ethers";
 import { fetch } from "@whatwg-node/fetch";
 import JSBI from "jsbi";
 import { ChainId } from "../constants";
-import { Chain, chains, Token, TokenAmount, wrappedToken } from "../entities";
+import { Chain, chains, Token, TokenAmount } from "../entities";
 import { Bridging } from "./bridging";
 import { ONE_INCH_ORACLE_MAP } from "./constants";
 import {
@@ -55,29 +55,25 @@ import { RevertPending } from "./revert";
 import { statelessWaitForComplete } from "./statelessWaitForComplete";
 import { Swapping } from "./swapping";
 import { ChainConfig, Config, OmniPoolConfig, OverrideConfig } from "./types";
-import { Zapping } from "./zapping";
-import { ZappingAave } from "./zappingAave";
-import { ZappingBeefy } from "./zappingBeefy";
-import { ZappingCream } from "./zappingCream";
+
 import { config as mainnet } from "./config/mainnet";
 import { config as testnet } from "./config/testnet";
 import { config as dev } from "./config/dev";
-import { config as teleport } from "./config/teleport";
 import { BestPoolSwapping } from "./bestPoolSwapping";
-import { ConfigCache } from "./config/cache-config/cache";
-import { OmniPoolInfo } from "./config/cache-config/builder";
+import { ConfigCache } from "./config/config-cache/cache";
+import { Id, OmniPoolInfo, TokenInfo } from "./config/config-cache/builder";
 import { PendingRequest } from "./revertRequest";
 import {
-  MakeOneInchRequestFn,
   makeOneInchRequestFactory,
+  MakeOneInchRequestFn,
 } from "./oneInchRequest";
 import {
-  SwapExactInParams,
   swapExactIn,
+  SwapExactInParams,
   SwapExactInResult,
 } from "./swapExactIn";
 
-export type ConfigName = "dev" | "testnet" | "mainnet" | "teleport";
+export type ConfigName = "dev" | "testnet" | "mainnet";
 
 export type DiscountTier = {
   amount: string;
@@ -170,8 +166,6 @@ export class Symbiosis {
       this.config = testnet;
     } else if (config === "dev") {
       this.config = dev;
-    } else if (config === "teleport") {
-      this.config = teleport;
     } else {
       throw new Error("Unknown config name");
     }
@@ -186,6 +180,10 @@ export class Symbiosis {
         return chainConfig;
       });
     }
+    if (overrideConfig?.limits) {
+      this.config.limits = overrideConfig.limits;
+    }
+
     this.fetch = overrideConfig?.fetch ?? defaultFetch;
 
     this.makeOneInchRequest =
@@ -202,22 +200,6 @@ export class Symbiosis {
         return [chain.id, new StaticJsonRpcProvider(rpc, chain.id)];
       })
     );
-  }
-
-  public validateSwapAmounts(amount: TokenAmount): void {
-    const { token } = amount;
-    const wrapped = wrappedToken(token);
-    const threshold = this.configCache.getTokenThreshold(wrapped);
-    if (BigNumber.from(amount.raw.toString()).lt(threshold)) {
-      const formattedThreshold = utils.formatUnits(threshold, token.decimals);
-
-      throw new Error(
-        `The amount is too low: ${amount.toFixed(
-          2
-        )}. Min amount: ${formattedThreshold}`,
-        ErrorCode.AMOUNT_TOO_LOW
-      );
-    }
   }
 
   public chains(): Chain[] {
@@ -245,22 +227,6 @@ export class Symbiosis {
 
   public newRevertPending(request: PendingRequest) {
     return new RevertPending(this, request);
-  }
-
-  public newZapping(omniPoolConfig: OmniPoolConfig) {
-    return new Zapping(this, omniPoolConfig);
-  }
-
-  public newZappingAave(omniPoolConfig: OmniPoolConfig) {
-    return new ZappingAave(this, omniPoolConfig);
-  }
-
-  public newZappingCream(omniPoolConfig: OmniPoolConfig) {
-    return new ZappingCream(this, omniPoolConfig);
-  }
-
-  public newZappingBeefy(omniPoolConfig: OmniPoolConfig) {
-    return new ZappingBeefy(this, omniPoolConfig);
   }
 
   public getProvider(
@@ -492,7 +458,7 @@ export class Symbiosis {
     if (!response.ok) {
       const text = await response.text();
       const json = JSON.parse(text);
-      throw new Error(json.message ?? text);
+      throw new Error(json.message ?? text, ErrorCode.ADVISOR_ERROR);
     }
 
     const { price, save } = await response.json();
@@ -594,6 +560,10 @@ export class Symbiosis {
 
   public getOmniPoolTokens(omniPoolConfig: OmniPoolConfig): Token[] {
     return this.configCache.getOmniPoolTokens(omniPoolConfig);
+  }
+
+  public getTokenInfoById(tokenId: Id): TokenInfo {
+    return this.configCache.getTokenInfoById(tokenId);
   }
 
   public async waitForComplete(

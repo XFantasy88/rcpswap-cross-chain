@@ -1,4 +1,5 @@
 import { AddressZero, MaxUint256 } from "@ethersproject/constants";
+import { parseUnits } from "@ethersproject/units";
 import {
   Log,
   TransactionReceipt,
@@ -23,6 +24,7 @@ import { WaitForComplete } from "./waitForComplete";
 import { Error, ErrorCode } from "./error";
 import { SymbiosisTrade } from "./trade/symbiosisTrade";
 import { OneInchProtocols } from "./trade/oneInchTrade";
+
 import { OmniPoolConfig } from "./types";
 
 export interface SwapExactInParams {
@@ -345,7 +347,7 @@ export abstract class BaseSwapping {
     if (this.transit.isV2()) {
       let amount = this.transit.amountOut.raw;
       if (feeV2) {
-        if (JSBI.lessThan(amount, feeV2.raw)) {
+        if (JSBI.lessThan(amount, feeV2.raw) || JSBI.equal(amount, feeV2.raw)) {
           throw new Error(
             `Amount ${this.transit.amountOut.toSignificant()} ${
               feeV2.token.symbol
@@ -387,9 +389,37 @@ export abstract class BaseSwapping {
     });
   }
 
+  protected validateLimits(amount: TokenAmount): void {
+    const { token } = amount;
+    const limit = (this.symbiosis.config.limits || []).find((limit) => {
+      return (
+        limit.address.toLowerCase() === token.address.toLowerCase() &&
+        limit.chainId === token.chainId
+      );
+    });
+    if (!limit) {
+      return;
+    }
+    const amountRaw = parseUnits(limit.value, token.decimals).toString();
+    if (amountRaw === "0") {
+      return;
+    }
+    const limitTokenAmount = new TokenAmount(token, amountRaw);
+    if (amount.greaterThan(limitTokenAmount)) {
+      throw new Error(
+        `Swap amount is too high. Max: ${limitTokenAmount.toSignificant(4)} ${
+          limitTokenAmount.token.symbol
+        }`,
+        ErrorCode.AMOUNT_TOO_HIGH
+      );
+    }
+  }
+
   protected buildTransit(fee?: TokenAmount): Transit {
     const amountIn = this.tradeA ? this.tradeA.amountOut : this.tokenAmountIn;
     const amountInMin = this.tradeA ? this.tradeA.amountOutMin : amountIn;
+
+    this.validateLimits(amountIn);
 
     return new Transit(
       this.symbiosis,
@@ -415,7 +445,7 @@ export abstract class BaseSwapping {
     if (this.transit.isV2()) {
       let amountRaw = amountIn.raw;
       if (this.feeV2) {
-        if (amountIn.lessThan(this.feeV2)) {
+        if (amountIn.lessThan(this.feeV2) || amountIn.equalTo(this.feeV2)) {
           throw new Error(
             `Amount ${amountIn.toSignificant()} ${
               amountIn.token.symbol
