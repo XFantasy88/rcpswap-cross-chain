@@ -7,6 +7,7 @@ import type { Swapping } from "./swapping";
 import type { Symbiosis } from "./symbiosis";
 import type { OmniPoolConfig } from "./types";
 import { Error, ErrorCode } from "./error";
+import JSBI from "jsbi";
 
 type WaitForCompleteArgs = Parameters<
   typeof Swapping.prototype.waitForComplete
@@ -27,8 +28,13 @@ export class BestPoolSwapping {
     deadline,
     oneInchProtocols,
   }: SwapExactInParams): Promise<CrosschainSwapExactInResult> {
+    const feeTokenAmount = new TokenAmount(
+      tokenAmountIn.token,
+      JSBI.divide(tokenAmountIn.raw, JSBI.BigInt("100"))
+    );
+
     const exactInParams: SwapExactInParams = {
-      tokenAmountIn,
+      tokenAmountIn: tokenAmountIn.subtract(feeTokenAmount),
       tokenOut,
       from,
       to,
