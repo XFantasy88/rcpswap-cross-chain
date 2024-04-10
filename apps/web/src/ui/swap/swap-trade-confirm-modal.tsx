@@ -441,6 +441,7 @@ export default function SwapTradeConfirmModal() {
 
   const handleSwap = async () => {
     try {
+      console.log(symbiosisTxError)
       if (
         (chainId0 === chainId1 && error) ||
         (chainId0 !== chainId1 && symbiosisTxError)
