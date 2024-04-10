@@ -1,17 +1,17 @@
-import ConfirmSwapModal from "@/components/swap/ConfirmSwapModal"
+import ConfirmSwapModal from "@/components/swap/ConfirmSwapModal";
 import {
   useDerivedSwapState,
   useSwapTrade,
   useSymbiosisTrade,
-} from "@/ui/swap/derived-swap-state-provider"
-import { useDerivedSwapTradeState } from "./derived-swap-trade-state-provider"
-import { useCallback, useMemo, useRef } from "react"
-import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi"
+} from "@/ui/swap/derived-swap-state-provider";
+import { useDerivedSwapTradeState } from "./derived-swap-trade-state-provider";
+import { useCallback, useMemo, useRef } from "react";
+import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import {
   META_ROUTE_PROCESSOR_ADDRESS,
   ROUTE_PROCESSOR_3_ADDRESS,
-} from "rcpswap/config"
-import { metaRouteProcessorAbi, routeProcessor2Abi } from "rcpswap/abi"
+} from "rcpswap/config";
+import { metaRouteProcessorAbi, routeProcessor2Abi } from "rcpswap/abi";
 import {
   ApprovalState,
   getEtherscanLink,
@@ -21,24 +21,24 @@ import {
   queryFnUseBalances,
   useTokenApproval,
   waitForTransaction,
-} from "@rcpswap/wagmi"
-import { Amount, tryParseAmount } from "rcpswap/currency"
-import { finalizeTransaction, useAddTransaction } from "@rcpswap/dexie"
-import { useAddPopup } from "@/state/application/hooks"
-import { RouteStatus } from "@rcpswap/tines"
-import { gasMargin } from "rcpswap"
-import confirmPriceImpactWithoutFee from "@/components/swap/confirmPriceImpactWithoutFee"
-import { getEthersTransactionReceipt } from "@/utils/getEthersTransactionReceipt"
-import { fetchBlockNumber } from "wagmi/actions"
+} from "@rcpswap/wagmi";
+import { Amount, tryParseAmount } from "rcpswap/currency";
+import { finalizeTransaction, useAddTransaction } from "@rcpswap/dexie";
+import { useAddPopup } from "@/state/application/hooks";
+import { RouteStatus } from "@rcpswap/tines";
+import { gasMargin } from "rcpswap";
+import confirmPriceImpactWithoutFee from "@/components/swap/confirmPriceImpactWithoutFee";
+import { getEthersTransactionReceipt } from "@/utils/getEthersTransactionReceipt";
+import { fetchBlockNumber } from "wagmi/actions";
 import {
   SUPPORTED_NETWORK_INFO,
   SYMBIOSIS_CONFIRMATION_BLOCK_COUNT,
-} from "@/config"
-import { StepType } from "@/components/TransactionConfirmationModal"
-import { convertAmountFromSymbiosis } from "@/utils"
-import { Address, TransactionExecutionError, zeroAddress } from "viem"
-import { ChainId } from "rcpswap/chain"
-import { Symbiosis } from "@rcpswap/symbiosis"
+} from "@/config";
+import { StepType } from "@/components/TransactionConfirmationModal";
+import { convertAmountFromSymbiosis } from "@/utils";
+import { Address, TransactionExecutionError, zeroAddress } from "viem";
+import { ChainId } from "rcpswap/chain";
+import { Symbiosis } from "@rcpswap/symbiosis";
 
 export default function SwapTradeConfirmModal() {
   const {
@@ -52,23 +52,23 @@ export default function SwapTradeConfirmModal() {
       token1,
     },
     mutate: { setSwapAmount },
-  } = useDerivedSwapState()
+  } = useDerivedSwapState();
 
-  const { data: trade } = useSwapTrade()
-  const { data: symbiosis } = useSymbiosisTrade()
+  const { data: trade } = useSwapTrade();
+  const { data: symbiosis } = useSymbiosisTrade();
 
-  console.log(trade)
+  console.log(symbiosis);
 
-  const addTransaction = useAddTransaction()
-  const addPopup = useAddPopup()
-  const { address } = useAccount()
+  const addTransaction = useAddTransaction();
+  const addPopup = useAddPopup();
+  const { address } = useAccount();
 
-  const symbiosisRef = useRef<any>()
+  const symbiosisRef = useRef<any>();
 
   const parsedAmount = useMemo(
     () => tryParseAmount(swapAmount, token0),
     [token0, swapAmount]
-  )
+  );
 
   const [approvalState] = useTokenApproval({
     amount: parsedAmount,
@@ -77,7 +77,7 @@ export default function SwapTradeConfirmModal() {
         ? META_ROUTE_PROCESSOR_ADDRESS[chainId0]
         : ROUTE_PROCESSOR_3_ADDRESS[chainId0],
     enabled: Boolean(parsedAmount),
-  })
+  });
 
   const {
     state: {
@@ -102,7 +102,7 @@ export default function SwapTradeConfirmModal() {
       setCurrencyToAdd,
       setSwapResult,
     },
-  } = useDerivedSwapTradeState()
+  } = useDerivedSwapTradeState();
 
   const { config, error } = usePrepareContractWrite({
     chainId: chainId0,
@@ -118,7 +118,7 @@ export default function SwapTradeConfirmModal() {
     value: tradeToConfirm?.value ?? 0n,
     staleTime: 5000,
     cacheTime: 10000,
-  })
+  });
 
   const { writeAsync } = useContractWrite({
     ...config,
@@ -132,16 +132,16 @@ export default function SwapTradeConfirmModal() {
         }
       : undefined,
     onSuccess: async (data) => {
-      setAttemptingTxn(false)
-      setTxHash(data.hash)
-      setSwapErrorMessage(undefined)
+      setAttemptingTxn(false);
+      setTxHash(data.hash);
+      setSwapErrorMessage(undefined);
       setSteps([
         {
           ...steps[0],
           status: "success",
           link: getEtherscanLink(chainId0, data.hash, "transaction"),
         },
-      ])
+      ]);
 
       const baseText = `Swap ${tradeToConfirm?.amountIn?.toSignificant(3)} ${
         tradeToConfirm?.amountIn?.currency.symbol
@@ -154,13 +154,13 @@ export default function SwapTradeConfirmModal() {
         recipient !== undefined && recipient !== address && isAddress(recipient)
           ? `to ${getShortenAddress(recipient)}`
           : ""
-      }`
+      }`;
 
-      addTransaction(address ?? "", chainId0, data.hash, baseText)
+      addTransaction(address ?? "", chainId0, data.hash, baseText);
 
       waitForTransaction({ hash: data.hash })
         .then((receipt) => {
-          finalizeTransaction(data.hash, "success", receipt)
+          finalizeTransaction(data.hash, "success", receipt);
 
           addPopup(
             {
@@ -172,23 +172,23 @@ export default function SwapTradeConfirmModal() {
               },
             },
             data.hash
-          )
+          );
         })
         .catch((err) => {
-          console.log(err)
-          finalizeTransaction(data.hash, "failed")
-        })
+          console.log(err);
+          finalizeTransaction(data.hash, "failed");
+        });
     },
     onError: (error) => {
       setSwapErrorMessage(
         error instanceof TransactionExecutionError
           ? "User rejected the transaction."
           : "Transaction failed, this can be caused by prices changes - try increasing slippage"
-      )
-      setAttemptingTxn(false)
-      setTxHash(undefined)
+      );
+      setAttemptingTxn(false);
+      setTxHash(undefined);
     },
-  })
+  });
 
   const { config: symbiosisConfig, error: symbiosisTxError } =
     usePrepareContractWrite({
@@ -212,7 +212,7 @@ export default function SwapTradeConfirmModal() {
       ),
       staleTime: 5000,
       cacheTime: 10000,
-    })
+    });
 
   const { writeAsync: symbiosisWriteAsync } = useContractWrite({
     ...symbiosisConfig,
@@ -227,7 +227,7 @@ export default function SwapTradeConfirmModal() {
       : undefined,
     onMutate: () => {
       if (symbiosisRef && symbiosis) {
-        symbiosisRef.current = symbiosis
+        symbiosisRef.current = symbiosis;
       }
     },
     onSuccess: async (data) => {
@@ -241,7 +241,7 @@ export default function SwapTradeConfirmModal() {
         recipient !== undefined && recipient !== address && isAddress(recipient)
           ? `to ${getShortenAddress(recipient)}`
           : ""
-      }`
+      }`;
 
       const newSteps: StepType[] = [
         {
@@ -255,9 +255,9 @@ export default function SwapTradeConfirmModal() {
           currentRounds: 0,
         },
         ...steps.slice(2),
-      ]
+      ];
 
-      setSteps(newSteps)
+      setSteps(newSteps);
 
       const beforeBalance = await queryFnUseBalances({
         chainId: chainId1,
@@ -267,66 +267,68 @@ export default function SwapTradeConfirmModal() {
         res && token1
           ? res?.[token1.isNative ? zeroAddress : token1.address]
           : undefined
-      )
+      );
 
-      console.log(beforeBalance)
+      console.log(beforeBalance);
 
-      addTransaction(address ?? "", chainId0, data.hash, baseText)
+      addTransaction(address ?? "", chainId0, data.hash, baseText);
       try {
         waitForTransaction({ hash: data.hash })
           .then(async (receipt) => {
-            const publicClient = getPublicClient({ chainId: chainId0 })
+            const publicClient = getPublicClient({ chainId: chainId0 });
 
-            const currentBlockNo = await fetchBlockNumber({ chainId: chainId0 })
+            const currentBlockNo = await fetchBlockNumber({
+              chainId: chainId0,
+            });
             const unwatch = publicClient.watchBlockNumber({
               onBlockNumber: (blockNo) => {
-                const offset = Number(blockNo - currentBlockNo)
+                const offset = Number(blockNo - currentBlockNo);
                 if (offset >= SYMBIOSIS_CONFIRMATION_BLOCK_COUNT[chainId0]) {
                   newSteps[1] = {
                     ...newSteps[1],
                     currentRounds: newSteps[1].totalRounds,
                     status: "success",
-                  }
-                  newSteps[2] = { ...newSteps[2], status: "pending" }
-                  setSteps(newSteps)
+                  };
+                  newSteps[2] = { ...newSteps[2], status: "pending" };
+                  setSteps(newSteps);
                 } else {
-                  newSteps[1] = { ...newSteps[1], currentRounds: offset }
-                  setSteps(newSteps)
+                  newSteps[1] = { ...newSteps[1], currentRounds: offset };
+                  setSteps(newSteps);
                 }
               },
-            })
+            });
 
             const symbiosisData = await symbiosisRef.current?.symbiosis
               ?.waitForComplete(getEthersTransactionReceipt(receipt))
               .then(async (log: any) => {
-                console.log(log)
-                unwatch?.()
+                console.log(log);
+                unwatch?.();
                 newSteps[1] = {
                   ...newSteps[1],
                   currentRounds: newSteps[1].totalRounds,
                   status: "success",
-                }
-                newSteps[2] = { ...newSteps[2], status: "pending" }
-                setSteps(newSteps)
-                const swapData = symbiosisRef.current
-                if (!log || !swapData) return
-                const expectedTokenOut = swapData.amountOut?.currency
+                };
+                newSteps[2] = { ...newSteps[2], status: "pending" };
+                setSteps(newSteps);
+                const swapData = symbiosisRef.current;
+                if (!log || !swapData) return;
+                const expectedTokenOut = swapData.amountOut?.currency;
 
                 const symbiosisObj = new Symbiosis(
                   "mainnet",
                   "rcpswap-cross-chain"
-                )
+                );
 
                 const transitTokenSent =
                   await symbiosisObj.findTransitTokenSent(
                     chainId1,
                     log.transactionHash
-                  )
+                  );
 
-                let formatedText
+                let formatedText;
 
                 if (transitTokenSent) {
-                  formatedText = `Received ${transitTokenSent?.token?.symbol} instead of ${expectedTokenOut?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`
+                  formatedText = `Received ${transitTokenSent?.token?.symbol} instead of ${expectedTokenOut?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`;
                 } else {
                   const afterBalance = await queryFnUseBalances({
                     chainId: chainId1,
@@ -336,14 +338,14 @@ export default function SwapTradeConfirmModal() {
                     res && token1
                       ? res?.[token1.isNative ? zeroAddress : token1.address]
                       : undefined
-                  )
+                  );
                   const result =
                     afterBalance &&
                     beforeBalance &&
                     afterBalance.currency.equals(beforeBalance.currency)
                       ? afterBalance.subtract(beforeBalance)
-                      : undefined
-                  setSwapResult(result)
+                      : undefined;
+                  setSwapResult(result);
 
                   formatedText = `Swap ${symbiosisRef.current?.amountIn?.toSignificant(
                     3
@@ -357,7 +359,7 @@ export default function SwapTradeConfirmModal() {
                     isAddress(recipient)
                       ? `to ${getShortenAddress(recipient)}`
                       : ""
-                  }`
+                  }`;
                 }
 
                 newSteps[2] = {
@@ -368,8 +370,8 @@ export default function SwapTradeConfirmModal() {
                     log?.transactionHash,
                     "transaction"
                   ),
-                }
-                setSteps(newSteps)
+                };
+                setSteps(newSteps);
 
                 addPopup(
                   {
@@ -381,36 +383,36 @@ export default function SwapTradeConfirmModal() {
                     },
                   },
                   log.transactionHash
-                )
+                );
 
-                return { transitTokenSent, hash: log?.transactionHash }
-              })
+                return { transitTokenSent, hash: log?.transactionHash };
+              });
 
-            finalizeTransaction(data.hash, "success", receipt)
+            finalizeTransaction(data.hash, "success", receipt);
             if (symbiosisData?.transitTokenSent) {
-              setAttemptingTxn(false)
-              setTxHash(symbiosisData.hash)
+              setAttemptingTxn(false);
+              setTxHash(symbiosisData.hash);
               setCurrencyToAdd(
                 convertAmountFromSymbiosis(symbiosisData.transitTokenSent)
                   .currency
-              )
+              );
               setSwapWarningMessage(
                 `Received ${symbiosisData?.transitTokenSent?.token?.symbol} instead of ${token1?.symbol} to avoid any loss due to an adverse exchange rate change on the destination network.`
-              )
+              );
             }
           })
           .catch((err) => {
-            console.log(err)
-            finalizeTransaction(data.hash, "failed")
-            setAttemptingTxn(false)
-            setTxHash(data.hash)
-            setSwapErrorMessage("Failed to listen event")
-          })
+            console.log(err);
+            finalizeTransaction(data.hash, "failed");
+            setAttemptingTxn(false);
+            setTxHash(data.hash);
+            setSwapErrorMessage("Failed to listen event");
+          });
       } catch (err) {
-        finalizeTransaction(data.hash, "failed")
-        setAttemptingTxn(false)
-        setTxHash(data.hash)
-        setSwapErrorMessage("Failed to listen event")
+        finalizeTransaction(data.hash, "failed");
+        setAttemptingTxn(false);
+        setTxHash(data.hash);
+        setSwapErrorMessage("Failed to listen event");
       }
     },
     onError: (error) => {
@@ -418,23 +420,23 @@ export default function SwapTradeConfirmModal() {
         error instanceof TransactionExecutionError
           ? "User rejected the transaction."
           : "Transaction failed, this can be caused by prices changes - try increasing slippage"
-      )
-      setAttemptingTxn(false)
-      setTxHash(undefined)
+      );
+      setAttemptingTxn(false);
+      setTxHash(undefined);
     },
-  })
+  });
 
   const handleAcceptChanges = useCallback(() => {
-    setTradeToConfirm(chainId0 === chainId1 ? trade : symbiosis)
-  }, [setTradeToConfirm, trade, symbiosis, chainId0, chainId1])
+    setTradeToConfirm(chainId0 === chainId1 ? trade : symbiosis);
+  }, [setTradeToConfirm, trade, symbiosis, chainId0, chainId1]);
 
   const handleConfirmDismiss = useCallback(() => {
-    setShowConfirm(false)
+    setShowConfirm(false);
 
     if (txHash) {
-      setSwapAmount("")
+      setSwapAmount("");
     }
-  }, [setShowConfirm, txHash, setSwapAmount])
+  }, [setShowConfirm, txHash, setSwapAmount]);
 
   const handleSwap = async () => {
     try {
@@ -442,28 +444,28 @@ export default function SwapTradeConfirmModal() {
         (chainId0 === chainId1 && error) ||
         (chainId0 !== chainId1 && symbiosisTxError)
       ) {
-        const errorMessage = chainId0 === chainId1 ? error : symbiosisTxError
+        const errorMessage = chainId0 === chainId1 ? error : symbiosisTxError;
         setSwapErrorMessage(
           errorMessage instanceof TransactionExecutionError
             ? "User rejected the transaction"
             : "Transaction failed, this can be caused by prices changes - try increasing slippage"
-        )
-        setAttemptingTxn(false)
-        setTxHash(undefined)
-        return
+        );
+        setAttemptingTxn(false);
+        setTxHash(undefined);
+        return;
       }
       if (
         tradeToConfirm?.priceImpact &&
         !confirmPriceImpactWithoutFee(tradeToConfirm.priceImpact)
       ) {
-        return
+        return;
       }
 
-      setSwapErrorMessage(undefined)
-      setTxHash(undefined)
-      setCurrencyToAdd(undefined)
-      setSwapWarningMessage(undefined)
-      setSwapResult(undefined)
+      setSwapErrorMessage(undefined);
+      setTxHash(undefined);
+      setCurrencyToAdd(undefined);
+      setSwapWarningMessage(undefined);
+      setSwapResult(undefined);
       setSteps(
         chainId0 === chainId1
           ? [
@@ -490,17 +492,17 @@ export default function SwapTradeConfirmModal() {
                 desc: "Check in the Explorer",
               },
             ]
-      )
-      setAttemptingTxn(true)
+      );
+      setAttemptingTxn(true);
 
-      if (chainId0 === chainId1) await writeAsync?.()
+      if (chainId0 === chainId1) await writeAsync?.();
       else {
-        await symbiosisWriteAsync?.()
+        await symbiosisWriteAsync?.();
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   return (
     <ConfirmSwapModal
@@ -522,5 +524,5 @@ export default function SwapTradeConfirmModal() {
       currencyToAdd={chainId0 !== chainId1 ? currencyToAdd : undefined}
       swapResult={swapResult}
     />
-  )
+  );
 }
