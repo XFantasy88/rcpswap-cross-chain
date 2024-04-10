@@ -535,8 +535,7 @@ export default function SwapTradeButton() {
     <Checker.Error
       error={
         chainId0 !== chainId1 && symbiosisError
-          ? (symbiosisError as any)?.code === ErrorCode.AMOUNT_LESS_THAN_FEE ||
-            (symbiosisError as any)?.code === ErrorCode.AMOUNT_TOO_LOW
+          ? (symbiosisError as any)?.code === ErrorCode.AMOUNT_LESS_THAN_FEE
             ? "Amount is too low"
             : (symbiosisError as any)?.code === ErrorCode.AMOUNT_TOO_HIGH
             ? "Amount is too high"
