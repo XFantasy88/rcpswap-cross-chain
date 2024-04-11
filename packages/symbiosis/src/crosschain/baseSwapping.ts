@@ -148,6 +148,8 @@ export abstract class BaseSwapping {
       await this.tradeC.init();
     }
 
+    console.log(this.tradeA, this.tradeC);
+
     this.route = this.getRoute();
 
     const [{ fee, save }, feeV2Raw] = await Promise.all([
