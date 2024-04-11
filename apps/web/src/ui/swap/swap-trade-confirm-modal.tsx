@@ -57,8 +57,6 @@ export default function SwapTradeConfirmModal() {
   const { data: trade } = useSwapTrade();
   const { data: symbiosis } = useSymbiosisTrade();
 
-  console.log(symbiosis);
-
   const addTransaction = useAddTransaction();
   const addPopup = useAddPopup();
   const { address } = useAccount();
@@ -416,7 +414,7 @@ export default function SwapTradeConfirmModal() {
       }
     },
     onError: (error) => {
-      console.log(error)
+      console.log(error);
       setSwapErrorMessage(
         error instanceof TransactionExecutionError
           ? "User rejected the transaction."
@@ -441,7 +439,7 @@ export default function SwapTradeConfirmModal() {
 
   const handleSwap = async () => {
     try {
-      console.log(symbiosisTxError)
+      console.log(symbiosisTxError);
       if (
         (chainId0 === chainId1 && error) ||
         (chainId0 !== chainId1 && symbiosisTxError)
