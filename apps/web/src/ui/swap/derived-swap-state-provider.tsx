@@ -333,6 +333,7 @@ const useSymbiosisTrade = () => {
         slippage: +allowedSlippage * 100,
         maxDepth: ultraMode ? 1000 : 100,
       });
+      console.log(res);
 
       const amountOut = Amount.fromRawAmount(
         token1,

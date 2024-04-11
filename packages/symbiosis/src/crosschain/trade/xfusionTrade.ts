@@ -89,8 +89,6 @@ export class XfusionTrade implements SymbiosisTrade {
       this.maxDepth ?? 100
     );
 
-    console.log(bestRoute);
-
     if (bestRoute.status === RouteStatus.NoWay) {
       throw new Error("Cannot create trade");
     }
