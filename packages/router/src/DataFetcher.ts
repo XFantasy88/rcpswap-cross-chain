@@ -89,7 +89,7 @@ export class DataFetcher {
         const provider = new SushiSwapV2Provider(this.chainId, this.web3Client)
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -98,7 +98,7 @@ export class DataFetcher {
         const provider = new SushiSwapV3Provider(this.chainId, this.web3Client)
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -107,7 +107,7 @@ export class DataFetcher {
         const provider = new ArbSwapProvider(this.chainId, this.web3Client)
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -116,7 +116,7 @@ export class DataFetcher {
         const provider = new RCPSwapProvider(this.chainId, this.web3Client)
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -134,7 +134,7 @@ export class DataFetcher {
         const provider = new QuickSwapV2Provider(this.chainId, this.web3Client)
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -143,7 +143,7 @@ export class DataFetcher {
         const provider = new QuickSwapV3Provider(this.chainId, this.web3Client)
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -155,7 +155,7 @@ export class DataFetcher {
         )
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -167,7 +167,7 @@ export class DataFetcher {
         )
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -176,7 +176,7 @@ export class DataFetcher {
         const provider = new TraderJoeProvider(this.chainId, this.web3Client)
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -188,7 +188,7 @@ export class DataFetcher {
         )
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -200,7 +200,7 @@ export class DataFetcher {
         )
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -209,7 +209,7 @@ export class DataFetcher {
         const provider = new BiSwapProvider(this.chainId, this.web3Client)
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 
@@ -218,7 +218,7 @@ export class DataFetcher {
         const provider = new PangolinSwapProvider(this.chainId, this.web3Client)
         this.providers.push(provider)
       } catch (e: unknown) {
-        console.warn(e)
+        // console.warn(e)
       }
     }
 

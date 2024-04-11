@@ -107,7 +107,7 @@ export abstract class PancakeSwapV3BaseProvider extends LiquidityProvider {
     if (excludePools)
       staticPools = staticPools.filter((p) => !excludePools.has(p.address))
 
-    console.debug("staticPools v3 base", staticPools.length)
+    // console.debug("staticPools v3 base", staticPools.length)
 
     const slot0 = await this.client
       .multicall({

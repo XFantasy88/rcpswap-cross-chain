@@ -95,7 +95,7 @@ export abstract class AlgebraBaseProvider extends LiquidityProvider {
     if (excludePools)
       staticPools = staticPools.filter((p) => !excludePools.has(p.address))
 
-    console.debug("staticPools v3 base", staticPools.length)
+    // console.debug("staticPools v3 base", staticPools.length)
 
     const globalState = await this.client
       .multicall({
